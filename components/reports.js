@@ -1,23 +1,63 @@
-import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import { StyleSheet, Text, View, Button } from 'react-native';
+import { FlatList, ActivityIndicator, Text, View, Button } from 'react-native';
 
-export default class Home extends React.Component {
-    render() {
-        return (
-            <View style={styles.container} >
-                <Text>Reports</Text>
-                <StatusBar style="auto" />
-            </View>
+export default class FetchExample extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { isLoading: true };
+  }
+
+  componentDidMount() {
+    return fetch('http://192.168.0.7:8080/reports')
+      .then(response => response.json())
+      .then(responseJson => {
+        this.setState(
+          {
+            isLoading: false,
+            dataSource: responseJson,
+          },
+          function() {}
         );
-    }
-}
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  }
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#fff',
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-});
+  render() {
+    if (this.state.isLoading) {
+      return (
+        <View style={{ flex: 1, padding: 20 }}>
+          <ActivityIndicator />
+        </View>
+      );
+    }
+
+    return (
+      <View style={{ flex: 1, paddingTop: 20 }}>
+        <FlatList
+          data={this.state.dataSource}
+          renderItem={({ item }) => (
+            <View>
+                <Text style={{ borderBottomWidth: 1, marginBottom: 12, fontSize: 20, fontWeight: "200",
+                              textAlign: "center", paddingBottom: 30 }}>
+                  Reporte #{item.id}{"\n"}
+                  Realizado por: {item.user.name} {item.user.lastName}{"\n"}{"\n"}
+                  Descripción: {item.description}{"\n"}
+                  Estado: {item.state}{"\n"}
+                  Privacidad: {item.privacy}{"\n"}{"\n"}
+                  
+                  <Button
+                    title="Ver más"
+                    onPress={() => null}
+                  />
+                </Text>
+                <Text></Text>
+              </View>
+          )}
+          keyExtractor={({ id }, index) => id}
+        />
+      </View>
+    );
+  }
+}
