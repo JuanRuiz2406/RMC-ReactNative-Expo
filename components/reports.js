@@ -1,5 +1,5 @@
-import React from 'react';
-import { FlatList, ActivityIndicator, Text, View, Button } from 'react-native';
+import React from "react";
+import { FlatList, ActivityIndicator, Text, View, Button } from "react-native";
 
 export default class FetchExample extends React.Component {
   constructor(props) {
@@ -8,20 +8,30 @@ export default class FetchExample extends React.Component {
   }
 
   componentDidMount() {
-    return fetch('http://192.168.0.7:8080/reports')
-      .then(response => response.json())
-      .then(responseJson => {
+    return fetch("http://192.168.0.7:8080/reports")
+      .then((response) => response.json())
+      .then((responseJson) => {
         this.setState(
           {
             isLoading: false,
             dataSource: responseJson,
           },
-          function() {}
+          function () {}
         );
       })
-      .catch(error => {
+      .catch((error) => {
         console.error(error);
       });
+  }
+
+  delete(id) {
+    fetch("http://192.168.0.7:8080/reports/" + id, {
+      method: "DELETE",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+    });
   }
 
   render() {
@@ -39,21 +49,33 @@ export default class FetchExample extends React.Component {
           data={this.state.dataSource}
           renderItem={({ item }) => (
             <View>
-                <Text style={{ borderBottomWidth: 1, marginBottom: 12, fontSize: 20, fontWeight: "200",
-                              textAlign: "center", paddingBottom: 30 }}>
-                  Reporte #{item.id}{"\n"}
-                  Realizado por: {item.user.name} {item.user.lastName}{"\n"}{"\n"}
-                  Descripción: {item.description}{"\n"}
-                  Estado: {item.state}{"\n"}
-                  Privacidad: {item.privacy}{"\n"}{"\n"}
-                  
-                  <Button
-                    title="Ver más"
-                    onPress={() => null}
-                  />
-                </Text>
-                <Text></Text>
-              </View>
+              <Text
+                style={{
+                  borderBottomWidth: 1,
+                  marginBottom: 12,
+                  fontSize: 20,
+                  fontWeight: "200",
+                  textAlign: "center",
+                  paddingBottom: 30,
+                }}
+              >
+                Reporte #{item.id}
+                {"\n"}
+                Realizado por: {item.user.name} {item.user.lastName}
+                {"\n"}
+                {"\n"}
+                Descripción: {item.description}
+                {"\n"}
+                Estado: {item.state}
+                {"\n"}
+                Privacidad: {item.privacy}
+                {"\n"}
+                {"\n"}
+                <Button title="Ver más" onPress={() => null} />
+                <Button title="Eliminar" onPress={() => this.delete(item.id)} />
+              </Text>
+              <Text></Text>
+            </View>
           )}
           keyExtractor={({ id }, index) => id}
         />
