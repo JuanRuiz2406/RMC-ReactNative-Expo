@@ -6,7 +6,7 @@ export default class Home extends React.Component {
     render() {
         return (
             <View style={styles.container} >
-                <Text>Profile</Text>
+                <Text>User</Text>
                 <StatusBar style="auto" />
             </View>
         );

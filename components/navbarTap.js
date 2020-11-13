@@ -15,7 +15,8 @@ export default function MyTabs() {
     return (
         <Tab.Navigator
             initialRouteName="Home"
-            activeColor="black"
+            activeColor="#feB139"
+            tabBarOptions={{ activeTintColor: '#FEB139' }}
             style={{ backgroundColor: 'white' }}
         >
             <Tab.Screen
@@ -23,7 +24,7 @@ export default function MyTabs() {
                 component={Home}
                 options={{
                     tabBarLabel: 'Home',
-                    tabBarIcon: ({ color }) => (
+                    tabBarIcon: ({ color, }) => (
                         <AntDesign name="home" color={color} size={30} />
                     ),
                 }}
