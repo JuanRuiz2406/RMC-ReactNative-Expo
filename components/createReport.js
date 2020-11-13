@@ -1,7 +1,17 @@
 import React, { Component } from "react";
-import { View, Text, Button, TextInput } from "react-native";
+import { View, Text, Button, TextInput, Alert } from "react-native";
 
 export default class App extends React.Component {
+  createTwoButtonAlert = (msg) =>
+    Alert.alert(
+      "Reporte",
+      msg,
+      [
+        { text: "OK", onPress: () => console.log("OK Pressed") }
+      ],
+      { cancelable: false }
+    );
+
   constructor() {
     super();
     this.state = {
@@ -25,6 +35,18 @@ export default class App extends React.Component {
         privacy: this.state.privacy,
         user: this.state.user,
       }),
+    }).then((response) => response.json())
+    .then((responseJson) => {
+      this.setState(
+        {
+          isLoading: false,
+          dataSource: responseJson,
+        },
+        this.createTwoButtonAlert(responseJson.messageString)
+      );
+    })
+    .catch((error) => {
+      console.error(error);
     });
   }
 
