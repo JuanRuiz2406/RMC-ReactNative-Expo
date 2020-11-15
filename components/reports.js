@@ -8,7 +8,7 @@ export default class FetchExample extends React.Component {
   }
 
   componentDidMount() {
-    return fetch("http://192.168.0.7:8080/reports")
+    return fetch("http://192.168.1.112:8080/reports")
       .then((response) => response.json())
       .then((responseJson) => {
         this.setState(
@@ -16,7 +16,7 @@ export default class FetchExample extends React.Component {
             isLoading: false,
             dataSource: responseJson,
           },
-          function () {}
+          function () { }
         );
       })
       .catch((error) => {
@@ -25,7 +25,7 @@ export default class FetchExample extends React.Component {
   }
 
   delete(id) {
-    fetch("http://192.168.0.7:8080/reports/" + id, {
+    fetch("http://192.168.1.112:8080/reports/" + id, {
       method: "DELETE",
       headers: {
         Accept: "application/json",
