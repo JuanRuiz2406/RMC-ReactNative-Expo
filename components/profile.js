@@ -27,11 +27,11 @@ export default class Profile extends React.Component {
                     </View>
 
                     <View style={styles.infoUserContainer}>
-                        <Text style={styles.textTitle}>Cedula:</Text>
+                        <Text style={styles.textTitle}>Cédula:</Text>
                         <Text style={styles.textSecond}>5 0420 0201</Text>
-                        <Text style={styles.textTitle}>Correo:</Text>
+                        <Text style={styles.textTitle}>Correo Electrónico:</Text>
                         <Text style={styles.textSecond}>diegovillatj@gmail.com</Text>
-                        <Text style={styles.textTitle}>Ccontraseña:</Text>
+                        <Text style={styles.textTitle}>Contraseña:</Text>
                         <Text style={styles.textSecond}>*******</Text>
                         <Text style={styles.textTitle}>Provincia:</Text>
                         <Text style={styles.textSecond}>Guanacaste</Text>
