@@ -5,8 +5,12 @@ import {
   TextInput,
   Alert,
   StyleSheet,
-  TouchableOpacity
+  TouchableOpacity,
+  Image,
+  ScrollView,
 } from "react-native";
+import foto from "../imgs/huracan-otto.jpg";
+import foto2 from "../imgs/map2.jpg";
 
 const styles = StyleSheet.create({
   Title: {
@@ -32,15 +36,21 @@ const styles = StyleSheet.create({
     marginTop: 10,
     marginLeft: 40,
   },
-  Btn: {
-    color: "#F7751E",
-    marginTop: 50,
+  Img: {
+    marginTop: 20,
+    marginLeft: 30,
+    marginRight: 30,
+    marginBottom: 20,
+    width: 350,
+    height: 200,
+    alignItems: "center",
   },
   button: {
     backgroundColor: "#FEB139",
     padding: 7,
     marginLeft: 120,
     marginRight: 120,
+    marginBottom: 50,
     borderWidth: 1,
     borderRadius: 10,
     borderColor: "black",
@@ -50,7 +60,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     color: "#fff",
     fontWeight: "bold",
-},
+  },
 });
 
 export default class App extends React.Component {
@@ -66,7 +76,7 @@ export default class App extends React.Component {
     super();
     this.state = {
       description: "",
-      state: "",
+      state: "Pendiente",
       privacy: "",
       user: 1,
     };
@@ -104,43 +114,37 @@ export default class App extends React.Component {
   render() {
     return (
       <View>
-        <Text style={styles.Title}>Crear Reporte</Text>
+        <ScrollView>
+          <Text style={styles.Title}>Crear Reporte</Text>
 
-        
-        <Text style={styles.Text}>Descripción</Text>
-        <TextInput
-          placeholder="   Ingresa la descripción del Reporte"
-          onChangeText={(text) => {
-            this.setState({ description: text });
-          }}
-          style={styles.InputText}
-        />
+          <Text style={styles.Text}>Inserte una Imágen</Text>
+          <Image style={styles.Img} source={foto}></Image>
 
-        <Text style={styles.Text}>Estado</Text>
-        <TextInput
-          placeholder="   Ingresa el Estado"
-          onChangeText={(text) => {
-            this.setState({ state: text });
-          }}
-          style={styles.InputText}
-        />
+          <Text style={styles.Text}>Escoge la Ubicación</Text>
+          <Image style={styles.Img} source={foto2}></Image>
 
-        <Text style={styles.Text}>Privacidad</Text>
-        <TextInput
-          placeholder="   Ingresa la privacidad del Reporte"
-          onChangeText={(text) => {
-            this.setState({ privacy: text });
-          }}
-          style={styles.InputText}
-        />
-        
-        <TouchableOpacity
-          onPress={() => this.submit()}
-          style={styles.button}
-        >
-          <Text style={styles.buttonText}>Reportar</Text>
-        </TouchableOpacity>
+          <Text style={styles.Text}>Descripción</Text>
+          <TextInput
+            placeholder="   Ingresa la descripción del Reporte"
+            onChangeText={(text) => {
+              this.setState({ description: text });
+            }}
+            style={styles.InputText}
+          />
 
+          <Text style={styles.Text}>Privacidad</Text>
+          <TextInput
+            placeholder="   Ingresa la privacidad del Reporte"
+            onChangeText={(text) => {
+              this.setState({ privacy: text });
+            }}
+            style={styles.InputText}
+          />
+
+          <TouchableOpacity onPress={() => this.submit()} style={styles.button}>
+            <Text style={styles.buttonText}>Reportar</Text>
+          </TouchableOpacity>
+        </ScrollView>
       </View>
     );
   }

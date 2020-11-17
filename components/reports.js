@@ -1,5 +1,69 @@
 import React from "react";
-import { FlatList, ActivityIndicator, Text, View, Button } from "react-native";
+import { FlatList,
+  ActivityIndicator,
+  Text,
+  View,
+  StyleSheet,
+  TouchableOpacity,
+  Image,
+ } from "react-native";
+import foto from "../imgs/huracan-otto.jpg";
+
+ const styles = StyleSheet.create({
+  Page: {
+    textAlign: "center",
+    fontSize: 25,
+    margin: 10,
+    fontWeight: "bold",
+  },
+  Title: {
+    fontSize: 30,
+    marginTop: 10,
+    marginLeft: 30,
+  },
+  Title2: {
+    fontSize: 23,
+    marginTop: 10,
+    marginLeft: 30,
+    fontWeight: "bold",
+  },
+  Text: {
+    fontSize: 20,
+    fontWeight: "bold",
+    marginTop: 10,
+    marginLeft: 40,
+  },
+  Description: {
+    fontSize: 20,
+    marginTop: 10,
+    marginLeft: 70,
+    marginRight: 70,
+  },
+  button: {
+    backgroundColor: "#FEB139",
+    padding: 7,
+    marginLeft: 120,
+    marginRight: 120,
+    borderWidth: 1,
+    borderRadius: 10,
+    borderColor: "black",
+  },
+  buttonText: {
+    fontSize: 20,
+    textAlign: "center",
+    color: "#fff",
+    fontWeight: "bold",
+  },
+  Barra: {
+    borderBottomWidth: 1,
+    marginBottom: 12,
+    marginLeft: 20,
+    marginRight: 30,
+    fontSize: 30,
+    fontWeight: "200",
+    textAlign: "center",
+  },
+});
 
 export default class FetchExample extends React.Component {
   constructor(props) {
@@ -8,7 +72,7 @@ export default class FetchExample extends React.Component {
   }
 
   componentDidMount() {
-    return fetch("http://192.168.1.112:8080/reports")
+    return fetch("http://192.168.0.3:8080/reports")
       .then((response) => response.json())
       .then((responseJson) => {
         this.setState(
@@ -24,16 +88,6 @@ export default class FetchExample extends React.Component {
       });
   }
 
-  delete(id) {
-    fetch("http://192.168.1.112:8080/reports/" + id, {
-      method: "DELETE",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-    });
-  }
-
   render() {
     if (this.state.isLoading) {
       return (
@@ -45,36 +99,26 @@ export default class FetchExample extends React.Component {
 
     return (
       <View style={{ flex: 1, paddingTop: 20 }}>
+        <Text style={styles.Page}>Reportes</Text>
+
         <FlatList
           data={this.state.dataSource}
           renderItem={({ item }) => (
             <View>
-              <Text
-                style={{
-                  borderBottomWidth: 1,
-                  marginBottom: 12,
-                  fontSize: 20,
-                  fontWeight: "200",
-                  textAlign: "center",
-                  paddingBottom: 30,
-                }}
-              >
-                Reporte #{item.id}
-                {"\n"}
-                Realizado por: {item.user.name} {item.user.lastName}
-                {"\n"}
-                {"\n"}
-                Descripción: {item.description}
-                {"\n"}
-                Estado: {item.state}
-                {"\n"}
-                Privacidad: {item.privacy}
-                {"\n"}
-                {"\n"}
-                <Button title="Ver más" onPress={() => null} />
-                <Button title="Eliminar" onPress={() => this.delete(item.id)} />
-              </Text>
-              <Text></Text>
+              <Text style={ styles.Title }>Reporte #{item.id}</Text>
+              <Image source={ foto }></Image>
+
+              <Text style={ styles.Title2 }>Descripción:</Text>
+              <Text style={ styles.Description }>{item.description}</Text>
+
+              <Text style={ styles.Description }>
+              <TouchableOpacity onPress={() => null} style={styles.button}>
+                <Text style={styles.buttonText}>Ver más</Text>
+              </TouchableOpacity>
+                {item.state}</Text>
+              
+              <Text style={ styles.Barra }></Text>  
+              
             </View>
           )}
           keyExtractor={({ id }, index) => id}
