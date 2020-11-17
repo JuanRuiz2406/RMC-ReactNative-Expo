@@ -5,7 +5,7 @@ import {
   TextInput,
   Alert,
   StyleSheet,
-  TouchableOpacity,
+  TouchableOpacity
 } from "react-native";
 
 const styles = StyleSheet.create({
@@ -68,7 +68,7 @@ export default class App extends React.Component {
       description: "",
       state: "",
       privacy: "",
-      user: "",
+      user: 1,
     };
   }
 
@@ -133,16 +133,7 @@ export default class App extends React.Component {
           }}
           style={styles.InputText}
         />
-
-        <Text style={styles.Text}>Id de Usuario</Text>
-        <TextInput
-          placeholder="   Ingresa el ID de tu Usuario"
-          onChangeText={(text) => {
-            this.setState({ user: text });
-          }}
-          style={styles.InputText}
-        />
-
+        
         <TouchableOpacity
           onPress={() => this.submit()}
           style={styles.button}
