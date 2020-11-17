@@ -14,6 +14,7 @@ export default function Donut({
     delay = 500,
     textColor,
     max = 100,
+    texto = 'Casos Atendidos',
 }) {
     const animatedValue = React.useRef(new Animated.Value(0)).current
     const halfCircle = radius + strokeWidth
@@ -96,6 +97,11 @@ export default function Donut({
                     ]
                 }
             />
+            <Text
+                style={
+                    { fontWeight: 'bold', textDecorationLine: 'none', textAlign: 'center', fontSize: 20, lineHeight: 40 }
+                }
+            >{texto}</Text>
         </View>
     );
 }
