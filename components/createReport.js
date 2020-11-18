@@ -78,12 +78,12 @@ export default class App extends React.Component {
       description: "",
       state: "Pendiente",
       privacy: "",
-      user: 1,
+      user: 3,
     };
   }
 
   submit() {
-    fetch("http://192.168.0.3:8080/reports", {
+    fetch("http://192.168.0.8:8080/reports", {
       method: "POST",
       headers: {
         Accept: "application/json",

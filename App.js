@@ -5,6 +5,7 @@ import { createStackNavigator } from '@react-navigation/stack'
 import { NavigationContainer } from '@react-navigation/native'
 
 import navBar from './components/navbarTap'
+import { color } from 'react-native-reanimated';
 
 const Stack = createStackNavigator()
 
@@ -12,7 +13,7 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="ReportsMyCity">
-        <Stack.Screen name="ReportsMyCity" component={navBar} />
+        <Stack.Screen name="ReportsMyCity" component={navBar} options={{ headerStyle: { backgroundColor: '#008652' } }} />
       </Stack.Navigator>
     </NavigationContainer>
   );
@@ -20,9 +21,8 @@ export default function App() {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#008652',
     alignItems: 'center',
     justifyContent: 'center',
-  },
+  }
 });

@@ -1,8 +1,30 @@
 import React from 'react';
 import { StyleSheet, Text, View, Button, SafeAreaView, Image, ScrollView } from 'react-native';
 import { Ionicons } from '@expo/vector-icons'
-
+import Carousel from './carouselProfile'
 export default class Profile extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = { isLoading: true };
+    }
+
+    componentDidMount() {
+        return fetch("http://192.168.0.8:8080/reports")
+            .then((response) => response.json())
+            .then((responseJson) => {
+                this.setState(
+                    {
+                        isLoading: false,
+                        dataSource: responseJson,
+                    },
+                    function () { }
+                );
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+    }
+
     render() {
         return (
             <SafeAreaView style={styles.container}>
@@ -40,6 +62,7 @@ export default class Profile extends React.Component {
                         <Text style={styles.textTitle}>Numero de Celular:</Text>
                         <Text style={styles.textSecond}>+506 8888 8888</Text>
                     </View>
+                    <Carousel data={this.state.dataSource} />
                 </ScrollView>
             </SafeAreaView>
         );

@@ -7,6 +7,7 @@ import {
   StyleSheet,
   TouchableOpacity,
   Image,
+  ScrollView
 } from "react-native";
 import foto from "../imgs/huracan-otto.jpg";
 
@@ -74,7 +75,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   EndReport: {
-    paddingLeft: 310,
+    marginLeft: 280,
   },
   NoBtn: {
     padding: 5,
@@ -88,10 +89,11 @@ const styles = StyleSheet.create({
   },
   Barra: {
     borderBottomWidth: 1,
-    marginBottom: 12,
+    marginBottom: 20,
     marginLeft: 20,
     marginRight: 30,
     textAlign: "center",
+    backgroundColor: "black"
   },
   Img: {
     marginTop: 20,
@@ -111,7 +113,7 @@ export default class FetchExample extends React.Component {
   }
 
   componentDidMount() {
-    return fetch("http://192.168.0.3:8080/reports")
+    return fetch("http://192.168.0.8:8080/reports")
       .then((response) => response.json())
       .then((responseJson) => {
         this.setState(
@@ -119,7 +121,7 @@ export default class FetchExample extends React.Component {
             isLoading: false,
             dataSource: responseJson,
           },
-          function () {}
+          function () { }
         );
       })
       .catch((error) => {
@@ -137,7 +139,7 @@ export default class FetchExample extends React.Component {
     }
 
     return (
-      <View style={{ flex: 1, paddingTop: 20 }}>
+      <ScrollView style={{ flex: 1, paddingTop: 20 }}>
         <Text style={styles.Page}>Reportes</Text>
 
         <FlatList
@@ -163,15 +165,15 @@ export default class FetchExample extends React.Component {
               <Text style={styles.EndReport}>
                 <TouchableOpacity onPress={() => null} style={styles.button}>
                   <Text style={styles.buttonText}>Ver más</Text>
-                </TouchableOpacity>  
+                </TouchableOpacity>
               </Text>
 
-              <Text style={styles.Barra}></Text>
+              <View style={styles.Barra}></View>
             </View>
           )}
           keyExtractor={({ id }, index) => id}
         />
-      </View>
+      </ScrollView>
     );
   }
 }
