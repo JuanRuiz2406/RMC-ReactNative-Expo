@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, StyleSheet, Text, Image, Dimensions } from 'react-native'
+import { View, StyleSheet, Text, Image, Dimensions, TouchableOpacity } from 'react-native'
 
 const { width, height } = Dimensions.get('window')
 
@@ -8,10 +8,14 @@ const CarouselItem = ({ item }) => {
         <View style={styles.cardView}>
             <Image style={styles.image} source={require('../imgs/huracan-otto.jpg')} />
             <View style={styles.textView}>
-                <Text style={styles.itemTitle}>{item.id}</Text>
-                <Text style={styles.itemDescription} >{item.description}</Text>
-                <Text style={styles.itemDescription} >{item.state}</Text>
+                <Text style={styles.itemTitle}>#{item.id}</Text>
+                <Text style={styles.itemDescription} >Descripcion: {item.description}</Text>
+                <Text style={styles.itemDescription} >Estado: {item.state}</Text>
+                <TouchableOpacity onPress={() => null} style={styles.button}>
+                    <Text style={styles.buttonText}>Ver más</Text>
+                </TouchableOpacity>
             </View>
+
         </View>
     )
 }
@@ -23,7 +27,7 @@ const styles = StyleSheet.create({
         height: height / 3,
         backgroundColor: 'white',
         margin: 10,
-        borderRadius: 10,
+        borderRadius: 5,
         shadowColor: '#000',
         shadowOffset: { width: 0.5, height: 0.5 },
         shadowOpacity: 0.5,
@@ -55,13 +59,27 @@ const styles = StyleSheet.create({
     },
     itemDescription: {
         color: 'white',
-        fontSize: 12,
+        fontSize: 20,
         shadowColor: '#000',
         shadowOffset: { width: 0.8, height: 0.8 },
         shadowOpacity: 1,
         shadowRadius: 3,
         elevation: 5
-    }
+    },
+    button: {
+        backgroundColor: "#008652",
+        padding: 5,
+        borderWidth: 1,
+        borderRadius: 10,
+        borderColor: "black",
+        marginRight: 150,
+    },
+    buttonText: {
+        fontSize: 16,
+        textAlign: "center",
+        color: "#fff",
+        fontWeight: "bold",
+    },
 })
 
 export default CarouselItem
