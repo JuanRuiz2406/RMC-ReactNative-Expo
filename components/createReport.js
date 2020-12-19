@@ -75,25 +75,57 @@ export default class App extends React.Component {
   constructor() {
     super();
     this.state = {
+      title: "Tit1",
       description: "",
       state: "Pendiente",
       privacy: "",
-      user: 3,
+      user: {
+        direction: "string",
+        email: "string@email.com",
+        id: 1,
+        idCard: "string",
+        lastname: "string",
+        name: "string",
+        password: "string",
+        role: "string"
+      },
+      coordenates: {
+        id: 1,
+        latitude: "string",
+        longitude: "string"
+      },
+      municipality: {
+        id: 1,
+        name: "string",
+        adress: "string",
+        email: "string@email.com",
+        telephone: "string",
+        schedule: "string",
+        webSite: "string",
+        coordenates: {
+          id: 1,
+          latitude: "string",
+          longitude: "string"
+        }
+      }
     };
   }
 
   submit() {
-    fetch("http://192.168.0.8:8080/reports", {
+    fetch("http://192.168.0.13:8080/report", {
       method: "POST",
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
+        title: this.state.title,
         description: this.state.description,
         state: this.state.state,
         privacy: this.state.privacy,
         user: this.state.user,
+        coordenates: this.state.coordenates,
+        municipality: this.state.municipality,
       }),
     })
       .then((response) => response.json())
