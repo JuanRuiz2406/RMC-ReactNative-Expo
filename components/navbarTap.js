@@ -6,7 +6,7 @@ import { AntDesign } from '@expo/vector-icons';
 import Home from './home'
 import Reports from './reports'
 import Report from './report'
-import CreateReport from './createReport'
+import CreateReport from './FormReport'
 import Profile from './profile'
 
 const Tab = createBottomTabNavigator();

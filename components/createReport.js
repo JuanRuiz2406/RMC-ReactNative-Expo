@@ -112,7 +112,7 @@ export default class App extends React.Component {
   }
 
   submit() {
-    fetch("http://192.168.0.13:8080/report", {
+    fetch("http://192.168.0.17:8080/report", {
       method: "POST",
       headers: {
         Accept: "application/json",

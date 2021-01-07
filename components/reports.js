@@ -113,7 +113,7 @@ export default class FetchExample extends React.Component {
   }
 
   componentDidMount() {
-    return fetch("http://192.168.0.13:8080/report")
+    return fetch("http://192.168.0.17:8080/report")
       .then((response) => response.json())
       .then((responseJson) => {
         this.setState(
