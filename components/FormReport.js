@@ -6,6 +6,11 @@ export default () => {
   const { register, setValue, handleSubmit, control, reset, errors } = useForm();
   const onSubmit = data => {
     console.log(data);
+    Alert.alert("Form data", String(
+      'title: ' + data.title + ',\n' +
+      'description: ' + data.description + ',\n' +
+      'privacy: ' + data.privacy
+    ))
   };
 
   const onChange = arg => {
@@ -18,7 +23,7 @@ export default () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.label}>First name</Text>
+      <Text style={styles.label}>Titulo</Text>
       <Controller
         control={control}
         render={({ onChange, onBlur, value }) => (
@@ -29,10 +34,10 @@ export default () => {
             value={value}
           />
         )}
-        name="firstName"
+        name="title"
         rules={{ required: true }}
       />
-      <Text style={styles.label}>Last name</Text>
+      <Text style={styles.label}>Descripcion</Text>
       <Controller
         control={control}
         render={({ onChange, onBlur, value }) => (
@@ -43,9 +48,27 @@ export default () => {
             value={value}
           />
         )}
-        name="lastName"
+        name="description"
         rules={{ required: true }}
       />
+      <Text style={styles.label}>Privacidad</Text>
+      <Controller
+        control={control}
+        render={({ onChange, onBlur, value }) => (
+          <TextInput
+            style={styles.input}
+            onBlur={onBlur}
+            onChangeText={value => onChange(value)}
+            value={value}
+          />
+        )}
+        name="privacy"
+        rules={{ required: true }}
+      />
+
+      <Text style={styles.label}>*Ubicacion*</Text>
+
+      <Text style={styles.label}>*Fotos*</Text>
 
       <View style={styles.button}>
         <Button
@@ -54,8 +77,9 @@ export default () => {
           title="Reset"
           onPress={() => {
             reset({
-              firstName: 'Bill',
-              lastName: 'Luo'
+              title: '',
+              description: '',
+              privacy: ''
             })
           }}
         />
