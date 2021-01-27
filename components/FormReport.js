@@ -1,114 +1,171 @@
 import * as React from 'react';
-import { Text, View, StyleSheet, TextInput, Button, Alert } from 'react-native';
+import { Text, View, StyleSheet, TextInput, TouchableOpacity, Alert, ScrollView, Dimensions } from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
 
 export default () => {
-  const { register, setValue, handleSubmit, control, reset, errors } = useForm();
+  const { handleSubmit, control, reset, errors } = useForm();
+  const user = {
+    direction: "string",
+    email: "string@email.com",
+    id: 1,
+    idCard: "string",
+    lastname: "string",
+    name: "string",
+    password: "string",
+    role: "string"
+  }
+  const coordenates = {
+    id: 1,
+    latitude: "string",
+    longitude: "string"
+  }
+  const municipality = {
+    id: 1,
+    name: "string",
+    adress: "string",
+    email: "string@email.com",
+    telephone: "string",
+    schedule: "string",
+    webSite: "string",
+    coordenates: {
+      id: 1,
+      latitude: "string",
+      longitude: "string"
+    },
+  }
+
   const onSubmit = data => {
     console.log(data);
-    Alert.alert("Form data", String(
-      'title: ' + data.title + ',\n' +
-      'description: ' + data.description + ',\n' +
-      'privacy: ' + data.privacy
-    ))
-  };
 
-  const onChange = arg => {
-    return {
-      value: arg.nativeEvent.text,
-    };
-  };
+    fetch("http://192.168.0.17:8080/report", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        title: data.title,
+        description: data.description,
+        state: 'Nuevo',
+        privacy: data.privacy,
+        user: user,
+        coordenates: coordenates,
+        municipality: municipality,
+      }),
+    })
+      .then((response) => response.json())
+      .then((responseJson) => {
+        Alert.alert("Reporte", responseJson.messageString)
+      })
+      .catch((error) => {
+        console.error(error);
+      })
+
+    reset({
+      title: '',
+      description: '',
+      privacy: ''
+    })
+  }
 
   console.log(errors);
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.label}>Titulo</Text>
-      <Controller
-        control={control}
-        render={({ onChange, onBlur, value }) => (
-          <TextInput
-            style={styles.input}
-            onBlur={onBlur}
-            onChangeText={value => onChange(value)}
-            value={value}
-          />
-        )}
-        name="title"
-        rules={{ required: true }}
-      />
-      <Text style={styles.label}>Descripcion</Text>
-      <Controller
-        control={control}
-        render={({ onChange, onBlur, value }) => (
-          <TextInput
-            style={styles.input}
-            onBlur={onBlur}
-            onChangeText={value => onChange(value)}
-            value={value}
-          />
-        )}
-        name="description"
-        rules={{ required: true }}
-      />
-      <Text style={styles.label}>Privacidad</Text>
-      <Controller
-        control={control}
-        render={({ onChange, onBlur, value }) => (
-          <TextInput
-            style={styles.input}
-            onBlur={onBlur}
-            onChangeText={value => onChange(value)}
-            value={value}
-          />
-        )}
-        name="privacy"
-        rules={{ required: true }}
-      />
-
-      <Text style={styles.label}>*Ubicacion*</Text>
-
-      <Text style={styles.label}>*Fotos*</Text>
-
-      <View style={styles.button}>
-        <Button
-          style={styles.buttonInner}
-          color
-          title="Reset"
-          onPress={() => {
-            reset({
-              title: '',
-              description: '',
-              privacy: ''
-            })
-          }}
+    <View>
+      <ScrollView style={styles.scrollView}>
+        <Text style={styles.label}>Título</Text>
+        <Controller
+          control={control}
+          render={({ onChange, onBlur, value }) => (
+            <TextInput
+              style={styles.input}
+              onBlur={onBlur}
+              onChangeText={value => onChange(value)}
+              value={value}
+            />
+          )}
+          name="title"
+          rules={{ required: true }}
+          defaultValue=""
         />
-      </View>
+        {errors.title && <Text style={styles.errorMessage}>*El título es requerido.*</Text>}
 
-      <View style={styles.button}>
-        <Button
-          style={styles.buttonInner}
-          color
-          title="Button"
+        <Text style={styles.label}>Descripción</Text>
+        <Controller
+          control={control}
+          render={({ onChange, onBlur, value }) => (
+            <TextInput
+              style={styles.input}
+              onBlur={onBlur}
+              onChangeText={value => onChange(value)}
+              value={value}
+            />
+          )}
+          name="description"
+          rules={{ required: true }}
+          defaultValue=""
+        />
+        {errors.description && <Text style={styles.errorMessage}>*Por favor describa su reporte.*</Text>}
+
+        <Text style={styles.label}>Privacidad</Text>
+        <Controller
+          control={control}
+          render={({ onChange, onBlur, value }) => (
+            <TextInput
+              style={styles.input}
+              onBlur={onBlur}
+              onChangeText={value => onChange(value)}
+              value={value}
+            />
+          )}
+          name="privacy"
+          rules={{ required: true }}
+          defaultValue=""
+        />
+        {errors.privacy && <Text style={styles.errorMessage}>*Por favor indique la Privacidad.*</Text>}
+
+        <Text style={styles.label}>*Ubicacion*</Text>
+
+        <Text style={styles.label}>*Fotos*</Text>
+
+        <TouchableOpacity
+          style={styles.button}
           onPress={handleSubmit(onSubmit)}
-        />
-      </View>
+          >
+            <Text style={styles.buttonText}>Reportar</Text>
+        </TouchableOpacity>
+      </ScrollView>  
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   label: {
-    color: 'white',
     margin: 20,
-    marginLeft: 0,
+    marginTop: 25,
+    marginLeft: 40,
+    fontSize: 18,
+  },
+  errorMessage: {
+    marginLeft: 35,
+    fontSize: 12,
   },
   button: {
-    marginTop: 40,
-    color: 'white',
-    height: 40,
-    backgroundColor: '#ec5990',
-    borderRadius: 4,
+    backgroundColor: "#FEB139",
+    padding: 7,
+    marginTop: 25,
+    marginLeft: 40,
+    marginRight: 40,
+    marginBottom: 50,
+    borderWidth: 1,
+    borderRadius: 10,
+    borderColor: "black",
+  },
+  buttonText: {
+    fontSize: 20,
+    textAlign: "center",
+    color: "#fff",
+    fontWeight: "bold",
   },
   container: {
     flex: 1,
@@ -121,5 +178,11 @@ const styles = StyleSheet.create({
     height: 40,
     padding: 10,
     borderRadius: 4,
+    borderWidth: 1,
+    marginLeft: 30,
+    marginRight: 30,
+  },
+  scrollView: {
+    width: Dimensions.get('window').width,
   },
 });

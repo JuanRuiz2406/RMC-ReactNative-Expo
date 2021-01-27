@@ -6,7 +6,8 @@ import { AntDesign } from '@expo/vector-icons';
 import Home from './home'
 import Reports from './reports'
 import Report from './report'
-import CreateReport from './FormReport'
+import FormReport from './FormReport'
+import CreateReport from './createReport'
 import Profile from './profile'
 
 const Tab = createBottomTabNavigator();
@@ -31,7 +32,7 @@ export default function MyTabs() {
             />
             <Tab.Screen
                 name="Buscar"
-                component={Report}
+                component={CreateReport}
                 options={{
                     tabBarIcon: ({ color }) => (
                         <AntDesign name="search1" color={color} size={30} />
@@ -40,7 +41,7 @@ export default function MyTabs() {
             />
             <Tab.Screen
                 name="Crear Reporte"
-                component={CreateReport}
+                component={FormReport}
                 options={{
                     tabBarLabel: 'Crear Reporte',
                     tabBarIcon: ({ color }) => (
