@@ -1,6 +1,16 @@
-import * as React from 'react';
-import { Text, View, StyleSheet, TextInput, TouchableOpacity, Alert, ScrollView, Dimensions } from 'react-native';
-import { useForm, Controller } from 'react-hook-form';
+import React, { useState } from "react";
+import {
+  Text,
+  View,
+  StyleSheet,
+  TextInput,
+  TouchableOpacity,
+  Alert,
+  ScrollView,
+  Dimensions,
+} from "react-native";
+import { Picker } from "@react-native-picker/picker";
+import { useForm, Controller } from "react-hook-form";
 
 export default () => {
   const { handleSubmit, control, reset, errors } = useForm();
@@ -12,13 +22,13 @@ export default () => {
     lastname: "string",
     name: "string",
     password: "string",
-    role: "string"
-  }
+    role: "string",
+  };
   const coordenates = {
     id: 1,
     latitude: "string",
-    longitude: "string"
-  }
+    longitude: "string",
+  };
   const municipality = {
     id: 1,
     name: "string",
@@ -30,12 +40,17 @@ export default () => {
     coordenates: {
       id: 1,
       latitude: "string",
-      longitude: "string"
+      longitude: "string",
     },
-  }
+  };
 
-  const onSubmit = data => {
+  const onSubmit = (data) => {
     console.log(data);
+
+    reset({
+      title: "",
+      description: "",
+    });
 
     fetch("http://192.168.0.17:8080/report", {
       method: "POST",
@@ -46,7 +61,7 @@ export default () => {
       body: JSON.stringify({
         title: data.title,
         description: data.description,
-        state: 'Nuevo',
+        state: "Nuevo",
         privacy: data.privacy,
         user: user,
         coordenates: coordenates,
@@ -55,20 +70,16 @@ export default () => {
     })
       .then((response) => response.json())
       .then((responseJson) => {
-        Alert.alert("Reporte", responseJson.messageString)
+        Alert.alert("Reporte", responseJson.messageString);
       })
       .catch((error) => {
         console.error(error);
-      })
-
-    reset({
-      title: '',
-      description: '',
-      privacy: ''
-    })
-  }
+      });
+  };
 
   console.log(errors);
+
+  const [priv, setPriv] = useState("Selecciona");
 
   return (
     <View>
@@ -80,7 +91,7 @@ export default () => {
             <TextInput
               style={styles.input}
               onBlur={onBlur}
-              onChangeText={value => onChange(value)}
+              onChangeText={(value) => onChange(value)}
               value={value}
             />
           )}
@@ -88,7 +99,9 @@ export default () => {
           rules={{ required: true }}
           defaultValue=""
         />
-        {errors.title && <Text style={styles.errorMessage}>*El título es requerido.*</Text>}
+        {errors.title && (
+          <Text style={styles.errorMessage}>*El título es requerido.*</Text>
+        )}
 
         <Text style={styles.label}>Descripción</Text>
         <Controller
@@ -97,7 +110,7 @@ export default () => {
             <TextInput
               style={styles.input}
               onBlur={onBlur}
-              onChangeText={value => onChange(value)}
+              onChangeText={(value) => onChange(value)}
               value={value}
             />
           )}
@@ -105,24 +118,33 @@ export default () => {
           rules={{ required: true }}
           defaultValue=""
         />
-        {errors.description && <Text style={styles.errorMessage}>*Por favor describa su reporte.*</Text>}
+        {errors.description && (
+          <Text style={styles.errorMessage}>
+            *Por favor describa su reporte.*
+          </Text>
+        )}
 
         <Text style={styles.label}>Privacidad</Text>
         <Controller
           control={control}
           render={({ onChange, onBlur, value }) => (
-            <TextInput
-              style={styles.input}
+            <Picker
               onBlur={onBlur}
-              onChangeText={value => onChange(value)}
+              selectedValue={priv}
+              style={styles.picker}
+              onValueChange={(itemValue, itemPosition) => {
+                onChange(itemValue);
+                setPriv(itemValue);
+              }}
               value={value}
-            />
+            >
+              <Picker.Item label="Público" value="Público" />
+              <Picker.Item label="Privado" value="Privado" />
+            </Picker>
           )}
           name="privacy"
-          rules={{ required: true }}
-          defaultValue=""
+          defaultValue={priv}
         />
-        {errors.privacy && <Text style={styles.errorMessage}>*Por favor indique la Privacidad.*</Text>}
 
         <Text style={styles.label}>*Ubicacion*</Text>
 
@@ -131,10 +153,10 @@ export default () => {
         <TouchableOpacity
           style={styles.button}
           onPress={handleSubmit(onSubmit)}
-          >
-            <Text style={styles.buttonText}>Reportar</Text>
+        >
+          <Text style={styles.buttonText}>Reportar</Text>
         </TouchableOpacity>
-      </ScrollView>  
+      </ScrollView>
     </View>
   );
 };
@@ -169,12 +191,12 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    justifyContent: 'center',
+    justifyContent: "center",
     padding: 8,
-    backgroundColor: '#0e101c',
+    backgroundColor: "#0e101c",
   },
   input: {
-    backgroundColor: 'white',
+    backgroundColor: "white",
     height: 40,
     padding: 10,
     borderRadius: 4,
@@ -182,7 +204,15 @@ const styles = StyleSheet.create({
     marginLeft: 30,
     marginRight: 30,
   },
+  picker: {
+    backgroundColor: "white",
+    borderRadius: 4,
+    borderWidth: 1,
+    height: 50,
+    marginLeft: 30,
+    marginRight: 30,
+  },
   scrollView: {
-    width: Dimensions.get('window').width,
+    width: Dimensions.get("window").width,
   },
 });
