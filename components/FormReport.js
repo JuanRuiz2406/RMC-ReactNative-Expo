@@ -16,8 +16,14 @@ import * as Location from "expo-location";
 export default () => {
   const { handleSubmit, control, reset, errors } = useForm();
   const [priv, setPriv] = useState("Público");
-  const [coordenates, setCoordenates] = useState({});
+  const [showMap, setShowMap] = useState(false);
+  const [latitude, setLatitude] = useState(0);
+  const [longitude, setLongitude] = useState(0);
 
+  const coordenates = {
+    latitude: latitude,
+    longitude: longitude,
+  };
   const user = {
     direction: "string",
     email: "string@email.com",
@@ -78,31 +84,6 @@ export default () => {
 
   console.log(errors);
 
-  const onSubmitCoordenates = (coordLatitude, coordLongitude) => {
-    console.log(coordLatitude, coordLongitude);
-
-    fetch("http://192.168.0.2:8080/coordenates", {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        latitude: coordLatitude,
-        longitude: coordLongitude,
-      }),
-    })
-      .then((response) => response.json())
-      .then((responseJson) => {
-        console.log(responseJson);
-        setCoordenates(responseJson);
-        Alert.alert("Ubicacion", "Ubicación seleccionada exitosamente");
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  };
-
   useEffect(() => {
     (async () => {
       let { status } = await Location.requestPermissionsAsync();
@@ -113,12 +94,16 @@ export default () => {
 
       let location = await Location.getCurrentPositionAsync({});
 
-      onSubmitCoordenates(location.coords.latitude, location.coords.longitude);
+      setLatitude(location.coords.latitude);
+      setLongitude(location.coords.longitude);
 
       //let location2 = await Location.reverseGeocodeAsync(coordenates);
-      
     })();
   }, []);
+
+  const map = () => {
+    setShowMap(!showMap);
+  };
 
   return (
     <View>
@@ -185,7 +170,9 @@ export default () => {
           defaultValue={priv}
         />
 
-        <Text style={styles.label}>*Ubicacion*</Text>
+        <TouchableOpacity style={styles.button} onPress={map}>
+          <Text style={styles.buttonText}>*Ubicacion*</Text>
+        </TouchableOpacity>
 
         <Text style={styles.label}>*Fotos*</Text>
 
