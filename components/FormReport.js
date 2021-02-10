@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Text,
   View,
@@ -11,9 +11,13 @@ import {
 } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import { useForm, Controller } from "react-hook-form";
+import * as Location from "expo-location";
 
 export default () => {
   const { handleSubmit, control, reset, errors } = useForm();
+  const [priv, setPriv] = useState("Público");
+  const [coordenates, setCoordenates] = useState({});
+
   const user = {
     direction: "string",
     email: "string@email.com",
@@ -23,11 +27,6 @@ export default () => {
     name: "string",
     password: "string",
     role: "string",
-  };
-  const coordenates = {
-    id: 1,
-    latitude: "string",
-    longitude: "string",
   };
   const municipality = {
     id: 1,
@@ -44,7 +43,7 @@ export default () => {
     },
   };
 
-  const onSubmit = (data) => {
+  const onSubmitReport = (data) => {
     console.log(data);
 
     reset({
@@ -52,7 +51,7 @@ export default () => {
       description: "",
     });
 
-    fetch("http://192.168.0.17:8080/report", {
+    fetch("http://192.168.0.2:8080/report", {
       method: "POST",
       headers: {
         Accept: "application/json",
@@ -79,7 +78,47 @@ export default () => {
 
   console.log(errors);
 
-  const [priv, setPriv] = useState("Selecciona");
+  const onSubmitCoordenates = (coordLatitude, coordLongitude) => {
+    console.log(coordLatitude, coordLongitude);
+
+    fetch("http://192.168.0.2:8080/coordenates", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        latitude: coordLatitude,
+        longitude: coordLongitude,
+      }),
+    })
+      .then((response) => response.json())
+      .then((responseJson) => {
+        console.log(responseJson);
+        setCoordenates(responseJson);
+        Alert.alert("Ubicacion", "Ubicación seleccionada exitosamente");
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+
+  useEffect(() => {
+    (async () => {
+      let { status } = await Location.requestPermissionsAsync();
+      if (status !== "granted") {
+        setErrorMsg("Permission to access location was denied");
+        return;
+      }
+
+      let location = await Location.getCurrentPositionAsync({});
+
+      onSubmitCoordenates(location.coords.latitude, location.coords.longitude);
+
+      //let location2 = await Location.reverseGeocodeAsync(coordenates);
+      
+    })();
+  }, []);
 
   return (
     <View>
@@ -152,7 +191,7 @@ export default () => {
 
         <TouchableOpacity
           style={styles.button}
-          onPress={handleSubmit(onSubmit)}
+          onPress={handleSubmit(onSubmitReport)}
         >
           <Text style={styles.buttonText}>Reportar</Text>
         </TouchableOpacity>
