@@ -18,12 +18,11 @@ const styles = StyleSheet.create({
         width: '100%',
         alignItems: 'center',
         justifyContent: 'center',
-        padding: 20,
         borderRadius: 8,
     },
 
     text: {
-        color: 'purple',
+        color: '#00ff6a',
         fontWeight: '500',
         fontSize: 14,
 

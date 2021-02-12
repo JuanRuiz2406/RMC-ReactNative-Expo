@@ -8,11 +8,12 @@ export function Input({ style, ...props }) {
 }
 
 const styles = StyleSheet.create({
-    input: {
-        backgroundColor: '#ccc',
+    Input: {
+        backgroundColor: '#e8e8e8',
         width: '100%',
         padding: 20,
         borderRadius: 8,
+        color: 'black',
 
     },
 });

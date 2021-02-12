@@ -7,7 +7,7 @@ import { dummyData } from '../data/data'
 import Donut from './donutChart'
 import { circleData } from '../data/circleData'
 
-export default class Home extends React.Component {
+export class Home extends React.Component {
     render() {
         return (
             <ScrollView showsVerticalScrollIndicator={false}>
