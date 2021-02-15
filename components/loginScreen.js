@@ -11,8 +11,30 @@ import { AuthContext } from './contexts/authContext';
 export function LoginScreen({ navigation }) {
 
     const { login } = React.useContext(AuthContext);
-    const [email, setEmail] = React.useState(() => 'diegovillatj@gmail.com');
-    const [password, setPassword] = React.useState(() => 'abc');
+    const [data, setData] = React.useState({
+        username: '',
+        password: '',
+        check_textInputChange: true,
+        secureTextEntry: true
+    });
+
+    const inputChange = (val) => {
+        setData({
+            ...data,
+            username: val,
+        });
+    }
+
+    const handlePasswordChange = (val) => {
+        setData({
+            ...data,
+            password: val,
+        });
+    }
+
+    const loginHandle = (username, password) => {
+        login(username, password);
+    }
 
     return (
         <AuthContainer>
@@ -23,14 +45,23 @@ export function LoginScreen({ navigation }) {
                 LOGIN
             </Heading>
 
-            <Input style={styles.input} placeholder={'Nombre de Usuario'} keyboardType={'email-address'} value={email} onChangeText={setEmail} />
-            <Input style={styles.input} placeholder={'Contraseña'} secureTextEntry value={password} onChangeText={setPassword} />
+            <Input style={styles.input}
+                placeholder={'Nombre de Usuario'}
+                keyboardType={'email-address'}
+                onChangeText={(val) => inputChange(val)}
+            />
+
+            <Input style={styles.input}
+                placeholder={'Contraseña'}
+                secureTextEntry={true}
+                onChangeText={(val) => handlePasswordChange(val)}
+            />
 
             <FilledButton
                 title={'Login'}
                 style={styles.loginButton}
                 onPress={() => {
-                    login(email, password);
+                    loginHandle(data.username, data.password)
                 }}
             />
 

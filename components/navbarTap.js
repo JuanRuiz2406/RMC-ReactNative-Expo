@@ -11,7 +11,7 @@ import Profile from './profile'
 
 const Tab = createBottomTabNavigator();
 
-export default function MyTabs() {
+const navBar = () => {
     return (
         <Tab.Navigator
             initialRouteName="Home"
@@ -72,3 +72,5 @@ export default function MyTabs() {
         </Tab.Navigator>
     );
 }
+
+export default navBar;

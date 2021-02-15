@@ -32,25 +32,39 @@ export function RegisterScreen({ navigation }) {
                 REGISTRO
             </Heading>
 
-            <Input style={styles.input} placeholder={'Nombre'} value={name} onChangeText={setName} />
-            <Input style={styles.input} placeholder={'Apellido'} value={lasname} onChangeText={setLastname} />
-            <Input style={styles.input} placeholder={'Numero de identificacion'} value={idCard} onChangeText={setId} />
-            <Input style={styles.input} placeholder={'Nombre de Usuario'} keyboardType={'email-address'} value={email} onChangeText={setEmail} />
-            <Input style={styles.input} placeholder={'Contraseña'} secureTextEntry value={password} onChangeText={setPassword} />
+            <Input style={styles.input}
+                placeholder={'Nombre'}
+                value={name}
+                onChangeText={setName}
+            />
+            <Input style={styles.input}
+                placeholder={'Apellido'}
+                value={lasname}
+                onChangeText={setLastname}
+            />
+            <Input style={styles.input}
+                placeholder={'Numero de identificacion'}
+                value={idCard}
+                onChangeText={setId}
+            />
+            <Input style={styles.input}
+                placeholder={'Nombre de Usuario'}
+                keyboardType={'email-address'}
+                value={email}
+                onChangeText={setEmail}
+            />
+            <Input style={styles.input}
+                placeholder={'Contraseña'}
+                secureTextEntry
+                value={password}
+                onChangeText={setPassword}
+            />
 
             <FilledButton
                 title={'Registro'}
                 style={styles.RegisterButton}
-                onPress={async () => {
-                    try {
-                        setLoading(true);
-                        await register(email, password);
-                        navigation.pop();
-                    } catch (e) {
-                        setError(e.message);
-                        setLoading(false);
-                        console.log(e);
-                    }
+                onPress={() => {
+                    register();
                 }}
             />
         </AuthContainer>
