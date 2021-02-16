@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, View, ActivityIndicator, Alert } from "react-native";
-import { List } from "./index";
+import { StyleSheet, View, Alert } from "react-native";
+import { List, ActivityIndicator } from "./index";
 
 export default () => {
   const [loading, setLoading] = useState(true);
@@ -21,9 +21,7 @@ export default () => {
 
   if (loading) {
     return (
-      <View style={styles.loading}>
-        <ActivityIndicator size="large" color="#0000ff" />
-      </View>
+      <ActivityIndicator/>
     );
   }
 
@@ -40,12 +38,5 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     alignItems: "stretch",
     justifyContent: "center",
-  },
-  loading: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "stretch",
-    justifyContent: "center",
-    paddingTop: 22,
   },
 });
