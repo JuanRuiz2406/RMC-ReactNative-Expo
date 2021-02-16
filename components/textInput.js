@@ -1,18 +1,43 @@
 import React from "react";
-import { StyleSheet, TextInput } from "react-native";
+import { StyleSheet, TextInput, Text } from "react-native";
+import { Controller } from "react-hook-form";
 
-export default ({ onChangeText, onBlur, value }) => {
+export default ({ title, control, name, error, errorMessage }) => {
   return (
-    <TextInput
-      style={styles.input}
-      onBlur={onBlur}
-      onChangeText={onChangeText}
-      value={value}
-    />
+    <>
+      <Text style={styles.label}>{title}</Text>
+      <Controller
+        control={control}
+        render={({ onChange, onBlur, value }) => (
+          <TextInput
+            style={styles.input}
+            onBlur={onBlur}
+            onChangeText={(value) => onChange(value)}
+            value={value}
+          />
+        )}
+        name={name}
+        rules={{ required: true }}
+        defaultValue=""
+      />
+      {error && (
+        <Text style={styles.errorMessage}>{errorMessage}</Text>
+      )}
+    </>
   );
 };
 
 const styles = StyleSheet.create({
+  label: {
+    margin: 20,
+    marginTop: 25,
+    marginLeft: 40,
+    fontSize: 18,
+  },
+  errorMessage: {
+    marginLeft: 35,
+    fontSize: 12,
+  },
   input: {
     backgroundColor: "white",
     height: 40,

@@ -109,23 +109,13 @@ export default () => {
   return (
     <View>
       <ScrollView style={styles.scrollView}>
-        <Text style={styles.label}>Título</Text>
-        <Controller
+        <TtextInput
+          title="Título"
           control={control}
-          render={({ onChange, onBlur, value }) => (
-            <TtextInput
-              onBlur={onBlur}
-              onChangeText={(value) => onChange(value)}
-              value={value}
-            />
-          )}
           name="title"
-          rules={{ required: true }}
-          defaultValue=""
+          error={errors.title}
+          errorMessage="*El título es requerido*"
         />
-        {errors.title && (
-          <Text style={styles.errorMessage}>*El título es requerido.*</Text>
-        )}
 
         <Text style={styles.label}>Descripción</Text>
         <Controller
