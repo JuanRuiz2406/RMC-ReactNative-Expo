@@ -3,15 +3,16 @@ import {
   Text,
   View,
   StyleSheet,
-  TextInput,
   TouchableOpacity,
   Alert,
   ScrollView,
+  TextInput,
   Dimensions,
 } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import { useForm, Controller } from "react-hook-form";
 import * as Location from "expo-location";
+import { TtextInput } from "./index";
 
 export default () => {
   const { handleSubmit, control, reset, errors } = useForm();
@@ -112,8 +113,7 @@ export default () => {
         <Controller
           control={control}
           render={({ onChange, onBlur, value }) => (
-            <TextInput
-              style={styles.input}
+            <TtextInput
               onBlur={onBlur}
               onChangeText={(value) => onChange(value)}
               value={value}

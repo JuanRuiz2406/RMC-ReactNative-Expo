@@ -1,12 +1,12 @@
 import React from "react";
 import { StyleSheet, TextInput } from "react-native";
 
-export default ({ onChange, onBlur, value }) => {
+export default ({ onChangeText, onBlur, value }) => {
   return (
     <TextInput
       style={styles.input}
       onBlur={onBlur}
-      onChangeText={(value) => onChange}
+      onChangeText={onChangeText}
       value={value}
     />
   );
