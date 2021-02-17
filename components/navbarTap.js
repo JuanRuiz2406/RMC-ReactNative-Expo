@@ -1,12 +1,17 @@
 import * as React from 'react';
+import { StyleSheet, Text, View } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { AntDesign } from '@expo/vector-icons';
 
-import { Home, Reports, FormReport, Location } from './index';
+import Home from './home'
+import Reports from './reports'
+import Report from './report'
+import CreateReport from './createReport'
+import Profile from './profile'
 
 const Tab = createBottomTabNavigator();
 
-export default function MyTabs() {
+const navBar = () => {
     return (
         <Tab.Navigator
             initialRouteName="Home"
@@ -18,15 +23,24 @@ export default function MyTabs() {
                 name="Home"
                 component={Home}
                 options={{
-                    tabBarLabel: 'Inicio',
+                    tabBarLabel: 'Home',
                     tabBarIcon: ({ color, }) => (
                         <AntDesign name="home" color={color} size={30} />
                     ),
                 }}
             />
             <Tab.Screen
+                name="Buscar"
+                component={Report}
+                options={{
+                    tabBarIcon: ({ color }) => (
+                        <AntDesign name="search1" color={color} size={30} />
+                    ),
+                }}
+            />
+            <Tab.Screen
                 name="Crear Reporte"
-                component={FormReport}
+                component={CreateReport}
                 options={{
                     tabBarLabel: 'Crear Reporte',
                     tabBarIcon: ({ color }) => (
@@ -35,10 +49,10 @@ export default function MyTabs() {
                 }}
             />
             <Tab.Screen
-                name="Reportes"
+                name="Reports"
                 component={Reports}
                 options={{
-                    tabBarLabel: 'Reportes',
+                    tabBarLabel: 'Reports',
                     tabBarIcon: ({ color }) => (
                         <AntDesign name="bells" color={color} size={30} />
                     ),
@@ -46,7 +60,7 @@ export default function MyTabs() {
             />
             <Tab.Screen
                 name="Perfil"
-                component={Location}
+                component={Profile}
                 options={{
                     tabBarLabel: 'Perfil',
                     tabBarIcon: ({ color }) => (
@@ -58,3 +72,5 @@ export default function MyTabs() {
         </Tab.Navigator>
     );
 }
+
+export default navBar;
