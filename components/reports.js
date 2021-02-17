@@ -19,15 +19,13 @@ export default () => {
     Alert.alert("Detalle", "http://URL/report/" + String(reportId));
   };
 
-  if (loading) {
-    return (
-      <ActivityIndicator/>
-    );
-  }
-
   return (
     <View style={styles.container}>
-      <List reports={reports} onPress={onPress} />
+      {loading ? (
+        <ActivityIndicator />
+      ) : (
+        <List reports={reports} onPress={onPress} />
+      )}
     </View>
   );
 };
