@@ -16,6 +16,7 @@
     "axios": "^0.21.1",
     "expo": "~40.0.1",
     "expo-status-bar": "~1.0.3",
+    "firebase": "^8.2.7",
     "react": "17.0.1",
     "react-dom": "17.0.1",
     "react-native": "https://github.com/expo/react-native/archive/sdk-39.0.3.tar.gz",

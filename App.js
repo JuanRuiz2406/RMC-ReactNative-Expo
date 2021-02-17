@@ -20,7 +20,7 @@ const App = () => {
   //const [userToken, setUserToken] = React.useState(null);
 
   const initialLoginState = {
-    isLoading: true,
+    isLoading: false,
     userName: null,
     userToken: null,
   };
@@ -66,9 +66,10 @@ const App = () => {
       console.log(userName, password);
       if (userName == 'user' && password == 'pass') {
         userToken = 'asdf';
+        console.log('user token: ', userToken);
+        dispatch({ type: 'LOGIN', id: userName, token: userToken });
       }
-      console.log('user token: ', userToken);
-      dispatch({ type: 'LOGIN', id: userName, token: userToken });
+
     },
     logout: () => {
       dispatch({ type: 'LOGOUT' });
@@ -84,7 +85,7 @@ const App = () => {
       let userToken;
       userToken = 'fgg'
       console.log('user token: ', userToken)
-      dispatch({ type: 'REGISTER', token: userToken });
+      dispatch({ type: 'RETRUEVE_TOKEN', token: userToken });
     }, 1000);
   }, []);
 
