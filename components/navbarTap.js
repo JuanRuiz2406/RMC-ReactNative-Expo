@@ -1,13 +1,8 @@
 import * as React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { AntDesign } from '@expo/vector-icons';
 
-import Home from './home'
-import Reports from './reports'
-import Report from './report'
-import CreateReport from './createReport'
-import Profile from './profile'
+import { Home, Reports, FormReport, Location } from './index';
 
 const Tab = createBottomTabNavigator();
 
@@ -23,24 +18,15 @@ const navBar = () => {
                 name="Home"
                 component={Home}
                 options={{
-                    tabBarLabel: 'Home',
+                    tabBarLabel: 'Inicio',
                     tabBarIcon: ({ color, }) => (
                         <AntDesign name="home" color={color} size={30} />
                     ),
                 }}
             />
             <Tab.Screen
-                name="Buscar"
-                component={Report}
-                options={{
-                    tabBarIcon: ({ color }) => (
-                        <AntDesign name="search1" color={color} size={30} />
-                    ),
-                }}
-            />
-            <Tab.Screen
                 name="Crear Reporte"
-                component={CreateReport}
+                component={FormReport}
                 options={{
                     tabBarLabel: 'Crear Reporte',
                     tabBarIcon: ({ color }) => (
@@ -49,10 +35,10 @@ const navBar = () => {
                 }}
             />
             <Tab.Screen
-                name="Reports"
+                name="Reportes"
                 component={Reports}
                 options={{
-                    tabBarLabel: 'Reports',
+                    tabBarLabel: 'Reportes',
                     tabBarIcon: ({ color }) => (
                         <AntDesign name="bells" color={color} size={30} />
                     ),
@@ -60,7 +46,7 @@ const navBar = () => {
             />
             <Tab.Screen
                 name="Perfil"
-                component={Profile}
+                component={Location}
                 options={{
                     tabBarLabel: 'Perfil',
                     tabBarIcon: ({ color }) => (
