@@ -6,13 +6,12 @@ import {
   TouchableOpacity,
   Alert,
   ScrollView,
-  TextInput,
   Dimensions,
 } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import { useForm, Controller } from "react-hook-form";
 import * as Location from "expo-location";
-import { TtextInput } from "./index";
+import { TextInput } from "./index";
 
 export default () => {
   const { handleSubmit, control, reset, errors } = useForm();
@@ -109,7 +108,7 @@ export default () => {
   return (
     <View>
       <ScrollView style={styles.scrollView}>
-        <TtextInput
+        <TextInput
           title="Título"
           control={control}
           name="title"
@@ -117,26 +116,13 @@ export default () => {
           errorMessage="*El título es requerido*"
         />
 
-        <Text style={styles.label}>Descripción</Text>
-        <Controller
+        <TextInput
+          title="Descripción"
           control={control}
-          render={({ onChange, onBlur, value }) => (
-            <TextInput
-              style={styles.input}
-              onBlur={onBlur}
-              onChangeText={(value) => onChange(value)}
-              value={value}
-            />
-          )}
           name="description"
-          rules={{ required: true }}
-          defaultValue=""
+          error={errors.title}
+          errorMessage="*Por favor describa su reporte*"
         />
-        {errors.description && (
-          <Text style={styles.errorMessage}>
-            *Por favor describa su reporte.*
-          </Text>
-        )}
 
         <Text style={styles.label}>Privacidad</Text>
         <Controller
