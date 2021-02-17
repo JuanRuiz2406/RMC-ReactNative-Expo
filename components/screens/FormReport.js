@@ -10,7 +10,7 @@ import {
 } from "react-native";
 import { useForm } from "react-hook-form";
 import * as Location from "expo-location";
-import { TextInput, Picker } from "./index";
+import { TextInput, Picker } from "../index";
 
 export default () => {
   const { handleSubmit, control, reset, errors } = useForm();

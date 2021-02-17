@@ -1,11 +1,11 @@
 export { default as Home} from './home'
-export { default as Reports } from './reports'
-export { default as FormReport } from './FormReport'
+export { default as Reports } from './screens/reports'
+export { default as FormReport } from './screens/FormReport'
 export { default as Profile } from './profile'
 export { default as List } from './list'
-export { default as Location } from './TESTlocation'
+export { default as Location } from './screens/TESTlocation'
 
-export { default as ActivityIndicator } from './activityIndicator'
+export { default as ActivityIndicator } from './screens/activityIndicator'
 export { default as TextInput } from './hook-form/textInput'
 export { default as Picker } from './hook-form/picker'
 
