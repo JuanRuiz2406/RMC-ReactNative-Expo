@@ -6,8 +6,8 @@ export { default as List } from './list'
 export { default as Location } from './TESTlocation'
 
 export { default as ActivityIndicator } from './activityIndicator'
-export { default as TextInput } from './textInput'
-export { default as Picker } from './picker'
+export { default as TextInput } from './hook-form/textInput'
+export { default as Picker } from './hook-form/picker'
 
 export { default as CarouselItem } from './carousel/carouselItems'
 export { default as Carousel } from './carousel/carousel'
