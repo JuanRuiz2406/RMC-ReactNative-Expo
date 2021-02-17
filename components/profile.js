@@ -8,6 +8,23 @@ export default class Profile extends React.Component {
         this.state = { isLoading: true };
     }
 
+    componentDidMount() {
+        return fetch("http://192.168.0.8:8080/reports")
+            .then((response) => response.json())
+            .then((responseJson) => {
+                this.setState(
+                    {
+                        isLoading: false,
+                        dataSource: responseJson,
+                    },
+                    function () { }
+                );
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+    }
+
     render() {
         return (
             <SafeAreaView style={styles.container}>
@@ -58,6 +75,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
     },
     text: {
+        fontFamily: "HelveticaNeue",
         backgroundColor: "#fff"
     },
     image: {
@@ -104,6 +122,7 @@ const styles = StyleSheet.create({
         fontSize: 30,
         fontWeight: "normal",
         lineHeight: 50,
+        fontFamily: "HelveticaNeue",
     },
     textSecond: {
         fontSize: 25,
