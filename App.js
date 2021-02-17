@@ -1,21 +1,18 @@
 //import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { createStackNavigator } from '@react-navigation/stack';
-import { NavigationContainer } from '@react-navigation/native';
+import React, { useEffect, useReducer, useMemo } from "react";
+import { createStackNavigator } from "@react-navigation/stack";
+import { NavigationContainer } from "@react-navigation/native";
 
-import AuthStackNavigator from './components/Navigators/AuthStackNavigator';
-import { lightTheme } from './theme/light'
-import { AuthContext } from './components/contexts/authContext';
-import { BASE_URL } from './components/config';
-import { useEffect } from 'react';
+import AuthStackNavigator from "./components/Navigators/AuthStackNavigator";
+import { lightTheme } from "./theme/light";
+import { AuthContext } from "./components/contexts/authContext";
+import { BASE_URL } from "./components/config";
 
-import navBar from './components/navbarTap'
+import navBar from "./components/navbarTap";
 
 const Stack = createStackNavigator();
 
-
-const App = () => {
-
+export default () => {
   //const [isLoading, setIsLoding] = React.useState(true);
   //const [userToken, setUserToken] = React.useState(null);
 
@@ -27,65 +24,65 @@ const App = () => {
 
   const loginReducer = (prevState, action) => {
     switch (action.type) {
-      case 'RETRUEVE_TOKEN':
+      case "RETRUEVE_TOKEN":
         return {
           ...prevState,
           userToken: action.token,
           isLoading: false,
         };
-      case 'LOGIN':
+      case "LOGIN":
         return {
           ...prevState,
           userName: action.id,
           userToken: action.token,
           isLoading: true,
         };
-      case 'LOGOUT':
+      case "LOGOUT":
         return {
           ...prevState,
           userName: null,
           userToken: null,
           isLoading: false,
         };
-      case 'REGISTER':
+      case "REGISTER":
         return {
           ...prevState,
           userName: action.id,
           userToken: action.token,
           isLoading: true,
         };
-
     }
   };
 
-  const [loginState, dispatch] = React.useReducer(loginReducer, initialLoginState);
+  const [loginState, dispatch] = useReducer(
+    loginReducer,
+    initialLoginState
+  );
 
-  const auth = React.useMemo(() => ({
+  const auth = useMemo(() => ({
     login: (userName, password) => {
       let userToken;
       console.log(userName, password);
-      if (userName == 'user' && password == 'pass') {
-        userToken = 'asdf';
-        console.log('user token: ', userToken);
-        dispatch({ type: 'LOGIN', id: userName, token: userToken });
+      if (userName == "user" && password == "pass") {
+        userToken = "asdf";
+        console.log("user token: ", userToken);
+        dispatch({ type: "LOGIN", id: userName, token: userToken });
       }
-
     },
     logout: () => {
-      dispatch({ type: 'LOGOUT' });
+      dispatch({ type: "LOGOUT" });
     },
     register: () => {
-      dispatch({ type: 'REGISTER', id: userName, token: userToken });
+      dispatch({ type: "REGISTER", id: userName, token: userToken });
     },
-  }),
-  );
+  }));
 
   useEffect(() => {
     setTimeout(() => {
       let userToken;
-      userToken = 'fgg'
-      console.log('user token: ', userToken)
-      dispatch({ type: 'RETRUEVE_TOKEN', token: userToken });
+      userToken = "fgg";
+      console.log("user token: ", userToken);
+      dispatch({ type: "RETRUEVE_TOKEN", token: userToken });
     }, 1000);
   }, []);
 
@@ -93,7 +90,11 @@ const App = () => {
     return (
       <NavigationContainer>
         <Stack.Navigator initialRouteName="ReportsMyCity">
-          <Stack.Screen name="ReportsMyCity" component={navBar} options={{ headerStyle: { backgroundColor: '#008652' } }} />
+          <Stack.Screen
+            name="ReportsMyCity"
+            component={navBar}
+            options={{ headerStyle: { backgroundColor: "#008652" } }}
+          />
         </Stack.Navigator>
       </NavigationContainer>
     );
@@ -101,24 +102,24 @@ const App = () => {
   return (
     <AuthContext.Provider value={auth}>
       <NavigationContainer theme={lightTheme}>
-        {loginState.userToken == ! null ? (
+        {loginState.userToken == !null ? (
           <Stack.Navigator initialRouteName="ReportsMyCity">
-            <Stack.Screen name="ReportsMyCity" component={navBar} options={{ headerStyle: { backgroundColor: '#008652' } }} />
+            <Stack.Screen
+              name="ReportsMyCity"
+              component={navBar}
+              options={{ headerStyle: { backgroundColor: "#008652" } }}
+            />
           </Stack.Navigator>
-        )
-          :
-          <Stack.Navigator screenOptions={{
-            headerShown: false,
-          }}>
-            <Stack.Screen name={'AuthStack2'} component={AuthStackNavigator} />
+        ) : (
+          <Stack.Navigator
+            screenOptions={{
+              headerShown: false,
+            }}
+          >
+            <Stack.Screen name={"AuthStack2"} component={AuthStackNavigator} />
           </Stack.Navigator>
-        }
-
-
+        )}
       </NavigationContainer>
-    </AuthContext.Provider >
-
+    </AuthContext.Provider>
   );
-}
-
-export default App;
+};
