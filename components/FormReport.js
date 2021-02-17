@@ -15,7 +15,7 @@ import { TextInput } from "./index";
 
 export default () => {
   const { handleSubmit, control, reset, errors } = useForm();
-  const [priv, setPriv] = useState("Público");
+  const [priv, setPriv] = useState("");
   const [showMap, setShowMap] = useState(false);
   const [latitude, setLatitude] = useState(0);
   const [longitude, setLongitude] = useState(0);
@@ -138,13 +138,16 @@ export default () => {
               }}
               value={value}
             >
+              <Picker.Item label="Seleccione..." value="" />
               <Picker.Item label="Público" value="Público" />
               <Picker.Item label="Privado" value="Privado" />
             </Picker>
           )}
           name="privacy"
           defaultValue={priv}
+          rules={{ required: true }}
         />
+        {errors.privacy && <Text style={styles.errorMessage}>*Selecciona alguna opción*</Text>}
 
         <TouchableOpacity style={styles.button} onPress={map}>
           <Text style={styles.buttonText}>*Ubicacion*</Text>
