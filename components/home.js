@@ -1,40 +1,32 @@
-import { StatusBar } from "expo-status-bar";
-import React from "react";
-import { View, ScrollView } from "react-native";
+import { StatusBar } from 'expo-status-bar';
+import React from 'react';
+import { StyleSheet, Text, View, Button, ScrollView } from 'react-native';
 
-import { Carousel, Donut } from "./index";
+import Carousel from './carousel'
+import { dummyData } from '../data/data'
+import Donut from './donutChart'
+import { circleData } from '../data/circleData'
 
-import { dummyData } from "../data/data";
-import { circleData } from "../data/circleData";
+const Home = () => {
+    return (
+        <ScrollView showsVerticalScrollIndicator={false}>
+            <Carousel data={dummyData} />
+            <StatusBar style="auto" />
+            <View
+                style={{
+                    backgroundColor: 'transparent',
+                    alignItems: 'center',
+                    justifyContent: 'space-evenly',
+                    flexWrap: 'wrap',
+                    flexDirection: 'row'
+                }}>
+                {circleData.map((p, i) => {
+                    return <Donut key={i} percentage={p.percentage} color={p.color} delay={1000} max={p.max} radius={p.radius} texto={p.texto} />
+                })}
+            </View>
 
-export default Home = () => {
-  return (
-    <ScrollView showsVerticalScrollIndicator={false}>
-      <Carousel data={dummyData} />
-      <StatusBar style="auto" />
-      <View
-        style={{
-          backgroundColor: "transparent",
-          alignItems: "center",
-          justifyContent: "space-evenly",
-          flexWrap: "wrap",
-          flexDirection: "row",
-        }}
-      >
-        {circleData.map((p, i) => {
-          return (
-            <Donut
-              key={i}
-              percentage={p.percentage}
-              color={p.color}
-              delay={1000}
-              max={p.max}
-              radius={p.radius}
-              texto={p.texto}
-            />
-          );
-        })}
-      </View>
-    </ScrollView>
-  );
+        </ScrollView>
+    );
 };
+
+export default Home;

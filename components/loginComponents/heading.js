@@ -1,18 +1,21 @@
-import React from "react";
-import { StyleSheet, Text } from "react-native";
+import React from 'react';
+import { StyleSheet, Text } from 'react-native';
 
 export function Heading({ children, style, ...props }) {
-  return (
-    <Text {...props} style={[styles.text, style]}>
-      {children}
-    </Text>
-  );
+
+    return (
+        <Text {...props} style={[styles.text, style]}>
+
+            {children}
+
+        </Text>
+    );
 }
 
 const styles = StyleSheet.create({
-  text: {
-    fontWeight: "bold",
-    fontSize: 32,
-    color: "#000",
-  },
+    text: {
+        fontWeight: 'bold',
+        fontSize: 32,
+        color: '#000',
+    },
 });
