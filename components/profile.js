@@ -8,7 +8,7 @@ import {
   ScrollView,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import Carousel from "./carouselProfile";
+import Carousel from "./carousel/carouselProfile";
 export default class Profile extends React.Component {
   constructor(props) {
     super(props);

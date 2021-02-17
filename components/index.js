@@ -9,9 +9,9 @@ export { default as ActivityIndicator } from './activityIndicator'
 export { default as TextInput } from './textInput'
 export { default as Picker } from './picker'
 
-export { default as CarouselItem } from './carouselItems'
-export { default as Carousel } from './carousel'
-export { default as Donut } from './donutChart'
+export { default as CarouselItem } from './carousel/carouselItems'
+export { default as Carousel } from './carousel/carousel'
+export { default as Donut } from './carousel/donutChart'
 
 // export { default as Heading } from './loginComponents/heading'
 // export { default as Input } from './loginComponents/input'

@@ -15,7 +15,7 @@ export default CarouselItem = ({ item }) => {
     <View style={styles.cardView}>
       <Image
         style={styles.image}
-        source={require("../imgs/huracan-otto.jpg")}
+        source={require("../../imgs/huracan-otto.jpg")}
       />
       <View style={styles.textView}>
         <Text style={styles.itemTitle}>#{item.id}</Text>
