@@ -20,9 +20,7 @@ export default ({ title, control, name, error, errorMessage }) => {
         rules={{ required: true }}
         defaultValue=""
       />
-      {error && (
-        <Text style={styles.errorMessage}>{errorMessage}</Text>
-      )}
+      {error && <Text style={styles.errorMessage}>{errorMessage}</Text>}
     </>
   );
 };

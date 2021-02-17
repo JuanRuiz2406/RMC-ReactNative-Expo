@@ -8,17 +8,16 @@ import {
   ScrollView,
   Dimensions,
 } from "react-native";
-import { Picker } from "@react-native-picker/picker";
-import { useForm, Controller } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import * as Location from "expo-location";
-import { TextInput } from "./index";
+import { TextInput, Picker } from "./index";
 
 export default () => {
   const { handleSubmit, control, reset, errors } = useForm();
-  const [priv, setPriv] = useState("");
   const [showMap, setShowMap] = useState(false);
   const [latitude, setLatitude] = useState(0);
   const [longitude, setLongitude] = useState(0);
+  const pickerOptions = ["Público", "Privado"];
 
   const coordenates = {
     latitude: latitude,
@@ -120,40 +119,24 @@ export default () => {
           title="Descripción"
           control={control}
           name="description"
-          error={errors.title}
+          error={errors.description}
           errorMessage="*Por favor describa su reporte*"
         />
 
-        <Text style={styles.label}>Privacidad</Text>
-        <Controller
+        <Picker
+          title="Privacidad"
           control={control}
-          render={({ onChange, onBlur, value }) => (
-            <Picker
-              onBlur={onBlur}
-              selectedValue={priv}
-              style={styles.picker}
-              onValueChange={(itemValue, itemPosition) => {
-                onChange(itemValue);
-                setPriv(itemValue);
-              }}
-              value={value}
-            >
-              <Picker.Item label="Seleccione..." value="" />
-              <Picker.Item label="Público" value="Público" />
-              <Picker.Item label="Privado" value="Privado" />
-            </Picker>
-          )}
           name="privacy"
-          defaultValue={priv}
-          rules={{ required: true }}
+          error={errors.privacy}
+          errorMessage="*Selecciona alguna opción*"
+          pickerOptions={pickerOptions}
         />
-        {errors.privacy && <Text style={styles.errorMessage}>*Selecciona alguna opción*</Text>}
 
         <TouchableOpacity style={styles.button} onPress={map}>
           <Text style={styles.buttonText}>*Ubicacion*</Text>
         </TouchableOpacity>
 
-        <Text style={styles.label}>*Fotos*</Text>
+        <Text style={styles.textPhoto}>*Fotos*</Text>
 
         <TouchableOpacity
           style={styles.button}
@@ -167,15 +150,11 @@ export default () => {
 };
 
 const styles = StyleSheet.create({
-  label: {
+  textPhoto: {
     margin: 20,
     marginTop: 25,
     marginLeft: 40,
     fontSize: 18,
-  },
-  errorMessage: {
-    marginLeft: 35,
-    fontSize: 12,
   },
   button: {
     backgroundColor: "#FEB139",
@@ -199,23 +178,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     padding: 8,
     backgroundColor: "#0e101c",
-  },
-  input: {
-    backgroundColor: "white",
-    height: 40,
-    padding: 10,
-    borderRadius: 4,
-    borderWidth: 1,
-    marginLeft: 30,
-    marginRight: 30,
-  },
-  picker: {
-    backgroundColor: "white",
-    borderRadius: 4,
-    borderWidth: 1,
-    height: 50,
-    marginLeft: 30,
-    marginRight: 30,
   },
   scrollView: {
     width: Dimensions.get("window").width,
