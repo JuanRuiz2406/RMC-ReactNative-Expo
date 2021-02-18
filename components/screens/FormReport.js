@@ -10,7 +10,7 @@ import {
 } from "react-native";
 import { useForm } from "react-hook-form";
 import * as Location from "expo-location";
-import { TextInput, Picker } from "../index";
+import { TextInput, Picker, Navigation } from "../index";
 
 export default () => {
   const { handleSubmit, control, reset, errors } = useForm();
@@ -100,10 +100,6 @@ export default () => {
     })();
   }, []);
 
-  const map = () => {
-    setShowMap(!showMap);
-  };
-
   return (
     <View>
       <ScrollView style={styles.scrollView}>
@@ -132,7 +128,7 @@ export default () => {
           pickerOptions={pickerOptions}
         />
 
-        <TouchableOpacity style={styles.button} onPress={map}>
+        <TouchableOpacity style={styles.button} onPress={Navigation.navigate('Map')}>
           <Text style={styles.buttonText}>*Ubicacion*</Text>
         </TouchableOpacity>
 

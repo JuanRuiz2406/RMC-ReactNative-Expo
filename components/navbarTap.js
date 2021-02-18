@@ -2,7 +2,7 @@ import * as React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { AntDesign } from "@expo/vector-icons";
 
-import { Home, Reports, FormReport, Location } from "./index";
+import { Home, Reports, FormReport, Location } from "./screensRoutes";
 
 const Tab = createBottomTabNavigator();
 
