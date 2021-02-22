@@ -1,6 +1,6 @@
 import React from "react";
 import { View, StyleSheet, Dimensions, FlatList, Animated } from "react-native";
-import { CarouselItem } from "../index";
+import CarouselItem from "./carouselItems";
 
 const { width, height } = Dimensions.get("window");
 

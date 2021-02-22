@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { StyleSheet, View, Alert } from "react-native";
-import { List, ActivityIndicator } from "../index";
+import ActivityIndicator from "./activityIndicator";
+import { List } from "../report/index";
 
 export default () => {
   const [loading, setLoading] = useState(true);
