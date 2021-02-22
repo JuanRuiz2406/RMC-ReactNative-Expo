@@ -134,7 +134,7 @@ export default ({ navigation }) => {
 
         <TouchableOpacity
           style={styles.button}
-          onPress={() => navigation.navigate("Perfil")}
+          onPress={() => navigation.navigate("Mapa")}
         >
           <Text style={styles.buttonText}>*Ubicacion*</Text>
         </TouchableOpacity>
