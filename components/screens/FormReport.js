@@ -100,10 +100,6 @@ export default ({ navigation }) => {
     })();
   }, []);
 
-  const map = () => {
-    setShowMap(!showMap);
-  };
-
   return (
     <View>
       <ScrollView style={styles.scrollView}>
