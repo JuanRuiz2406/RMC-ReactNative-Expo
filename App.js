@@ -63,7 +63,7 @@ export default () => {
     login: (userName, password) => {
       let userToken;
       console.log(userName, password);
-      if (userName == "user" && password == "pass") {
+      if (userName == "" && password == "") {
         userToken = "asdf";
         console.log("user token: ", userToken);
         dispatch({ type: "LOGIN", id: userName, token: userToken });
