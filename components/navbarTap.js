@@ -3,9 +3,10 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { AntDesign } from "@expo/vector-icons";
 import { createAppContainer } from "react-navigation";
 import { Home, Reports, FormReport, Location } from "./screens/index";
-import { Navigation } from "./Navigators/index";
 
-createAppContainer(Navigation);
+import { createStackNavigator } from "react-navigation-stack";
+import { NavigationContainer } from "@react-navigation/native";
+
 const Tab = createBottomTabNavigator();
 
 export default navBar = () => {
