@@ -8,7 +8,7 @@ import { lightTheme } from "./theme/light";
 import { AuthContext } from "./components/contexts/authContext";
 import { BASE_URL } from "./components/config";
 
-import navBar from "./components/navbarTap";
+import { NavBar } from "./components/Navigators/index";
 
 const Stack = createStackNavigator();
 
@@ -54,10 +54,7 @@ export default () => {
     }
   };
 
-  const [loginState, dispatch] = useReducer(
-    loginReducer,
-    initialLoginState
-  );
+  const [loginState, dispatch] = useReducer(loginReducer, initialLoginState);
 
   const auth = useMemo(() => ({
     login: (userName, password) => {
@@ -92,7 +89,7 @@ export default () => {
         <Stack.Navigator initialRouteName="ReportsMyCity">
           <Stack.Screen
             name="ReportsMyCity"
-            component={navBar}
+            component={NavBar}
             options={{ headerStyle: { backgroundColor: "#008652" } }}
           />
         </Stack.Navigator>
@@ -106,7 +103,7 @@ export default () => {
           <Stack.Navigator initialRouteName="ReportsMyCity">
             <Stack.Screen
               name="ReportsMyCity"
-              component={navBar}
+              component={NavBar}
               options={{ headerStyle: { backgroundColor: "#008652" } }}
             />
           </Stack.Navigator>

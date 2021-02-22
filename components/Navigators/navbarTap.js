@@ -1,8 +1,8 @@
 import * as React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { AntDesign } from "@expo/vector-icons";
-import { Home, Reports, Location } from "./screens/index";
-import { FormReportStack } from "./Navigators/index";
+import { Home, Reports, Location } from "../screens/index";
+import FormReportStack from "./FormReportStack";
 
 const Tab = createBottomTabNavigator();
 
