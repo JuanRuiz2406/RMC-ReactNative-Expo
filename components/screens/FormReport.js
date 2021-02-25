@@ -32,20 +32,7 @@ export default ({ navigation }) => {
     password: "string",
     role: "string",
   };
-  const municipality = {
-    id: 1,
-    name: "string",
-    adress: "string",
-    email: "string@email.com",
-    telephone: "string",
-    schedule: "string",
-    webSite: "string",
-    coordenates: {
-      id: 1,
-      latitude: "string",
-      longitude: "string",
-    },
-  };
+  const cityName = "Liberia";
 
   const onSubmitReport = (data) => {
     console.log(data);
@@ -55,7 +42,7 @@ export default ({ navigation }) => {
       description: "",
     });
 
-    fetch("http://192.168.0.2:8080/report", {
+    fetch("http://192.168.0.2:8080/report/city/" + String(cityName), {
       method: "POST",
       headers: {
         Accept: "application/json",
@@ -68,7 +55,6 @@ export default ({ navigation }) => {
         privacy: data.privacy,
         user: user,
         coordenates: coordenates,
-        municipality: municipality,
       }),
     })
       .then((response) => response.json())
