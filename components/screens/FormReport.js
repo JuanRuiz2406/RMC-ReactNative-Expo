@@ -14,7 +14,6 @@ import { TextInput, Picker } from "../hook-form/index";
 
 export default ({ navigation }) => {
   const { handleSubmit, control, reset, errors } = useForm();
-  const [showMap, setShowMap] = useState(false);
   const [latitude, setLatitude] = useState(0);
   const [longitude, setLongitude] = useState(0);
   const pickerOptions = ["Público", "Privado"];
