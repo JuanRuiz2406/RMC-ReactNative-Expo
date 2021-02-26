@@ -20,6 +20,7 @@ export default () => {
     isLoading: false,
     userName: null,
     userToken: null,
+    code: null,
   };
 
   const loginReducer = (prevState, action) => {
@@ -72,8 +73,14 @@ export default () => {
     logout: () => {
       dispatch({ type: "LOGOUT" });
     },
-    register: () => {
-      dispatch({ type: "REGISTER", id: userName, token: userToken });
+    register: (messageString, userName) => {
+      if (messageString == "ok") {
+        let userToken = "asdf";
+        dispatch({ type: "REGISTER", id: userName, token: userToken });
+      } else {
+        console.log("No se puede registrar, error");
+      }
+
     },
   }));
 
@@ -111,14 +118,14 @@ export default () => {
             />
           </Stack.Navigator>
         ) : (
-          <Stack.Navigator
-            screenOptions={{
-              headerShown: false,
-            }}
-          >
-            <Stack.Screen name={"AuthStack2"} component={AuthStackNavigator} />
-          </Stack.Navigator>
-        )}
+            <Stack.Navigator
+              screenOptions={{
+                headerShown: false,
+              }}
+            >
+              <Stack.Screen name={"AuthStack2"} component={AuthStackNavigator} />
+            </Stack.Navigator>
+          )}
       </NavigationContainer>
     </AuthContext.Provider>
   );

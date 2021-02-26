@@ -1,79 +1,109 @@
-import React, { useContext, useState } from "react";
-import { StyleSheet } from "react-native";
+import React, { useContext, useState, useEffect } from "react";
+import { Alert, StyleSheet, TouchableOpacity, Dimensions, Text } from "react-native";
 import { Heading } from "../loginComponents/heading";
-import { Input } from "../loginComponents/input";
-import { FilledButton } from "../loginComponents/filledButton";
-import { IconButton } from "../loginComponents/iconButton";
 import { AuthContainer } from "../loginComponents/authContainer";
 import { AuthContext } from "../contexts/authContext";
+import { useForm } from "react-hook-form";
+import { TextInput } from "../index";
+import { API } from '../config/index';
+import axios from 'axios';
+import { ScrollView } from "react-native-gesture-handler";
 
 export function RegisterScreen({ navigation }) {
+
+  const { handleSubmit, control, reset, errors } = useForm();
   const { register } = useContext(AuthContext);
-  const [email, setEmail] = useState("diegovillatj@gmail.com");
-  const [name, setName] = useState("Diego");
-  const [lasname, setLastname] = useState("Villarreal");
-  const [idCard, setId] = useState("504200201");
-  const [direction, setDirection] = useState("Liberia");
-  const [role, setRole] = useState("user");
-  const [password, setPassword] = useState("abc");
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
+
+  const onSubmitRegister = (data) => {
+    console.log(data);
+
+    reset({
+      email: "",
+      password: "",
+      name: "",
+      lastname: "",
+      direction: "",
+    });
+
+    fetch("http://192.168.0.5:8080/user", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        direction: "Liberia",
+        email: data.email,
+        idCard: data.idCard,
+        lastname: data.lastname,
+        name: data.name,
+        password: data.password,
+        role: "user",
+      }),
+    })
+      .then((response) => response.json())
+      .then((responseJson) => {
+        console.log(responseJson.messageString);
+        register(responseJson.messageString, data.email);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  console.log(errors);
 
   return (
     <AuthContainer>
-      <IconButton
-        style={styles.closeIcon}
-        name={"close-circle-outline"}
-        onPress={() => {
-          navigation.pop();
-        }}
-      />
+      <ScrollView style={styles.scrollView}>
+        <Heading style={styles.title}>REGISTRO</Heading>
 
-      <Heading style={styles.title}>REGISTRO</Heading>
+        <TextInput
+          title="Nombre"
+          control={control}
+          name="name"
+          error={errors.name}
+          errorMessage="El nombre es requerido"
+        />
+        <TextInput
+          title="Apellido"
+          control={control}
+          name="lastname"
+          error={errors.lastname}
+          errorMessage="El apellido es requerido"
+        />
+        <TextInput
+          title="Identificacion"
+          control={control}
+          name="idCard"
+          error={errors.idCard}
+          errorMessage="La identificacion es requerido"
+        />
+        <TextInput
+          title="Correo"
+          control={control}
+          name="email"
+          error={errors.email}
+          errorMessage="El correo es requerido"
+        />
+        <TextInput
+          title="Contraseña"
+          control={control}
+          name="password"
+          error={errors.password}
+          errorMessage="El contraseña es requerido"
+        />
 
-      <Input
-        style={styles.input}
-        placeholder={"Nombre"}
-        value={name}
-        onChangeText={setName}
-      />
-      <Input
-        style={styles.input}
-        placeholder={"Apellido"}
-        value={lasname}
-        onChangeText={setLastname}
-      />
-      <Input
-        style={styles.input}
-        placeholder={"Numero de identificacion"}
-        value={idCard}
-        onChangeText={setId}
-      />
-      <Input
-        style={styles.input}
-        placeholder={"Nombre de Usuario"}
-        keyboardType={"email-address"}
-        value={email}
-        onChangeText={setEmail}
-      />
-      <Input
-        style={styles.input}
-        placeholder={"Contraseña"}
-        secureTextEntry
-        value={password}
-        onChangeText={setPassword}
-      />
-
-      <FilledButton
-        title={"Registro"}
-        style={styles.RegisterButton}
-        onPress={() => {
-          register();
-        }}
-      />
+        <TouchableOpacity
+          style={styles.RegisterButton}
+          onPress={handleSubmit(onSubmitRegister)}
+        >
+          <Text style={styles.buttonText}>Reportar</Text>
+        </TouchableOpacity>
+      </ScrollView>
     </AuthContainer>
   );
-}
+};
 
 const styles = StyleSheet.create({
   input: {
@@ -89,5 +119,14 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: 60,
     right: 16,
+  },
+  buttonText: {
+    fontSize: 20,
+    textAlign: "center",
+    color: "#fff",
+    fontWeight: "bold",
+  },
+  scrollView: {
+    width: Dimensions.get("window").width,
   },
 });

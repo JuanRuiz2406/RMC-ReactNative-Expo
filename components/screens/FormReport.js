@@ -142,7 +142,7 @@ export default () => {
           style={styles.button}
           onPress={handleSubmit(onSubmitReport)}
         >
-          <Text style={styles.buttonText}>Reportar</Text>
+
         </TouchableOpacity>
       </ScrollView>
     </View>
