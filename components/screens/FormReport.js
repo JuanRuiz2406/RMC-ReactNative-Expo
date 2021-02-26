@@ -9,11 +9,12 @@ import {
   Dimensions,
 } from "react-native";
 import { useForm } from "react-hook-form";
-import * as Location from "expo-location";
 import { TextInput, Picker } from "../hook-form/index";
+import * as Location from "expo-location";
 
 export default ({ navigation }) => {
   const { handleSubmit, control, reset, errors } = useForm();
+  const [cityName, setCityName] = useState("");
   const [latitude, setLatitude] = useState(0);
   const [longitude, setLongitude] = useState(0);
   const pickerOptions = ["Público", "Privado"];
@@ -32,7 +33,31 @@ export default ({ navigation }) => {
     password: "string",
     role: "string",
   };
-  const cityName = "Liberia";
+
+  useEffect(() => {
+    (async () => {
+      let { status } = await Location.requestPermissionsAsync();
+      if (status !== "granted") {
+        Alert.alert(
+          "Error",
+          "Se ha denegado el permiso para acceder a la Ubicación, no podrás realizar reportes"
+        );
+        return;
+      }
+    })();
+  }, []);
+
+  const getCurrentPositionAndCity = () => {
+    (async () => {
+      let locationData = await Location.getCurrentPositionAsync({});
+      setLatitude(locationData.coords.latitude);
+      setLongitude(locationData.coords.longitude);
+
+      let locationNames = await Location.reverseGeocodeAsync(coordenates);
+      let locate = locationNames;
+      setCityName(locate[0].city);
+    })();
+  };
 
   const onSubmitReport = (data) => {
     console.log(data);
@@ -68,23 +93,6 @@ export default ({ navigation }) => {
 
   console.log(errors);
 
-  useEffect(() => {
-    (async () => {
-      let { status } = await Location.requestPermissionsAsync();
-      if (status !== "granted") {
-        setErrorMsg("Permission to access location was denied");
-        return;
-      }
-
-      let location = await Location.getCurrentPositionAsync({});
-
-      setLatitude(location.coords.latitude);
-      setLongitude(location.coords.longitude);
-
-      //let location2 = await Location.reverseGeocodeAsync(coordenates);
-    })();
-  }, []);
-
   return (
     <View>
       <ScrollView style={styles.scrollView}>
@@ -117,7 +125,16 @@ export default ({ navigation }) => {
           style={styles.button}
           onPress={() => navigation.navigate("Mapa")}
         >
-          <Text style={styles.buttonText}>*Ubicacion*</Text>
+          <Text style={styles.buttonText}>*Abrir Mapa*</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={styles.button}
+          onPress={getCurrentPositionAndCity}
+        >
+          <Text style={styles.buttonText}>
+            *Seleccionar Ubicación + Ciudad*
+          </Text>
         </TouchableOpacity>
 
         <Text style={styles.textPhoto}>*Fotos*</Text>
