@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   Text,
   View,
@@ -10,7 +10,6 @@ import {
 } from "react-native";
 import { useForm } from "react-hook-form";
 import { TextInput, Picker } from "../hook-form/index";
-import * as Location from "expo-location";
 
 export default ({ navigation }) => {
   const { handleSubmit, control, reset, errors } = useForm();
@@ -32,31 +31,6 @@ export default ({ navigation }) => {
     name: "string",
     password: "string",
     role: "string",
-  };
-
-  useEffect(() => {
-    (async () => {
-      let { status } = await Location.requestPermissionsAsync();
-      if (status !== "granted") {
-        Alert.alert(
-          "Error",
-          "Se ha denegado el permiso para acceder a la Ubicación, no podrás realizar reportes"
-        );
-        return;
-      }
-    })();
-  }, []);
-
-  const getCurrentPositionAndCity = () => {
-    (async () => {
-      let locationCoordenates = await Location.getCurrentPositionAsync({});
-      setLatitude(locationCoordenates.coords.latitude);
-      setLongitude(locationCoordenates.coords.longitude);
-
-      let locationData = await Location.reverseGeocodeAsync(coordenates);
-      console.log(locationData[0].city);
-      setCityName(locationData[0].city);
-    })();
   };
 
   const onSubmitReport = (data) => {
@@ -123,19 +97,20 @@ export default ({ navigation }) => {
 
         <TouchableOpacity
           style={styles.button}
-          onPress={() => navigation.navigate("Mapa")}
+          onPress={() =>
+            navigation.navigate("Mapa", {
+              setLatitude: setLatitude,
+              setLongitude: setLongitude,
+              setCityName: setCityName,
+            })
+          }
         >
           <Text style={styles.buttonText}>*Abrir Mapa*</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity
-          style={styles.button}
-          onPress={getCurrentPositionAndCity}
-        >
-          <Text style={styles.buttonText}>
-            *Seleccionar Ubicación + Ciudad*
-          </Text>
-        </TouchableOpacity>
+        <Text style={styles.textPhoto}>{latitude}</Text>
+        <Text style={styles.textPhoto}>{longitude}</Text>
+        <Text style={styles.textPhoto}>{cityName}</Text>
 
         <Text style={styles.textPhoto}>*Fotos*</Text>
 
