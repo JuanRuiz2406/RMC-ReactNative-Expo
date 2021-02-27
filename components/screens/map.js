@@ -14,29 +14,11 @@ export default () => {
         setErrorMsg("Permission to access location was denied");
         return;
       }
-
-      let location = await Location.getCurrentPositionAsync({});
-
-      console.log(location.coords.latitude);
-      console.log(location.coords.longitude);
-
-      setLatitude(location.coords.latitude);
-      setLongitude(location.coords.longitude);
-
-      console.log(Latitude);
-      console.log(Longitude);
-      //let location2 = await Location.reverseGeocodeAsync(coordenates);
     })();
   }, []);
 
   const onChangeCoordenates = () => {
     (async () => {
-      let { status } = await Location.requestPermissionsAsync();
-      if (status !== "granted") {
-        setErrorMsg("Permission to access location was denied");
-        return;
-      }
-
       let location = await Location.getCurrentPositionAsync({});
       console.log(location.coords.latitude);
       console.log(location.coords.longitude);
@@ -54,7 +36,7 @@ export default () => {
     <View style={styles.container}>
       <MapView
         style={styles.map}
-        initialRegion={{
+        region={{
           latitude: Latitude,
           longitude: Longitude,
           latitudeDelta: 0.009,

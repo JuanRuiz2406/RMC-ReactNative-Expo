@@ -49,13 +49,13 @@ export default ({ navigation }) => {
 
   const getCurrentPositionAndCity = () => {
     (async () => {
-      let locationData = await Location.getCurrentPositionAsync({});
-      setLatitude(locationData.coords.latitude);
-      setLongitude(locationData.coords.longitude);
+      let locationCoordenates = await Location.getCurrentPositionAsync({});
+      setLatitude(locationCoordenates.coords.latitude);
+      setLongitude(locationCoordenates.coords.longitude);
 
-      let locationNames = await Location.reverseGeocodeAsync(coordenates);
-      let locate = locationNames;
-      setCityName(locate[0].city);
+      let locationData = await Location.reverseGeocodeAsync(coordenates);
+      console.log(locationData[0].city);
+      setCityName(locationData[0].city);
     })();
   };
 
