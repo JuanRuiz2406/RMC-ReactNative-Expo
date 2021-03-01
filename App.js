@@ -21,6 +21,8 @@ export default () => {
     userName: null,
     userToken: null,
     code: null,
+    apiEmail: null,
+    apiPassword: null,
   };
 
   const loginReducer = (prevState, action) => {
@@ -61,10 +63,11 @@ export default () => {
   );
 
   const auth = useMemo(() => ({
-    login: (userName, password) => {
+    login: (apiEmail, apiPassword, userName, password) => {
       let userToken;
+      console.log(apiEmail, apiPassword);
       console.log(userName, password);
-      if (userName == "user" && password == "pass") {
+      if (userName == apiEmail && password == apiPassword) {
         userToken = "asdf";
         console.log("user token: ", userToken);
         dispatch({ type: "LOGIN", id: userName, token: userToken });
@@ -108,7 +111,7 @@ export default () => {
   }
   return (
     <AuthContext.Provider value={auth}>
-      <NavigationContainer theme={lightTheme}>
+      <NavigationContainer >
         {loginState.userToken == !null ? (
           <Stack.Navigator initialRouteName="ReportsMyCity">
             <Stack.Screen

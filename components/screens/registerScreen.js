@@ -1,12 +1,10 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext } from "react";
 import { Alert, StyleSheet, TouchableOpacity, Dimensions, Text } from "react-native";
 import { Heading } from "../loginComponents/heading";
 import { AuthContainer } from "../loginComponents/authContainer";
 import { AuthContext } from "../contexts/authContext";
 import { useForm } from "react-hook-form";
 import { TextInput } from "../index";
-import { API } from '../config/index';
-import axios from 'axios';
 import { ScrollView } from "react-native-gesture-handler";
 
 export function RegisterScreen({ navigation }) {
@@ -25,7 +23,7 @@ export function RegisterScreen({ navigation }) {
       direction: "",
     });
 
-    fetch("http://192.168.0.5:8080/user", {
+    fetch("http://192.168.0.2:8080/user", {
       method: "POST",
       headers: {
         Accept: "application/json",
@@ -54,8 +52,8 @@ export function RegisterScreen({ navigation }) {
   console.log(errors);
 
   return (
-    <AuthContainer>
-      <ScrollView style={styles.scrollView}>
+    <ScrollView style={styles.scrollView}>
+      <AuthContainer>
         <Heading style={styles.title}>REGISTRO</Heading>
 
         <TextInput
@@ -100,8 +98,9 @@ export function RegisterScreen({ navigation }) {
         >
           <Text style={styles.buttonText}>Reportar</Text>
         </TouchableOpacity>
-      </ScrollView>
-    </AuthContainer>
+
+      </AuthContainer>
+    </ScrollView>
   );
 };
 
@@ -111,6 +110,7 @@ const styles = StyleSheet.create({
   },
   title: {
     marginBottom: 48,
+    textAlign: "center",
   },
   RegisterButton: {
     marginVertical: 32,
@@ -128,5 +128,7 @@ const styles = StyleSheet.create({
   },
   scrollView: {
     width: Dimensions.get("window").width,
+    height: Dimensions.get("window").height,
+    backgroundColor: "white",
   },
 });

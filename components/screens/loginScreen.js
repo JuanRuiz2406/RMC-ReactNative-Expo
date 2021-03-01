@@ -1,88 +1,103 @@
 import React, { useContext, useState } from "react";
-import { StyleSheet } from "react-native";
+import { StyleSheet, TouchableOpacity, Text, Dimensions } from "react-native";
 import { Heading } from "../loginComponents/heading";
-import { Input } from "../loginComponents/input";
-import { FilledButton } from "../loginComponents/filledButton";
 import { TextButton } from "../loginComponents/textButton";
-//import { Error } from './loginComponents/error';
+import { useForm } from "react-hook-form";
+import { TextInput } from "../index";
+import { ScrollView } from "react-native-gesture-handler";
 import { AuthContainer } from "../loginComponents/authContainer";
 import { AuthContext } from "../contexts/authContext";
 
 export function LoginScreen({ navigation }) {
+  const { handleSubmit, control, reset, errors } = useForm();
   const { login } = useContext(AuthContext);
-  const [data, setData] = useState({
-    username: "",
-    password: "",
-    check_textInputChange: true,
-    secureTextEntry: true,
-  });
 
-  const inputChange = (val) => {
-    setData({
-      ...data,
-      username: val,
+  const onSubmitLogin = (data) => {
+    console.log(data);
+
+    reset({
+      email: "",
+      password: "",
     });
+
+    fetch(`http://192.168.0.2:8080/user/byEmail/${data.email}`, {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => response.json())
+      .then((responseJson) => {
+        console.log(responseJson);
+        console.log(data.password, "fetch");
+        login(responseJson.email, responseJson.password, data.email, data.password);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
-  const handlePasswordChange = (val) => {
-    setData({
-      ...data,
-      password: val,
-    });
-  };
-
-  const loginHandle = (username, password) => {
-    login(username, password);
-  };
+  console.log(errors);
 
   return (
-    <AuthContainer>
-      <Heading style={styles.title}>ReportsMyCity</Heading>
-      <Heading style={styles.title}>LOGIN</Heading>
+    <ScrollView style={styles.scrollView}>
+      <AuthContainer>
+        <Heading style={styles.title}>ReportsMyCity</Heading>
+        <Heading style={styles.title}>LOGIN</Heading>
 
-      <Input
-        style={styles.input}
-        placeholder={"Nombre de Usuario"}
-        keyboardType={"email-address"}
-        onChangeText={(val) => inputChange(val)}
-      />
+        <TextInput
+          title="Correo"
+          control={control}
+          name="email"
+          error={errors.email}
+          errorMessage="El correo es requerido"
+        />
 
-      <Input
-        style={styles.input}
-        placeholder={"Contraseña"}
-        secureTextEntry={true}
-        onChangeText={(val) => handlePasswordChange(val)}
-      />
+        <TextInput
+          title="Contraseña"
+          control={control}
+          name="password"
+          error={errors.password}
+          errorMessage="La contraseña es obligatoria"
+        />
 
-      <FilledButton
-        title={"Login"}
-        style={styles.loginButton}
-        onPress={() => {
-          loginHandle(data.username, data.password);
-        }}
-      />
+        <TouchableOpacity
+          style={styles.RegisterButton}
+          onPress={handleSubmit(onSubmitLogin)}
+        >
+          <Text style={styles.buttonText}>Entrar</Text>
+        </TouchableOpacity>
 
-      <TextButton
-        title={"Tienes una cuanta? Crear una."}
-        onPress={() => {
-          navigation.navigate("RegisterScreen");
-        }}
-      />
-    </AuthContainer>
+        <TextButton
+          title={"Tienes una cuanta? Crear una."}
+          onPress={() => {
+            navigation.navigate("RegisterScreen");
+          }}
+        />
+
+      </AuthContainer>
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    alignItems: "center",
-  },
-  input: {
-    marginVertical: 8,
-  },
   title: {
     marginBottom: 48,
+    textAlign: "center",
   },
-  loginButton: {
+  buttonText: {
+    fontSize: 20,
+    textAlign: "center",
+    color: "#000",
+    fontWeight: "bold",
+  },
+  RegisterButton: {
     marginVertical: 32,
+  },
+  scrollView: {
+    width: Dimensions.get("window").width,
+    height: Dimensions.get("window").height,
+    backgroundColor: "white",
   },
 });
