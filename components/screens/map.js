@@ -1,64 +1,119 @@
 import React, { useState, useEffect } from "react";
-import MapView from "react-native-maps";
-import { StyleSheet, View, Dimensions, Text, Button } from "react-native";
+import MapView, { Marker } from "react-native-maps";
+import {
+  StyleSheet,
+  View,
+  Dimensions,
+  Text,
+  Button,
+  Alert,
+} from "react-native";
 import * as Location from "expo-location";
 import { useRoute } from "@react-navigation/native";
 
 export default ({ navigation: { goBack } }) => {
   const route = useRoute();
 
-  const [latitude, setLatitude] = useState(0);
-  const [longitude, setLongitude] = useState(0);
+  const [userLatitude, setUserLatitude] = useState(0);
+  const [userLongitude, setUserLongitude] = useState(0);
+  const [markerLatitude, setMarkerLatitude] = useState(0);
+  const [markerLongitude, setMarkerLongitude] = useState(0);
+  const [settingLatitude, setSettingLatitude] = useState(0);
+  const [settingLongitude, setSettingLongitude] = useState(0);
+  const [cityName, setCityName] = useState("");
 
   useEffect(() => {
     (async () => {
       let { status } = await Location.requestPermissionsAsync();
       if (status !== "granted") {
+        Alert.alert(
+          "Error",
+          "No se pudo acceder a los permisos de ubicación, no podrás hacer reportes."
+        );
         setErrorMsg("Permission to access location was denied");
         return;
       }
 
       let location = await Location.getCurrentPositionAsync({});
-      setLatitude(location.coords.latitude);
-      setLongitude(location.coords.longitude);
+      setUserLatitude(location.coords.latitude);
+      setUserLongitude(location.coords.longitude);
     })();
   }, []);
 
-  const onChangeCoordenates = () => {
+  const onChangeActualCoordenates = () => {
     (async () => {
       let location = await Location.getCurrentPositionAsync({});
-      setLatitude(location.coords.latitude);
-      setLongitude(location.coords.longitude);
+      setUserLatitude(location.coords.latitude);
+      setUserLongitude(location.coords.longitude);
 
       let locationData = await Location.reverseGeocodeAsync({
-        latitude: latitude,
-        longitude: longitude,
+        latitude: userLatitude,
+        longitude: userLongitude,
+      });
+      setCityName(locationData[0].city);
+    })();
+
+    setSettingLatitude(userLatitude);
+    setSettingLongitude(userLongitude);
+  };
+
+  const handleLongPress = async ({ nativeEvent }) => {
+    setMarkerLatitude(nativeEvent.coordinate.latitude);
+    setMarkerLongitude(nativeEvent.coordinate.longitude);
+
+    (async () => {
+      let locationData = await Location.reverseGeocodeAsync({
+        latitude: markerLatitude,
+        longitude: markerLongitude,
       });
 
-      route.params.setLatitude(latitude);
-      route.params.setLongitude(longitude);
-      route.params.setCityName(locationData[0].city);
-
-      console.log(latitude, longitude, locationData[0].city);
+      let locationReponse = locationData[0];
+      setCityName(locationReponse.city);
     })();
+
+    setSettingLatitude(markerLatitude);
+    setSettingLongitude(markerLongitude);
+
+    console.log(settingLatitude, settingLongitude, cityName);
+  };
+
+  const chooseLocation = () => {
+    route.params.setLatitude(settingLatitude);
+    route.params.setLongitude(settingLongitude);
+    route.params.setCityName(cityName);
+
+    console.log(settingLatitude, settingLongitude, cityName);
+
+    goBack();
   };
 
   return (
     <View style={styles.container}>
       <MapView
         style={styles.map}
+        showsUserLocation
         region={{
-          latitude: latitude,
-          longitude: longitude,
+          latitude: userLatitude,
+          longitude: userLongitude,
           latitudeDelta: 0.009,
           longitudeDelta: 0.009,
         }}
-        showsUserLocation
+        onLongPress={handleLongPress}
+      >
+        <MapView.Marker
+          coordinate={{
+            latitude: settingLatitude,
+            longitude: settingLongitude,
+          }}
+        />
+      </MapView>
+      <Text>{settingLatitude}</Text>
+      <Text>{settingLongitude}</Text>
+      <Button
+        onPress={onChangeActualCoordenates}
+        title="Marcar Mi Ubicación Actual"
       />
-      <Text>{latitude}</Text>
-      <Text>{longitude}</Text>
-      <Button onPress={onChangeCoordenates} title="Actualizar" />
-      <Button onPress={() => goBack()} title="Seleccionar" />
+      <Button onPress={chooseLocation} title="Seleccionar" />
     </View>
   );
 };

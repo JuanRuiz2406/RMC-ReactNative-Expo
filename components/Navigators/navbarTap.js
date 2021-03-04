@@ -3,6 +3,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { AntDesign } from "@expo/vector-icons";
 import { Home, Reports, Location } from "../screens/index";
 import FormReportStack from "./FormReportStack";
+import ReportStack from "./ReportsStack";
 
 const Tab = createBottomTabNavigator();
 
@@ -36,7 +37,7 @@ export default navBar = () => {
       />
       <Tab.Screen
         name="Reportes"
-        component={Reports}
+        component={ReportStack}
         options={{
           tabBarLabel: "Reportes",
           tabBarIcon: ({ color }) => (

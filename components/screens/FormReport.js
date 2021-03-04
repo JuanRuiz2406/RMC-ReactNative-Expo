@@ -11,7 +11,7 @@ import {
 import { useForm } from "react-hook-form";
 import { TextInput, Picker } from "../hook-form/index";
 
-export default ({ navigation }) => {
+export default ({ navigation: { navigate } }) => {
   const { handleSubmit, control, reset, errors } = useForm();
   const [cityName, setCityName] = useState("");
   const [latitude, setLatitude] = useState(0);
@@ -98,19 +98,19 @@ export default ({ navigation }) => {
         <TouchableOpacity
           style={styles.button}
           onPress={() =>
-            navigation.navigate("Mapa", {
+            navigate("Mapa", {
               setLatitude: setLatitude,
               setLongitude: setLongitude,
               setCityName: setCityName,
             })
           }
         >
-          <Text style={styles.buttonText}>*Abrir Mapa*</Text>
+          <Text style={styles.buttonText}>*Seleccionar Ubicación*</Text>
         </TouchableOpacity>
 
-        <Text style={styles.textPhoto}>{latitude}</Text>
-        <Text style={styles.textPhoto}>{longitude}</Text>
-        <Text style={styles.textPhoto}>{cityName}</Text>
+        <Text style={styles.textPhoto}>Lat: {latitude}</Text>
+        <Text style={styles.textPhoto}>Lon: {longitude}</Text>
+        <Text style={styles.textPhoto}>City: {cityName}</Text>
 
         <Text style={styles.textPhoto}>*Fotos*</Text>
 
