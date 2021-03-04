@@ -14,10 +14,7 @@ import { useRoute } from "@react-navigation/native";
 export default ({ navigation: { goBack } }) => {
   const route = useRoute();
 
-  const [userLatitude, setUserLatitude] = useState(0);
-  const [userLongitude, setUserLongitude] = useState(0);
-  const [markerLatitude, setMarkerLatitude] = useState(0);
-  const [markerLongitude, setMarkerLongitude] = useState(0);
+  const [showMarker, setShowMarker] = useState(false);
   const [settingLatitude, setSettingLatitude] = useState(0);
   const [settingLongitude, setSettingLongitude] = useState(0);
   const [cityName, setCityName] = useState("");
@@ -35,44 +32,41 @@ export default ({ navigation: { goBack } }) => {
       }
 
       let location = await Location.getCurrentPositionAsync({});
-      setUserLatitude(location.coords.latitude);
-      setUserLongitude(location.coords.longitude);
+      setSettingLatitude(location.coords.latitude);
+      setSettingLongitude(location.coords.longitude);
     })();
   }, []);
 
   const onChangeActualCoordenates = () => {
     (async () => {
       let location = await Location.getCurrentPositionAsync({});
-      setUserLatitude(location.coords.latitude);
-      setUserLongitude(location.coords.longitude);
+      setSettingLatitude(location.coords.latitude);
+      setSettingLongitude(location.coords.longitude);
 
       let locationData = await Location.reverseGeocodeAsync({
-        latitude: userLatitude,
-        longitude: userLongitude,
+        latitude: settingLatitude,
+        longitude: settingLongitude,
       });
       setCityName(locationData[0].city);
+      setShowMarker(true);
     })();
-
-    setSettingLatitude(userLatitude);
-    setSettingLongitude(userLongitude);
   };
 
   const handleLongPress = async ({ nativeEvent }) => {
-    setMarkerLatitude(nativeEvent.coordinate.latitude);
-    setMarkerLongitude(nativeEvent.coordinate.longitude);
-
     (async () => {
       let locationData = await Location.reverseGeocodeAsync({
-        latitude: markerLatitude,
-        longitude: markerLongitude,
+        latitude: nativeEvent.coordinate.latitude,
+        longitude: nativeEvent.coordinate.longitude,
       });
 
       let locationReponse = locationData[0];
       setCityName(locationReponse.city);
     })();
 
-    setSettingLatitude(markerLatitude);
-    setSettingLongitude(markerLongitude);
+    setSettingLatitude(nativeEvent.coordinate.latitude);
+    setSettingLongitude(nativeEvent.coordinate.longitude);
+
+    setShowMarker(true);
 
     console.log(settingLatitude, settingLongitude, cityName);
   };
@@ -93,22 +87,22 @@ export default ({ navigation: { goBack } }) => {
         style={styles.map}
         showsUserLocation
         region={{
-          latitude: userLatitude,
-          longitude: userLongitude,
+          latitude: settingLatitude,
+          longitude: settingLongitude,
           latitudeDelta: 0.009,
           longitudeDelta: 0.009,
         }}
         onLongPress={handleLongPress}
       >
-        <MapView.Marker
-          coordinate={{
-            latitude: settingLatitude,
-            longitude: settingLongitude,
-          }}
-        />
+        {showMarker ? (
+          <MapView.Marker
+            coordinate={{
+              latitude: settingLatitude,
+              longitude: settingLongitude,
+            }}
+          />
+        ) : null}
       </MapView>
-      <Text>{settingLatitude}</Text>
-      <Text>{settingLongitude}</Text>
       <Button
         onPress={onChangeActualCoordenates}
         title="Marcar Mi Ubicación Actual"
@@ -127,6 +121,6 @@ const styles = StyleSheet.create({
   },
   map: {
     width: Dimensions.get("window").width,
-    height: Dimensions.get("window").height - 300,
+    height: Dimensions.get("window").height - 235,
   },
 });

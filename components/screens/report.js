@@ -1,31 +1,35 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, View, Alert } from "react-native";
+import { StyleSheet, View } from "react-native";
 import ActivityIndicator from "./activityIndicator";
-import { List } from "../report/index";
+import { ShowReport } from "../report/index";
+import { useRoute } from "@react-navigation/native";
 
 export default () => {
-  const [loading, setLoading] = useState(true);
-  const [reports, setReports] = useState([]);
+  const route = useRoute();
+
+  const report = route.params.report;
+  const [loadingDetails, setLoadingDetails] = useState(true);
+  const [details, setDetails] = useState([]);
+
+  const fetchDetails = async () => {
+    const response = await fetch(
+      "http://192.168.0.2:8080/detailReport/byReport/" + report.id
+    );
+    const data = await response.json();
+    setDetails(data);
+    setLoadingDetails(false);
+  };
 
   useEffect(() => {
-    fetch("http://192.168.0.2:8080/report")
-      .then((response) => response.json())
-      .then((data) => {
-        setLoading(false);
-        setReports(data);
-      });
+    fetchDetails();
   }, []);
-
-  const onPress = (reportId) => {
-    Alert.alert("Detalle", "http://URL/report/" + String(reportId));
-  };
 
   return (
     <View style={styles.container}>
-      {loading ? (
+      {loadingDetails ? (
         <ActivityIndicator />
       ) : (
-        <List reports={reports} onPress={onPress} />
+        <ShowReport report={report} details={details} />
       )}
     </View>
   );

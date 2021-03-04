@@ -10,24 +10,18 @@ export default ({ reports, onPress }) => {
         <TouchableOpacity
           style={styles.report}
           onPress={() => {
-            onPress(item.id);
+            onPress(item);
           }}
         >
           <Text style={styles.title}>{item.title}</Text>
-          <Text style={styles.titleLeft}>
-            <Text style={styles.bold}>Realizado por: </Text>
-            <Text>
-              {item.user.name} {item.user.lastname}
-            </Text>
-          </Text>
 
-          <Text style={styles.state}>
-            <Text style={styles.bold}>Estado: </Text>
-            <Text>{item.state}</Text>
+          <Text style={[styles.titleLeft, styles.bold]}>
+            Descripción: *OPCIONAL*
           </Text>
-
-          <Text style={[styles.titleLeft, styles.bold]}>Descripción: </Text>
           <Text style={styles.description}>{item.description}</Text>
+
+          <Text style={styles.photo}>FOTO</Text>
+
         </TouchableOpacity>
       )}
     />
@@ -62,9 +56,10 @@ const styles = StyleSheet.create({
     fontSize: 20,
     marginTop: 10,
     marginLeft: 40,
-    marginBottom: 25,
+    marginBottom: 10,
   },
-  state: {
-    marginLeft: 230,
+  photo: {
+    fontSize: 45,
+    marginLeft: 100,
   },
 });

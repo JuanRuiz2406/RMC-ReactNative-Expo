@@ -3,7 +3,7 @@ import { StyleSheet, View, Alert } from "react-native";
 import ActivityIndicator from "./activityIndicator";
 import { List } from "../report/index";
 
-export default () => {
+export default ({ navigation: { navigate } }) => {
   const [loading, setLoading] = useState(true);
   const [reports, setReports] = useState([]);
 
@@ -16,8 +16,10 @@ export default () => {
       });
   }, []);
 
-  const onPress = (reportId) => {
-    Alert.alert("Detalle", "http://URL/report/" + String(reportId));
+  const onPress = (report) => {
+    navigate("Reporte Específico", {
+      report: report,
+    });
   };
 
   return (
