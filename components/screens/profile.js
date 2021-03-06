@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   StyleSheet,
   Text,
@@ -9,8 +9,37 @@ import {
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 // import CarouselProfile from "../carousel/index";
+import ActivityIndicator from "./activityIndicator";
+import { List } from "../report/index";
 
 export default () => {
+  const [loadingReports, setLoadingReports] = useState(true);
+  const [reports, setReports] = useState([]);
+
+  const user = {
+    direction: "string",
+    email: "string@email.com",
+    id: 1,
+    idCard: "string",
+    lastname: "string",
+    name: "string",
+    password: "string",
+    role: "string",
+  };
+
+  const fetchUserReports = async () => {
+    const response = await fetch(
+      "http://192.168.0.2:8080/report/byUserIdCard/" + user.idCard
+    );
+    const data = await response.json();
+    setReports(data);
+    setLoadingReports(false);
+  };
+
+  useEffect(() => {
+    fetchUserReports();
+  }, []);
+
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false}>
@@ -56,7 +85,17 @@ export default () => {
           <Text style={styles.textSecond}>+506 8888 8888</Text>
         </View>
         {/* <CarouselProfile data={this.state.dataSource} /> */}
+
+        <Text style={[styles.text, { fontWeight: "200", fontSize: 36 }]}>
+          *Botón para redirigir a vista de reportes?*
+        </Text>
       </ScrollView>
+
+      {loadingReports ? (
+        <ActivityIndicator />
+      ) : (
+        <List reports={reports} onPress={null} />
+      )}
     </SafeAreaView>
   );
 };

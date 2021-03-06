@@ -31,7 +31,6 @@ export default ({ navigation: { goBack } }) => {
           "Error",
           "No se pudo acceder a los permisos de ubicación, no podrás hacer reportes."
         );
-        setErrorMsg("Permission to access location was denied");
         return;
       }
 

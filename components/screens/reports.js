@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, View, Alert } from "react-native";
+import { StyleSheet, View } from "react-native";
 import ActivityIndicator from "./activityIndicator";
 import { List } from "../report/index";
 
