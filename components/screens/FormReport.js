@@ -96,7 +96,7 @@ export default ({ navigation: { navigate } }) => {
         />
 
         <TouchableOpacity
-          style={styles.button}
+          style={[styles.button, styles.orange]}
           onPress={() =>
             navigate("Mapa", {
               setLatitude: setLatitude,
@@ -115,7 +115,7 @@ export default ({ navigation: { navigate } }) => {
         <Text style={styles.textPhoto}>*Fotos*</Text>
 
         <TouchableOpacity
-          style={styles.button}
+          style={[styles.button, styles.green]}
           onPress={handleSubmit(onSubmitReport)}
         >
           <Text style={styles.buttonText}>Reportar</Text>
@@ -132,8 +132,13 @@ const styles = StyleSheet.create({
     marginLeft: 40,
     fontSize: 18,
   },
-  button: {
+  green: {
+    backgroundColor: "#008652",
+  },
+  orange: {
     backgroundColor: "#FEB139",
+  },
+  button: {
     padding: 7,
     marginTop: 25,
     marginLeft: 40,

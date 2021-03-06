@@ -4,7 +4,8 @@ import {
   StyleSheet,
   View,
   Dimensions,
-  Button,
+  TouchableOpacity,
+  Text,
   Alert,
 } from "react-native";
 import * as Location from "expo-location";
@@ -105,11 +106,14 @@ export default ({ navigation: { goBack } }) => {
           />
         ) : null}
       </MapView>
-      <Button
-        onPress={chooseActualCoordenates}
-        title="Enviar Mi Ubicación Actual"
-      />
-      <Button onPress={chooseLocation} title="Enviar Punto Seleccionado" />
+
+      <TouchableOpacity style={styles.button} onPress={chooseActualCoordenates}>
+        <Text style={styles.buttonText}>Enviar Mi Ubicación Actual</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity style={styles.button} onPress={chooseLocation}>
+        <Text style={styles.buttonText}>Enviar Punto Seleccionado</Text>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -123,6 +127,21 @@ const styles = StyleSheet.create({
   },
   map: {
     width: Dimensions.get("window").width,
-    height: Dimensions.get("window").height - 235,
+    height: Dimensions.get("window").height - 255,
+  },
+  button: {
+    backgroundColor: "#008652",
+    padding: 7,
+    width: Dimensions.get("window").width,
+    marginBottom: 5,
+    borderWidth: 1,
+    borderRadius: 10,
+    borderColor: "black",
+  },
+  buttonText: {
+    fontSize: 20,
+    textAlign: "center",
+    color: "#fff",
+    fontWeight: "bold",
   },
 });
