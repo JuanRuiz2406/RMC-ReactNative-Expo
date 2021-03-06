@@ -10,6 +10,7 @@ import {
 } from "react-native";
 import { useForm } from "react-hook-form";
 import { TextInput, Picker } from "../hook-form/index";
+import { reverseGeocodeAsync } from "expo-location";
 
 export default ({ navigation: { navigate } }) => {
   const { handleSubmit, control, reset, errors } = useForm();
@@ -66,6 +67,18 @@ export default ({ navigation: { navigate } }) => {
   };
 
   console.log(errors);
+
+  if (latitude !== 0 && longitude !== 0 && cityName == "") {
+    (async () => {
+      let locationData = await reverseGeocodeAsync({
+        latitude: latitude,
+        longitude: longitude,
+      });
+
+      let locationResponse = locationData[0];
+      setCityName(locationResponse.city);
+    })();
+  }
 
   return (
     <View>

@@ -8,7 +8,11 @@ import {
   Text,
   Alert,
 } from "react-native";
-import * as Location from "expo-location";
+import {
+  requestPermissionsAsync,
+  getCurrentPositionAsync,
+  reverseGeocodeAsync,
+} from "expo-location";
 import { useRoute } from "@react-navigation/native";
 
 export default ({ navigation: { goBack } }) => {
@@ -21,7 +25,7 @@ export default ({ navigation: { goBack } }) => {
 
   useEffect(() => {
     (async () => {
-      let { status } = await Location.requestPermissionsAsync();
+      let { status } = await requestPermissionsAsync();
       if (status !== "granted") {
         Alert.alert(
           "Error",
@@ -31,7 +35,7 @@ export default ({ navigation: { goBack } }) => {
         return;
       }
 
-      let location = await Location.getCurrentPositionAsync({});
+      let location = await getCurrentPositionAsync({});
       setSettingLatitude(location.coords.latitude);
       setSettingLongitude(location.coords.longitude);
     })();
@@ -41,11 +45,11 @@ export default ({ navigation: { goBack } }) => {
     setShowMarker(false);
 
     (async () => {
-      let location = await Location.getCurrentPositionAsync({});
+      let location = await getCurrentPositionAsync({});
       setSettingLatitude(location.coords.latitude);
       setSettingLongitude(location.coords.longitude);
 
-      let locationData = await Location.reverseGeocodeAsync({
+      let locationData = await reverseGeocodeAsync({
         latitude: settingLatitude,
         longitude: settingLongitude,
       });
@@ -57,13 +61,13 @@ export default ({ navigation: { goBack } }) => {
 
   const handleLongPress = async ({ nativeEvent }) => {
     (async () => {
-      let locationData = await Location.reverseGeocodeAsync({
+      let locationData = await reverseGeocodeAsync({
         latitude: nativeEvent.coordinate.latitude,
         longitude: nativeEvent.coordinate.longitude,
       });
 
-      let locationReponse = locationData[0];
-      setCityName(locationReponse.city);
+      let locationResponse = locationData[0];
+      setCityName(locationResponse.city);
     })();
 
     setSettingLatitude(nativeEvent.coordinate.latitude);
