@@ -4,7 +4,6 @@ import {
   StyleSheet,
   View,
   Dimensions,
-  Text,
   Button,
   Alert,
 } from "react-native";
@@ -37,7 +36,9 @@ export default ({ navigation: { goBack } }) => {
     })();
   }, []);
 
-  const onChangeActualCoordenates = () => {
+  const chooseActualCoordenates = () => {
+    setShowMarker(false);
+
     (async () => {
       let location = await Location.getCurrentPositionAsync({});
       setSettingLatitude(location.coords.latitude);
@@ -48,8 +49,9 @@ export default ({ navigation: { goBack } }) => {
         longitude: settingLongitude,
       });
       setCityName(locationData[0].city);
-      setShowMarker(true);
     })();
+
+    chooseLocation();
   };
 
   const handleLongPress = async ({ nativeEvent }) => {
@@ -95,7 +97,7 @@ export default ({ navigation: { goBack } }) => {
         onLongPress={handleLongPress}
       >
         {showMarker ? (
-          <MapView.Marker
+          <Marker
             coordinate={{
               latitude: settingLatitude,
               longitude: settingLongitude,
@@ -104,10 +106,10 @@ export default ({ navigation: { goBack } }) => {
         ) : null}
       </MapView>
       <Button
-        onPress={onChangeActualCoordenates}
-        title="Marcar Mi Ubicación Actual"
+        onPress={chooseActualCoordenates}
+        title="Enviar Mi Ubicación Actual"
       />
-      <Button onPress={chooseLocation} title="Seleccionar" />
+      <Button onPress={chooseLocation} title="Enviar Punto Seleccionado" />
     </View>
   );
 };

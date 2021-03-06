@@ -2,9 +2,9 @@ import { StatusBar } from "expo-status-bar";
 import React from "react";
 import { View, ScrollView } from "react-native";
 
-import { Carousel, Donut } from "./carousel/index";
-import { dummyData } from "../data/data";
-import { circleData } from "../data/circleData";
+import { Carousel, Donut } from "../carousel/index";
+import { dummyData } from "../../data/data";
+import { circleData } from "../../data/circleData";
 
 const Home = () => {
   return (
