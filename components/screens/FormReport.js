@@ -131,7 +131,7 @@ export default ({ navigation: { navigate } }) => {
           style={[styles.button, styles.green]}
           onPress={handleSubmit(onSubmitReport)}
         >
-          <Text style={styles.buttonText}>Reportar</Text>
+
         </TouchableOpacity>
       </ScrollView>
     </View>

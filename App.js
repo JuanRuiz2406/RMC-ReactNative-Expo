@@ -20,6 +20,9 @@ export default () => {
     isLoading: false,
     userName: null,
     userToken: null,
+    code: null,
+    apiEmail: null,
+    apiPassword: null,
   };
 
   const loginReducer = (prevState, action) => {
@@ -57,10 +60,11 @@ export default () => {
   const [loginState, dispatch] = useReducer(loginReducer, initialLoginState);
 
   const auth = useMemo(() => ({
-    login: (userName, password) => {
+    login: (apiEmail, apiPassword, userName, password) => {
       let userToken;
+      console.log(apiEmail, apiPassword);
       console.log(userName, password);
-      if (userName == "" && password == "") {
+      if (userName == apiEmail && password == apiPassword) {
         userToken = "asdf";
         console.log("user token: ", userToken);
         dispatch({ type: "LOGIN", id: userName, token: userToken });
@@ -69,8 +73,14 @@ export default () => {
     logout: () => {
       dispatch({ type: "LOGOUT" });
     },
-    register: () => {
-      dispatch({ type: "REGISTER", id: userName, token: userToken });
+    register: (messageString, userName) => {
+      if (messageString == "ok") {
+        let userToken = "asdf";
+        dispatch({ type: "REGISTER", id: userName, token: userToken });
+      } else {
+        console.log("No se puede registrar, error");
+      }
+
     },
   }));
 
@@ -98,7 +108,7 @@ export default () => {
   }
   return (
     <AuthContext.Provider value={auth}>
-      <NavigationContainer theme={lightTheme}>
+      <NavigationContainer >
         {loginState.userToken == !null ? (
           <Stack.Navigator initialRouteName="ReportsMyCity">
             <Stack.Screen
@@ -108,14 +118,14 @@ export default () => {
             />
           </Stack.Navigator>
         ) : (
-          <Stack.Navigator
-            screenOptions={{
-              headerShown: false,
-            }}
-          >
-            <Stack.Screen name={"AuthStack2"} component={AuthStackNavigator} />
-          </Stack.Navigator>
-        )}
+            <Stack.Navigator
+              screenOptions={{
+                headerShown: false,
+              }}
+            >
+              <Stack.Screen name={"AuthStack2"} component={AuthStackNavigator} />
+            </Stack.Navigator>
+          )}
       </NavigationContainer>
     </AuthContext.Provider>
   );
