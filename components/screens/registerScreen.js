@@ -1,10 +1,10 @@
 import React, { useContext } from "react";
-import { Alert, StyleSheet, TouchableOpacity, Dimensions, Text } from "react-native";
+import { StyleSheet, TouchableOpacity, Dimensions, Text } from "react-native";
 import { Heading } from "../loginComponents/heading";
 import { AuthContainer } from "../loginComponents/authContainer";
 import { AuthContext } from "../contexts/authContext";
 import { useForm } from "react-hook-form";
-import { TextInput } from "../index";
+import { TextInput } from "../hook-form/index";
 import { ScrollView } from "react-native-gesture-handler";
 
 export function RegisterScreen({ navigation }) {

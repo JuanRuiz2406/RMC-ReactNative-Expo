@@ -1,9 +1,9 @@
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import { StyleSheet, TouchableOpacity, Text, Dimensions } from "react-native";
 import { Heading } from "../loginComponents/heading";
 import { TextButton } from "../loginComponents/textButton";
 import { useForm } from "react-hook-form";
-import { TextInput } from "../index";
+import { TextInput } from "../hook-form/index";
 import { ScrollView } from "react-native-gesture-handler";
 import { AuthContainer } from "../loginComponents/authContainer";
 import { AuthContext } from "../contexts/authContext";
