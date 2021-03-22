@@ -4,9 +4,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { NavigationContainer } from "@react-navigation/native";
 
 import AuthStackNavigator from "./components/Navigators/AuthStackNavigator";
-import { lightTheme } from "./theme/light";
 import { AuthContext } from "./components/contexts/authContext";
-import { BASE_URL } from "./components/config";
 
 import navBar from "./components/navbarTap";
 
@@ -63,23 +61,29 @@ export default () => {
   );
 
   const auth = useMemo(() => ({
-    login: (apiEmail, apiPassword, userName, password) => {
+    login: (apiEmail, userName, token) => {
       let userToken;
-      console.log(apiEmail, apiPassword);
-      console.log(userName, password);
-      if (userName == apiEmail && password == apiPassword) {
-        userToken = "asdf";
-        console.log("user token: ", userToken);
-        dispatch({ type: "LOGIN", id: userName, token: userToken });
+      console.log(userName, apiEmail);
+      if (userName == apiEmail) {
+        if (token != null) {
+          userToken = token;
+          console.log("user token: ", userToken);
+          dispatch({ type: "LOGIN", id: userName, token: userToken });
+        } else {
+          console.log("Error en el login");
+        }
+      } else {
+        console.log("El correo no esta registrado");
       }
     },
     logout: () => {
       dispatch({ type: "LOGOUT" });
     },
-    register: (messageString, userName) => {
-      if (messageString == "ok") {
-        let userToken = "asdf";
-        dispatch({ type: "REGISTER", id: userName, token: userToken });
+    register: (emailApi, token) => {
+      let userToken2;
+      if (token != null) {
+        userToken2 = token;
+        dispatch({ type: "REGISTER", id: emailApi, token: userToken2 });
       } else {
         console.log("No se puede registrar, error");
       }
@@ -121,14 +125,14 @@ export default () => {
             />
           </Stack.Navigator>
         ) : (
-            <Stack.Navigator
-              screenOptions={{
-                headerShown: false,
-              }}
-            >
-              <Stack.Screen name={"AuthStack2"} component={AuthStackNavigator} />
-            </Stack.Navigator>
-          )}
+          <Stack.Navigator
+            screenOptions={{
+              headerShown: false,
+            }}
+          >
+            <Stack.Screen name={"AuthStack2"} component={AuthStackNavigator} />
+          </Stack.Navigator>
+        )}
       </NavigationContainer>
     </AuthContext.Provider>
   );

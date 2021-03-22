@@ -18,20 +18,24 @@ export function LoginScreen({ navigation }) {
     reset({
       email: "",
       password: "",
+      token: "",
     });
 
-    fetch(`http://192.168.0.2:8080/user/byEmail/${data.email}`, {
-      method: "GET",
+    fetch("http://192.168.0.3:8080/auth/login", {
+      method: "POST",
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
       },
+      body: JSON.stringify({
+        email: data.email,
+        password: data.password,
+      }),
     })
       .then((response) => response.json())
       .then((responseJson) => {
         console.log(responseJson);
-        console.log(data.password, "fetch");
-        login(responseJson.email, responseJson.password, data.email, data.password);
+        login(responseJson.email, data.email, responseJson.token);
       })
       .catch((error) => {
         console.log(error);
