@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { StyleSheet, TouchableOpacity, Text, Dimensions } from "react-native";
+import { StyleSheet, TouchableOpacity, Text, Dimensions, KeyboardAvoidingView } from "react-native";
 import { Heading } from "../loginComponents/heading";
 import { TextButton } from "../loginComponents/textButton";
 import { useForm } from "react-hook-form";
@@ -10,7 +10,7 @@ import { AuthContext } from "../contexts/authContext";
 
 export function LoginScreen({ navigation }) {
   const { handleSubmit, control, reset, errors } = useForm();
-  const { login } = useContext(AuthContext);
+  const { login, loginWithGoogle, loginWithFacebook } = useContext(AuthContext);
 
   const onSubmitLogin = (data) => {
     console.log(data);
@@ -18,20 +18,24 @@ export function LoginScreen({ navigation }) {
     reset({
       email: "",
       password: "",
+      token: "",
     });
 
-    fetch(`http://192.168.0.2:8080/user/byEmail/${data.email}`, {
-      method: "GET",
+    fetch("http://192.168.0.2:8080/auth/login", {
+      method: "POST",
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
       },
+      body: JSON.stringify({
+        email: data.email,
+        password: data.password,
+      }),
     })
       .then((response) => response.json())
       .then((responseJson) => {
         console.log(responseJson);
-        console.log(data.password, "fetch");
-        login(responseJson.email, responseJson.password, data.email, data.password);
+        login(responseJson.email, data.email, responseJson.token);
       })
       .catch((error) => {
         console.log(error);
@@ -41,43 +45,59 @@ export function LoginScreen({ navigation }) {
   console.log(errors);
 
   return (
-    <ScrollView style={styles.scrollView}>
-      <AuthContainer>
-        <Heading style={styles.title}>ReportsMyCity</Heading>
-        <Heading style={styles.title}>LOGIN</Heading>
+    <KeyboardAvoidingView style={styles.scrollView} behavior={Platform.OS === 'ios' ? 'padding' : null}>
+      <ScrollView>
+        <AuthContainer>
+          <Heading style={styles.title}>ReportsMyCity</Heading>
+          <Heading style={styles.title}>LOGIN</Heading>
 
-        <TextInput
-          title="Correo"
-          control={control}
-          name="email"
-          error={errors.email}
-          errorMessage="El correo es requerido"
-        />
+          <TextInput
+            title="Correo"
+            control={control}
+            name="email"
+            error={errors.email}
+            errorMessage="El correo es requerido"
+          />
 
-        <TextInput
-          title="Contraseña"
-          control={control}
-          name="password"
-          error={errors.password}
-          errorMessage="La contraseña es obligatoria"
-        />
+          <TextInput
+            title="Contraseña"
+            control={control}
+            name="password"
+            error={errors.password}
+            errorMessage="La contraseña es obligatoria"
+          />
 
-        <TouchableOpacity
-          style={styles.RegisterButton}
-          onPress={handleSubmit(onSubmitLogin)}
-        >
-          <Text style={styles.buttonText}>Entrar</Text>
-        </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.RegisterButton}
+            onPress={handleSubmit(onSubmitLogin)}
+          >
+            <Text style={styles.buttonText}>Entrar</Text>
+          </TouchableOpacity>
 
-        <TextButton
-          title={"Tienes una cuanta? Crear una."}
-          onPress={() => {
-            navigation.navigate("RegisterScreen");
-          }}
-        />
+          <TouchableOpacity
+            style={styles.RegisterButton}
+            onPress={() => loginWithGoogle()}
+          >
+            <Text style={styles.buttonTextGoogle}>Entrar con Google</Text>
+          </TouchableOpacity>
 
-      </AuthContainer>
-    </ScrollView>
+          <TouchableOpacity
+            style={styles.RegisterButton}
+            onPress={() => loginWithFacebook()}
+          >
+            <Text style={styles.buttonTextFacebook}>Entrar con Facebook</Text>
+          </TouchableOpacity>
+
+          <TextButton
+            title={"Tienes una cuanta? Crear una."}
+            onPress={() => {
+              navigation.navigate("RegisterScreen");
+            }}
+          />
+
+        </AuthContainer>
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 }
 
@@ -90,6 +110,18 @@ const styles = StyleSheet.create({
     fontSize: 20,
     textAlign: "center",
     color: "#000",
+    fontWeight: "bold",
+  },
+  buttonTextGoogle: {
+    fontSize: 20,
+    textAlign: "center",
+    color: "#FF0A0A",
+    fontWeight: "bold",
+  },
+  buttonTextFacebook: {
+    fontSize: 20,
+    textAlign: "center",
+    color: "#0A5CFF",
     fontWeight: "bold",
   },
   RegisterButton: {

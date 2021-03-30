@@ -1,104 +1,72 @@
-import React, { useState, useEffect } from "react";
+import React, { useContext } from "react";
 import {
   StyleSheet,
   Text,
   View,
-  SafeAreaView,
   Image,
   ScrollView,
+  TouchableOpacity
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-// import CarouselProfile from "../carousel/index";
-import ActivityIndicator from "./activityIndicator";
-import { List } from "../report/index";
+import { AuthContext } from "../contexts/authContext";
 
-export default () => {
-  const [loadingReports, setLoadingReports] = useState(true);
-  const [reports, setReports] = useState([]);
+export default function Profile() {
 
-  const user = {
-    direction: "string",
-    email: "string@email.com",
-    id: 1,
-    idCard: "string",
-    lastname: "string",
-    name: "string",
-    password: "string",
-    role: "string",
-  };
-
-  const fetchUserReports = async () => {
-    const response = await fetch(
-      "http://192.168.0.2:8080/report/byUserIdCard/" + user.idCard
-    );
-    const data = await response.json();
-    setReports(data);
-    setLoadingReports(false);
-  };
-
-  useEffect(() => {
-    fetchUserReports();
-  }, []);
+  const { logout } = useContext(AuthContext);
 
   return (
-    <SafeAreaView style={styles.container}>
-      <ScrollView showsVerticalScrollIndicator={false}>
-        <View style={styles.titleBar}>
-          <Ionicons name="ios-arrow-back" size={24} color="#52575D" />
-          <Ionicons name="md-more" size={24} color="#52575D" />
-        </View>
+    <ScrollView showsVerticalScrollIndicator={false}>
+      <View style={styles.titleBar}>
+        <Ionicons name="ios-arrow-back" size={24} color="#52575D" />
+        <Ionicons name="md-more" size={24} color="#52575D" />
+      </View>
 
-        <View style={{ alignSelf: "center" }}>
-          <View style={styles.profileImage}>
-            <Image
-              source={require("../../image/Diego.jpg")}
-              style={styles.image}
-              resizeMode="center"
-            />
-          </View>
-          <View style={styles.add}>
-            <Ionicons name="ios-add" size={40} color="#FEB139" />
-          </View>
+      <View style={{ alignSelf: "center" }}>
+        <View style={styles.profileImage}>
+          <Image
+            source={require("../../image/Diego.jpg")}
+            style={styles.image}
+            resizeMode="center"
+          />
         </View>
-
-        <View style={styles.infoContainer}>
-          <Text style={[styles.text, { fontWeight: "200", fontSize: 36 }]}>
-            Diego
-          </Text>
-          <Text style={[styles.text, { color: "#AEB5BC", fontSize: 14 }]}>
-            Villarreal
-          </Text>
+        <View style={styles.add}>
+          <Ionicons name="ios-add" size={40} color="#FEB139" />
         </View>
+      </View>
 
-        <View style={styles.infoUserContainer}>
-          <Text style={styles.textTitle}>Cédula:</Text>
-          <Text style={styles.textSecond}>5 0420 0201</Text>
-          <Text style={styles.textTitle}>Correo Electrónico:</Text>
-          <Text style={styles.textSecond}>diegovillatj@gmail.com</Text>
-          <Text style={styles.textTitle}>Contraseña:</Text>
-          <Text style={styles.textSecond}>*******</Text>
-          <Text style={styles.textTitle}>Provincia:</Text>
-          <Text style={styles.textSecond}>Guanacaste</Text>
-          <Text style={styles.textTitle}>Cantón:</Text>
-          <Text style={styles.textSecond}>Liberia</Text>
-          <Text style={styles.textTitle}>Numero de Celular:</Text>
-          <Text style={styles.textSecond}>+506 8888 8888</Text>
-        </View>
-        {/* <CarouselProfile data={this.state.dataSource} /> */}
-
+      <View style={styles.infoContainer}>
         <Text style={[styles.text, { fontWeight: "200", fontSize: 36 }]}>
-          *Botón para redirigir a vista de reportes?*
-        </Text>
-      </ScrollView>
+          Diego
+            </Text>
+        <Text style={[styles.text, { color: "#AEB5BC", fontSize: 14 }]}>
+          Villarreal
+            </Text>
+      </View>
 
-      {loadingReports ? (
-        <ActivityIndicator />
-      ) : (
-        <List reports={reports} onPress={null} />
-      )}
-    </SafeAreaView>
+      <View style={styles.infoUserContainer}>
+        <Text style={styles.textTitle}>Cédula:</Text>
+        <Text style={styles.textSecond}>5 0420 0201</Text>
+        <Text style={styles.textTitle}>Correo Electrónico:</Text>
+        <Text style={styles.textSecond}>diegovillatj@gmail.com</Text>
+        <Text style={styles.textTitle}>Contraseña:</Text>
+        <Text style={styles.textSecond}>*******</Text>
+        <Text style={styles.textTitle}>Provincia:</Text>
+        <Text style={styles.textSecond}>Guanacaste</Text>
+        <Text style={styles.textTitle}>Cantón:</Text>
+        <Text style={styles.textSecond}>Liberia</Text>
+        <Text style={styles.textTitle}>Numero de Celular:</Text>
+        <Text style={styles.textSecond}>+506 8888 8888</Text>
+      </View>
+
+      <TouchableOpacity
+        style={styles.RegisterButton}
+        onPress={() => { logout() }}
+      >
+        <Text style={styles.buttonText}>Cerrar Sesion</Text>
+      </TouchableOpacity>
+    </ScrollView>
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -157,5 +125,14 @@ const styles = StyleSheet.create({
     fontWeight: "normal",
     marginLeft: 40,
     color: "#AEB5BC",
+  },
+  buttonText: {
+    fontSize: 20,
+    textAlign: "center",
+    color: "#000",
+    fontWeight: "bold",
+  },
+  RegisterButton: {
+    marginVertical: 32,
   },
 });
