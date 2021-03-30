@@ -5,6 +5,7 @@ import * as Facebook from "expo-facebook";
 
 import { createStackNavigator } from "@react-navigation/stack";
 import { NavigationContainer } from "@react-navigation/native";
+import { NavBar } from "./components/Navigators/index";
 
 import AuthStackNavigator from "./components/Navigators/AuthStackNavigator";
 import { AuthContext } from "./components/contexts/authContext";
