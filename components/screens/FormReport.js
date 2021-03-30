@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Text,
   View,
@@ -11,27 +11,39 @@ import {
 import { useForm } from "react-hook-form";
 import { TextInput, Picker } from "../hook-form/index";
 import { reverseGeocodeAsync } from "expo-location";
+import AsyncStorage from '@react-native-community/async-storage';
 
 export default ({ navigation: { navigate } }) => {
   const { handleSubmit, control, reset, errors } = useForm();
   const [cityName, setCityName] = useState("");
   const [latitude, setLatitude] = useState(0);
   const [longitude, setLongitude] = useState(0);
+  const [token, setToken] = useState("");
   const pickerOptions = ["Público", "Privado"];
+
+  useEffect(() => {
+    getToken();
+  }, []);
+
+  const getToken = async () => {
+    const tokenInStorage = await AsyncStorage.getItem('userToken');
+
+    setToken(tokenInStorage);
+  };
 
   const coordenates = {
     latitude: latitude,
     longitude: longitude,
   };
   const user = {
-    direction: "string",
-    email: "string@email.com",
+    direction: "Mi casa",
+    email: "juan@juan.com",
     id: 1,
-    idCard: "string",
-    lastname: "string",
-    name: "string",
-    password: "string",
-    role: "string",
+    idCard: "123456789",
+    lastname: "Juan",
+    name: "Juan",
+    password: "123456789",
+    role: "user",
   };
 
   const onSubmitReport = (data) => {
@@ -45,8 +57,8 @@ export default ({ navigation: { navigate } }) => {
     fetch("http://192.168.0.2:8080/report/city/" + String(cityName), {
       method: "POST",
       headers: {
-        Accept: "application/json",
         "Content-Type": "application/json",
+        Authorization: "Bearer " + token,
       },
       body: JSON.stringify({
         title: data.title,
@@ -59,7 +71,8 @@ export default ({ navigation: { navigate } }) => {
     })
       .then((response) => response.json())
       .then((responseJson) => {
-        Alert.alert("Reporte", responseJson.messageString);
+        console.error(responseJson);
+        Alert.alert("Reporte", responseJson.message);
       })
       .catch((error) => {
         console.error(error);
@@ -131,7 +144,7 @@ export default ({ navigation: { navigate } }) => {
           style={[styles.button, styles.green]}
           onPress={handleSubmit(onSubmitReport)}
         >
-
+          <Text style={styles.buttonText}>Reportar</Text>
         </TouchableOpacity>
       </ScrollView>
     </View>
