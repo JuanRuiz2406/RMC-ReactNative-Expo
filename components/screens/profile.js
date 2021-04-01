@@ -16,11 +16,6 @@ export default function Profile() {
 
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
-      <View style={styles.titleBar}>
-        <Ionicons name="ios-arrow-back" size={24} color="#52575D" />
-        <Ionicons name="md-more" size={24} color="#52575D" />
-      </View>
-
       <View style={{ alignSelf: "center" }}>
         <View style={styles.profileImage}>
           <Image
@@ -80,12 +75,6 @@ const styles = StyleSheet.create({
     flex: 1,
     width: undefined,
     height: undefined,
-  },
-  titleBar: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    marginTop: 24,
-    marginHorizontal: 16,
   },
   profileImage: {
     width: 200,

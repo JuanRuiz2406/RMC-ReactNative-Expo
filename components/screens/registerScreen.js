@@ -1,5 +1,13 @@
 import React, { useContext } from "react";
-import { Alert, StyleSheet, TouchableOpacity, Dimensions, Text, KeyboardAvoidingView, Platform } from "react-native";
+import {
+  Alert,
+  StyleSheet,
+  TouchableOpacity,
+  Dimensions,
+  Text,
+  KeyboardAvoidingView,
+  Platform,
+} from "react-native";
 import { Heading } from "../loginComponents/heading";
 import { AuthContainer } from "../loginComponents/authContainer";
 import { AuthContext } from "../contexts/authContext";
@@ -8,10 +16,8 @@ import { TextInput } from "../hook-form/index";
 import { ScrollView } from "react-native-gesture-handler";
 
 export function RegisterScreen({ navigation }) {
-
   const { handleSubmit, control, reset, errors } = useForm();
   const { register } = useContext(AuthContext);
-
 
   const onSubmitRegister = (data) => {
     console.log(data);
@@ -31,7 +37,7 @@ export function RegisterScreen({ navigation }) {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        direction: "Liberia",
+        direction: data.direction,
         email: data.email,
         idCard: data.idCard,
         lastName: data.lastName,
@@ -54,10 +60,11 @@ export function RegisterScreen({ navigation }) {
               email: data.email,
               password: data.password,
             }),
-          }).then((response) => response.json())
+          })
+            .then((response) => response.json())
             .then((responseJsonLogin) => {
               register(responseJsonLogin.email, responseJsonLogin.token);
-            })
+            });
         } else {
           console.log("Error al registrar usuario, cheque los campos");
         }
@@ -68,7 +75,12 @@ export function RegisterScreen({ navigation }) {
   };
 
   return (
-    <KeyboardAvoidingView style={styles.scrollView} behavior={Platform.OS === 'ios' ? 'padding' : null}>
+    <KeyboardAvoidingView
+      style={styles.scrollView}
+      behavior={
+        Platform.OS === "ios" || Platform.OS === "android" ? "padding" : null
+      }
+    >
       <ScrollView>
         <AuthContainer>
           <Heading style={styles.title}>REGISTRO</Heading>
@@ -76,37 +88,96 @@ export function RegisterScreen({ navigation }) {
           <TextInput
             title="Nombre"
             control={control}
+            isPassword={false}
             name="name"
-            error={errors.name}
-            errorMessage="El nombre es requerido"
+            rules={{
+              required: {
+                value: true,
+                message: "*El Nombre es obligatorio*",
+              },
+              pattern: {
+                value: /^[a-zA-Z\s]*$/,
+                message: "*El Nombre solo puede tener letras*",
+              },
+            }}
+            errorMessage={errors?.name?.message}
           />
           <TextInput
             title="Apellido"
             control={control}
+            isPassword={false}
             name="lastName"
-            error={errors.lastName}
-            errorMessage="El apellido es requerido"
+            rules={{
+              required: {
+                value: true,
+                message: "*El Apellido es obligatorio*",
+              },
+              pattern: {
+                value: /^[a-zA-Z\s]*$/,
+                message: "*El Apellido solo puede tener letras*",
+              },
+            }}
+            errorMessage={errors?.lastName?.message}
           />
           <TextInput
             title="Identificacion"
             control={control}
+            isPassword={false}
             name="idCard"
-            error={errors.idCard}
-            errorMessage="La identificacion es requerido"
+            rules={{
+              required: {
+                value: true,
+                message: "*La Cédula es obligatoria*",
+              },
+            }}
+            errorMessage={errors?.idCard?.message}
           />
           <TextInput
-            title="Correo"
+            title="Correo Electrónico"
             control={control}
+            isPassword={false}
             name="email"
-            error={errors.email}
-            errorMessage="El correo es requerido"
+            rules={{
+              required: {
+                value: true,
+                message: "*El Correo Electrónico es obligatorio*",
+              },
+              pattern: {
+                value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                message: "*El Correo Electrónico debe tener un formato válido*",
+              },
+            }}
+            errorMessage={errors?.email?.message}
           />
           <TextInput
             title="Contraseña"
             control={control}
+            isPassword={true}
             name="password"
-            error={errors.password}
-            errorMessage="El contraseña es requerido"
+            rules={{
+              required: {
+                value: true,
+                message: "*La Contraseña es obligatoria*",
+              },
+              minLength: {
+                value: 8,
+                message: "*La Contraseña debe tener 8 caracteres mínimo*",
+              },
+            }}
+            errorMessage={errors?.password?.message}
+          />
+          <TextInput
+            title="Dirección"
+            control={control}
+            isPassword={false}
+            name="direction"
+            rules={{
+              required: {
+                value: true,
+                message: "*La Dirección es obligatoria*",
+              },
+            }}
+            errorMessage={errors?.direction?.message}
           />
 
           <TouchableOpacity
@@ -115,12 +186,11 @@ export function RegisterScreen({ navigation }) {
           >
             <Text style={styles.buttonText}>Registrar</Text>
           </TouchableOpacity>
-
         </AuthContainer>
       </ScrollView>
     </KeyboardAvoidingView>
   );
-};
+}
 
 const styles = StyleSheet.create({
   input: {

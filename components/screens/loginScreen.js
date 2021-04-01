@@ -1,5 +1,11 @@
 import React, { useContext } from "react";
-import { StyleSheet, TouchableOpacity, Text, Dimensions, KeyboardAvoidingView } from "react-native";
+import {
+  StyleSheet,
+  TouchableOpacity,
+  Text,
+  Dimensions,
+  KeyboardAvoidingView,
+} from "react-native";
 import { Heading } from "../loginComponents/heading";
 import { TextButton } from "../loginComponents/textButton";
 import { useForm } from "react-hook-form";
@@ -45,28 +51,51 @@ export function LoginScreen({ navigation }) {
   console.log(errors);
 
   return (
-    <KeyboardAvoidingView style={styles.scrollView} behavior={Platform.OS === 'ios' ? 'padding' : null}>
+    <KeyboardAvoidingView
+      style={styles.scrollView}
+      behavior={
+        Platform.OS === "ios" || Platform.OS === "android" ? "padding" : null
+      }
+    >
       <ScrollView>
         <AuthContainer>
           <Heading style={styles.title}>ReportsMyCity</Heading>
           <Heading style={styles.title}>LOGIN</Heading>
 
           <TextInput
-            title="Correo"
+            title="Correo Electrónico"
             control={control}
+            isPassword={false}
             name="email"
-            error={errors.email}
-            errorMessage="El correo es requerido"
+            rules={{
+              required: {
+                value: true,
+                message: "*El Correo Electrónico es obligatorio*",
+              },
+              pattern: {
+                value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                message: "*El Correo Electrónico debe tener un formato válido*",
+              },
+            }}
+            errorMessage={errors?.email?.message}
           />
-
           <TextInput
             title="Contraseña"
             control={control}
+            isPassword={true}
             name="password"
-            error={errors.password}
-            errorMessage="La contraseña es obligatoria"
+            rules={{
+              required: {
+                value: true,
+                message: "*La Contraseña es obligatoria*",
+              },
+              minLength: {
+                value: 8,
+                message: "*La Contraseña debe tener 8 caracteres mínimo*",
+              },
+            }}
+            errorMessage={errors?.password?.message}
           />
-
           <TouchableOpacity
             style={styles.RegisterButton}
             onPress={handleSubmit(onSubmitLogin)}
@@ -94,7 +123,6 @@ export function LoginScreen({ navigation }) {
               navigation.navigate("RegisterScreen");
             }}
           />
-
         </AuthContainer>
       </ScrollView>
     </KeyboardAvoidingView>

@@ -1,5 +1,11 @@
 import React from "react";
-import { StyleSheet, Text, FlatList, TouchableOpacity } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  Image,
+  FlatList,
+  TouchableOpacity,
+} from "react-native";
 
 export default ({ reports, onPress }) => {
   return (
@@ -16,12 +22,14 @@ export default ({ reports, onPress }) => {
           <Text style={styles.title}>{item.title}</Text>
 
           <Text style={[styles.titleLeft, styles.bold]}>
-            Descripción: *OPCIONAL*
+            Descripción:
           </Text>
           <Text style={styles.description}>{item.description}</Text>
 
-          <Text style={styles.photo}>FOTO</Text>
-
+          <Image
+            source={require("../../image/arbol-carretera.jpg")}
+            style={styles.image}
+          />
         </TouchableOpacity>
       )}
     />
@@ -29,6 +37,10 @@ export default ({ reports, onPress }) => {
 };
 
 const styles = StyleSheet.create({
+  image: {
+    width: 350,
+    height: 250,
+  },
   report: {
     borderBottomWidth: 1,
     marginTop: 20,

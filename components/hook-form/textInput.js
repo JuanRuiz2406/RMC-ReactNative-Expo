@@ -2,7 +2,7 @@ import React from "react";
 import { StyleSheet, TextInput, Text } from "react-native";
 import { Controller } from "react-hook-form";
 
-export default ({ title, control, name, error, errorMessage }) => {
+export default ({ title, control, isPassword, name, rules, errorMessage }) => {
   return (
     <>
       <Text style={styles.label}>{title}</Text>
@@ -10,6 +10,7 @@ export default ({ title, control, name, error, errorMessage }) => {
         control={control}
         render={({ onChange, onBlur, value }) => (
           <TextInput
+            secureTextEntry={isPassword}
             style={styles.input}
             onBlur={onBlur}
             onChangeText={(value) => onChange(value)}
@@ -17,10 +18,10 @@ export default ({ title, control, name, error, errorMessage }) => {
           />
         )}
         name={name}
-        rules={{ required: true }}
+        rules={rules}
         defaultValue=""
       />
-      {error && <Text style={styles.errorMessage}>{errorMessage}</Text>}
+      {<Text style={styles.errorMessage}>{errorMessage}</Text>}
     </>
   );
 };

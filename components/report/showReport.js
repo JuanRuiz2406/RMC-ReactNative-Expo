@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Image, Text, View } from "react-native";
 
 export default ({ report, details }) => {
   return (
@@ -27,13 +27,22 @@ export default ({ report, details }) => {
           </Text>
         ))
       ) : (
-        <Text style={styles.description}>No hay Detalles de este Reporte</Text>
+        <Text style={styles.description}>No hay Detalles sobre este Reporte</Text>
       )}
+
+      <Image
+        source={require("../../image/arbol-carretera.jpg")}
+        style={styles.image}
+      />
     </View>
   );
 };
 
 const styles = StyleSheet.create({
+  image: {
+    width: 350,
+    height: 250,
+  },
   report: {
     marginTop: 20,
     marginBottom: 20,

@@ -71,7 +71,6 @@ export default ({ navigation: { navigate } }) => {
     })
       .then((response) => response.json())
       .then((responseJson) => {
-        console.error(responseJson);
         Alert.alert("Reporte", responseJson.message);
       })
       .catch((error) => {
@@ -134,8 +133,6 @@ export default ({ navigation: { navigate } }) => {
           <Text style={styles.buttonText}>*Seleccionar Ubicación*</Text>
         </TouchableOpacity>
 
-        <Text style={styles.textPhoto}>Lat: {latitude}</Text>
-        <Text style={styles.textPhoto}>Lon: {longitude}</Text>
         <Text style={styles.textPhoto}>City: {cityName}</Text>
 
         <Text style={styles.textPhoto}>*Fotos*</Text>

@@ -27,7 +27,7 @@ export default ({ navigation: { navigate } }) => {
       headers: {
         method: "GET",
         Accept: "application/json",
-        Authorization: "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJqdWFuQGp1YW4uY29tIiwiaWF0IjoxNjE3MDg3Njc5LCJleHAiOjE2MTcwOTEyNzl9.jMP1BLC6P5R5bUV7IX2IRy3BD7WZ0fvvtWoJBaXOY2lEnH7YFvhMMeObY40XRxcxiUzgVxQKD5C0h7E5_Z8VVw",
+        Authorization: "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJqdWFuQGp1YW4uY29tIiwiaWF0IjoxNjE3MTI2OTQ2LCJleHAiOjE2MTgwMjgxMjN9.-sjgJVD4CyNj-Pp7bUmoFWIrVBJceKBhBE6rqWG0KdW3hnMV11wL3Vg9STaBb0Rs62cJV-fL7sgfdrfGIwdmwQ",
       },
     })
       .then((response) => response.json())
