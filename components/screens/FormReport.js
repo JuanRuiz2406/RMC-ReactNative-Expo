@@ -11,7 +11,7 @@ import {
 import { useForm } from "react-hook-form";
 import { TextInput, Picker } from "../hook-form/index";
 import { reverseGeocodeAsync } from "expo-location";
-import AsyncStorage from '@react-native-community/async-storage';
+import AsyncStorage from "@react-native-community/async-storage";
 
 export default ({ navigation: { navigate } }) => {
   const { handleSubmit, control, reset, errors } = useForm();
@@ -22,13 +22,27 @@ export default ({ navigation: { navigate } }) => {
   const pickerOptions = ["Público", "Privado"];
 
   useEffect(() => {
-    getToken();
-  }, []);
+    if (token === "") {
+      getToken();
+    } else {
+      updateCoordenadesAndCityName();
+    }
+  }, [latitude, longitude]);
 
   const getToken = async () => {
-    const tokenInStorage = await AsyncStorage.getItem('userToken');
+    const tokenInStorage = await AsyncStorage.getItem("userToken");
 
     setToken(tokenInStorage);
+  };
+
+  const updateCoordenadesAndCityName = async () => {
+    let locationData = await reverseGeocodeAsync({
+      latitude: latitude,
+      longitude: longitude,
+    });
+
+    let locationResponse = locationData[0];
+    setCityName(locationResponse.city);
   };
 
   const coordenates = {
@@ -80,35 +94,35 @@ export default ({ navigation: { navigate } }) => {
 
   console.log(errors);
 
-  if (latitude !== 0 && longitude !== 0 && cityName == "") {
-    (async () => {
-      let locationData = await reverseGeocodeAsync({
-        latitude: latitude,
-        longitude: longitude,
-      });
-
-      let locationResponse = locationData[0];
-      setCityName(locationResponse.city);
-    })();
-  }
-
   return (
     <View>
       <ScrollView style={styles.scrollView}>
         <TextInput
           title="Título"
           control={control}
+          isPassword={false}
           name="title"
-          error={errors.title}
-          errorMessage="*El título es requerido*"
+          rules={{
+            required: {
+              value: true,
+              message: "*El título es requerido*",
+            },
+          }}
+          errorMessage={errors?.title?.message}
         />
 
         <TextInput
           title="Descripción"
           control={control}
+          isPassword={false}
           name="description"
-          error={errors.description}
-          errorMessage="*Por favor describa su reporte*"
+          rules={{
+            required: {
+              value: true,
+              message: "*Por favor describa su reporte*",
+            },
+          }}
+          errorMessage={errors?.description?.message}
         />
 
         <Picker

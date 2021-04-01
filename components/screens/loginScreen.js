@@ -118,7 +118,7 @@ export function LoginScreen({ navigation }) {
           </TouchableOpacity>
 
           <TextButton
-            title={"Tienes una cuanta? Crear una."}
+            title={"No tienes una cuenta? Crea una"}
             onPress={() => {
               navigation.navigate("RegisterScreen");
             }}
