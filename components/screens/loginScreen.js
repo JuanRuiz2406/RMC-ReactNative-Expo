@@ -77,6 +77,7 @@ export function LoginScreen({ navigation }) {
                 message: "*El Correo Electrónico debe tener un formato válido*",
               },
             }}
+            defaultValue=""
             errorMessage={errors?.email?.message}
           />
           <TextInput
@@ -94,6 +95,7 @@ export function LoginScreen({ navigation }) {
                 message: "*La Contraseña debe tener 8 caracteres mínimo*",
               },
             }}
+            defaultValue=""
             errorMessage={errors?.password?.message}
           />
           <TouchableOpacity
@@ -118,7 +120,7 @@ export function LoginScreen({ navigation }) {
           </TouchableOpacity>
 
           <TextButton
-            title={"No tienes una cuenta? Crea una"}
+            title={"¿No tienes una cuenta? Crea una"}
             onPress={() => {
               navigation.navigate("RegisterScreen");
             }}

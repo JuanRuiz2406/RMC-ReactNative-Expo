@@ -108,6 +108,7 @@ export default ({ navigation: { navigate } }) => {
               message: "*El título es requerido*",
             },
           }}
+          defaultValue=""
           errorMessage={errors?.title?.message}
         />
 
@@ -122,6 +123,7 @@ export default ({ navigation: { navigate } }) => {
               message: "*Por favor describa su reporte*",
             },
           }}
+          defaultValue=""
           errorMessage={errors?.description?.message}
         />
 

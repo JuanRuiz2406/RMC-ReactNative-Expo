@@ -100,6 +100,7 @@ export function RegisterScreen({ navigation }) {
                 message: "*El Nombre solo puede tener letras*",
               },
             }}
+            defaultValue=""
             errorMessage={errors?.name?.message}
           />
           <TextInput
@@ -117,6 +118,7 @@ export function RegisterScreen({ navigation }) {
                 message: "*El Apellido solo puede tener letras*",
               },
             }}
+            defaultValue=""
             errorMessage={errors?.lastName?.message}
           />
           <TextInput
@@ -130,6 +132,7 @@ export function RegisterScreen({ navigation }) {
                 message: "*La Cédula es obligatoria*",
               },
             }}
+            defaultValue=""
             errorMessage={errors?.idCard?.message}
           />
           <TextInput
@@ -147,6 +150,7 @@ export function RegisterScreen({ navigation }) {
                 message: "*El Correo Electrónico debe tener un formato válido*",
               },
             }}
+            defaultValue=""
             errorMessage={errors?.email?.message}
           />
           <TextInput
@@ -164,6 +168,7 @@ export function RegisterScreen({ navigation }) {
                 message: "*La Contraseña debe tener 8 caracteres mínimo*",
               },
             }}
+            defaultValue=""
             errorMessage={errors?.password?.message}
           />
           <TextInput
@@ -177,6 +182,7 @@ export function RegisterScreen({ navigation }) {
                 message: "*La Dirección es obligatoria*",
               },
             }}
+            defaultValue=""
             errorMessage={errors?.direction?.message}
           />
 

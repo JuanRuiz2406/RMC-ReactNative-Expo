@@ -2,7 +2,15 @@ import React from "react";
 import { StyleSheet, TextInput, Text } from "react-native";
 import { Controller } from "react-hook-form";
 
-export default ({ title, control, isPassword, name, rules, errorMessage }) => {
+export default ({
+  title,
+  control,
+  isPassword,
+  name,
+  rules,
+  defaultValue,
+  errorMessage,
+}) => {
   return (
     <>
       <Text style={styles.label}>{title}</Text>
@@ -19,7 +27,7 @@ export default ({ title, control, isPassword, name, rules, errorMessage }) => {
         )}
         name={name}
         rules={rules}
-        defaultValue=""
+        defaultValue={defaultValue}
       />
       {<Text style={styles.errorMessage}>{errorMessage}</Text>}
     </>
