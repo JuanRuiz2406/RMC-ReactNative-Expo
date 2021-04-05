@@ -21,9 +21,6 @@ export default ({ reports, onPress }) => {
         >
           <Text style={styles.title}>{item.title}</Text>
 
-          <Text style={[styles.titleLeft, styles.bold]}>
-            Descripción:
-          </Text>
           <Text style={styles.description}>{item.description}</Text>
 
           <Image

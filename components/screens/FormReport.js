@@ -50,14 +50,14 @@ export default ({ navigation: { navigate } }) => {
     longitude: longitude,
   };
   const user = {
-    direction: "Mi casa",
-    email: "juan@juan.com",
     id: 1,
-    idCard: "123456789",
-    lastname: "Juan",
+    idCard: "117990636",
     name: "Juan",
-    password: "123456789",
-    role: "user",
+    lastname: "Ruiz",
+    email: "juan@rmc.com",
+    password: "$2a$10$gcYU0ucYM4vk3kG5LBKP8u9cm1Jg/x02SjP4DDtoY2AQvJpitwDtm",
+    role: "RMCTeam",
+    direction: "Casa",
   };
 
   const onSubmitReport = (data) => {
@@ -142,7 +142,6 @@ export default ({ navigation: { navigate } }) => {
             navigate("Mapa", {
               setLatitude: setLatitude,
               setLongitude: setLongitude,
-              setCityName: setCityName,
             })
           }
         >

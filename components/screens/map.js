@@ -11,7 +11,6 @@ import {
 import {
   requestPermissionsAsync,
   getCurrentPositionAsync,
-  reverseGeocodeAsync,
 } from "expo-location";
 import { useRoute } from "@react-navigation/native";
 
@@ -21,7 +20,6 @@ export default ({ navigation: { goBack } }) => {
   const [showMarker, setShowMarker] = useState(false);
   const [settingLatitude, setSettingLatitude] = useState(0);
   const [settingLongitude, setSettingLongitude] = useState(0);
-  const [cityName, setCityName] = useState("");
 
   useEffect(() => {
     (async () => {
@@ -42,47 +40,23 @@ export default ({ navigation: { goBack } }) => {
 
   const chooseActualCoordenates = () => {
     setShowMarker(false);
-
-    (async () => {
-      let location = await getCurrentPositionAsync({});
-      setSettingLatitude(location.coords.latitude);
-      setSettingLongitude(location.coords.longitude);
-
-      let locationData = await reverseGeocodeAsync({
-        latitude: settingLatitude,
-        longitude: settingLongitude,
-      });
-      setCityName(locationData[0].city);
-    })();
-
     chooseLocation();
   };
 
   const handleLongPress = async ({ nativeEvent }) => {
-    (async () => {
-      let locationData = await reverseGeocodeAsync({
-        latitude: nativeEvent.coordinate.latitude,
-        longitude: nativeEvent.coordinate.longitude,
-      });
-
-      let locationResponse = locationData[0];
-      setCityName(locationResponse.city);
-    })();
-
     setSettingLatitude(nativeEvent.coordinate.latitude);
     setSettingLongitude(nativeEvent.coordinate.longitude);
 
     setShowMarker(true);
 
-    console.log(settingLatitude, settingLongitude, cityName);
+    console.log(settingLatitude, settingLongitude);
   };
 
   const chooseLocation = () => {
     route.params.setLatitude(settingLatitude);
     route.params.setLongitude(settingLongitude);
-    route.params.setCityName(cityName);
 
-    console.log(settingLatitude, settingLongitude, cityName);
+    console.log(settingLatitude, settingLongitude);
 
     goBack();
   };
