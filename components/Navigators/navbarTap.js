@@ -1,7 +1,7 @@
 import * as React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { AntDesign } from "@expo/vector-icons";
-import { Home, Profile } from "../screens/index";
+import { Profile } from "../screens/index";
 import FormReportStack from "./FormReportStack";
 import ReportStack from "./ReportsStack";
 
@@ -17,11 +17,11 @@ export default navBar = () => {
     >
       <Tab.Screen
         name="Home"
-        component={Home}
+        component={ReportStack}
         options={{
-          tabBarLabel: "Inicio",
+          tabBarLabel: "Reportes",
           tabBarIcon: ({ color }) => (
-            <AntDesign name="home" color={color} size={30} />
+            <AntDesign name="bells" color={color} size={30} />
           ),
         }}
       />
@@ -32,16 +32,6 @@ export default navBar = () => {
           tabBarLabel: "Crear Reporte",
           tabBarIcon: ({ color }) => (
             <AntDesign name="plus" color={color} size={40} />
-          ),
-        }}
-      />
-      <Tab.Screen
-        name="Reportes"
-        component={ReportStack}
-        options={{
-          tabBarLabel: "Reportes",
-          tabBarIcon: ({ color }) => (
-            <AntDesign name="bells" color={color} size={30} />
           ),
         }}
       />

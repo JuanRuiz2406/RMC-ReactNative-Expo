@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
   report: {
     borderBottomWidth: 1,
     marginTop: 20,
-    marginBottom: 20,
+    marginBottom: 10,
     marginLeft: 30,
     marginRight: 30,
     textAlign: "center",

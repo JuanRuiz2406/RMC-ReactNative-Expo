@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback } from "react";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, View, ScrollView, RefreshControl } from "react-native";
 import ActivityIndicator from "./activityIndicator";
 import { List } from "../report/index";
 import AsyncStorage from "@react-native-community/async-storage";
@@ -7,10 +7,11 @@ import AsyncStorage from "@react-native-community/async-storage";
 export default ({ navigation: { navigate } }) => {
   const [loading, setLoading] = useState(true);
   const [reports, setReports] = useState([]);
+  const [refreshing, setRefreshing] = useState(false);
 
   useEffect(() => {
     fetchReports();
-  }, []);
+  }, [refreshing]);
 
   const fetchReports = useCallback(async () => {
     await fetch("http://192.168.0.2:8080/report", {
@@ -21,8 +22,8 @@ export default ({ navigation: { navigate } }) => {
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
         setLoading(false);
+        setRefreshing(false);
         setReports(data);
       });
   });
@@ -38,7 +39,16 @@ export default ({ navigation: { navigate } }) => {
       {loading ? (
         <ActivityIndicator />
       ) : (
-        <List reports={reports} onPress={onPress} />
+        <ScrollView
+          refreshControl={
+            <RefreshControl
+              refreshing={refreshing}
+              onRefresh={() => setRefreshing(true)}
+            />
+          }
+        >
+          <List reports={reports} onPress={onPress} />
+        </ScrollView>
       )}
     </View>
   );
