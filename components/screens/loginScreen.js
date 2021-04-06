@@ -41,7 +41,7 @@ export function LoginScreen({ navigation }) {
       .then((response) => response.json())
       .then((responseJson) => {
         console.log(responseJson);
-        login(responseJson.email, data.email, responseJson.token);
+        login(responseJson, data.email);
       })
       .catch((error) => {
         console.log(error);
