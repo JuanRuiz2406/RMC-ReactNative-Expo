@@ -69,17 +69,19 @@ export default () => {
   const [loginState, dispatch] = useReducer(loginReducer, initialLoginState);
 
   const auth = useMemo(() => ({
-    login: async (responseAPI, userName) => {
-      console.log(responseAPI.email, userName);
-      if (userName == responseAPI.email) {
-        if (responseAPI.token != null) {
+    login: async (apiEmail, userName, token) => {
+      let userToken;
+      console.log(userName, apiEmail);
+      if (userName == apiEmail) {
+        if (token != null) {
           try {
-            console.log("user token: ", responseAPI.token);
-            await AsyncStorage.setItem('data', JSON.stringify(responseAPI));
+            userToken = token;
+            console.log("user token: ", userToken);
+            await AsyncStorage.setItem('userToken', userToken);
           } catch (e) {
             console.log(e);
           }
-          dispatch({ type: "LOGIN", id: userName, token: responseAPI.token });
+          dispatch({ type: "LOGIN", id: userName, token: userToken });
         } else {
           console.log("Error en el login");
         }
@@ -89,21 +91,23 @@ export default () => {
     },
     logout: async () => {
       try {
-        await AsyncStorage.removeItem('data');
+        await AsyncStorage.removeItem('userToken');
       } catch (e) {
         console.log(e);
       }
       dispatch({ type: "LOGOUT" });
     },
-    register: async (responseAPI) => {
-      if (responseAPI.token != null) {
+    register: async (emailApi, token) => {
+      if (token != null) {
+        let userToken;
         try {
-          console.log("user token: ", responseAPI.token);
-          await AsyncStorage.setItem('data', JSON.stringify(responseAPI));
+          userToken = token;
+          console.log("user token: ", userToken);
+          await AsyncStorage.setItem('userToken', userToken);
         } catch (e) {
           console.log(e);
         }
-        dispatch({ type: "REGISTER", id: emailApi, token: responseAPI.token });
+        dispatch({ type: "REGISTER", id: emailApi, token: userToken });
       } else {
         console.log("No se puede registrar, error");
       }
@@ -118,7 +122,7 @@ export default () => {
 
         if (result.type === 'success') {
           console.log(result);
-          await AsyncStorage.setItem('data', JSON.stringify(result));
+          await AsyncStorage.setItem('userToken', result.accessToken);
           dispatch({ type: "LOGIN", id: result.user.email, token: result.accessToken });
         } else {
           console.log("Cancelado");
@@ -146,7 +150,7 @@ export default () => {
           const response = await fetch(`https://graph.facebook.com/me?access_token=${token}&fields=id,name,email,about,picture`);
           const resJSON = JSON.stringify(await response.json())
           console.log(resJSON);
-          await AsyncStorage.setItem('data', JSON.stringify({ data: resJSON, token: token }));
+          await AsyncStorage.setItem('userToken', token);
           dispatch({ type: "LOGIN", id: resJSON.email, token: token });
         } else {
           // type === 'cancel'
@@ -161,15 +165,15 @@ export default () => {
 
   useEffect(() => {
     setTimeout(async () => {
-      let resp;
-      resp = null;
+      let userToken;
+      userToken = null;
       try {
-        resp = await AsyncStorage.getItem('data');
-        console.log(resp);
+        userToken = await AsyncStorage.getItem('userToken');
+        console.log(userToken);
       } catch (e) {
         console.log(e);
       }
-      dispatch({ type: "RETRIEVE_TOKEN", token: resp.token });
+      dispatch({ type: "RETRIEVE_TOKEN", token: userToken });
     }, 1000);
   }, []);
 

@@ -63,7 +63,7 @@ export function RegisterScreen({ navigation }) {
           })
             .then((response) => response.json())
             .then((responseJsonLogin) => {
-              register(responseJsonLogin);
+              register(responseJsonLogin.email, responseJsonLogin.token);
             });
         } else {
           console.log("Error al registrar usuario, cheque los campos");
