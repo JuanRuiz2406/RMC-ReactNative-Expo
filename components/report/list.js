@@ -7,9 +7,11 @@ import {
   TouchableOpacity,
 } from "react-native";
 
-export default ({ reports, onPress }) => {
+export default ({ onRefresh, refreshing, reports, onPress }) => {
   return (
     <FlatList
+      onRefresh={onRefresh}
+      refreshing={refreshing}
       data={reports}
       keyExtractor={(item) => String(item.id)}
       renderItem={({ item }) => (

@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback } from "react";
-import { StyleSheet, View, ScrollView, RefreshControl } from "react-native";
+import { StyleSheet, View } from "react-native";
 import ActivityIndicator from "./activityIndicator";
 import { List } from "../report/index";
 import AsyncStorage from "@react-native-community/async-storage";
@@ -39,16 +39,12 @@ export default ({ navigation: { navigate } }) => {
       {loading ? (
         <ActivityIndicator />
       ) : (
-        <ScrollView
-          refreshControl={
-            <RefreshControl
-              refreshing={refreshing}
-              onRefresh={() => setRefreshing(true)}
-            />
-          }
-        >
-          <List reports={reports} onPress={onPress} />
-        </ScrollView>
+        <List
+          onRefresh={() => setRefreshing(true)}
+          refreshing={refreshing}
+          reports={reports}
+          onPress={onPress}
+        />
       )}
     </View>
   );
