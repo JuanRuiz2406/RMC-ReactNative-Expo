@@ -2,19 +2,23 @@ import React, { useContext } from "react";
 import {
   StyleSheet,
   TouchableOpacity,
-  Text,
   Dimensions,
-  KeyboardAvoidingView,
+  View,
 } from "react-native";
-import { Heading } from "../loginComponents/heading";
-import { TextButton } from "../loginComponents/textButton";
 import { useForm } from "react-hook-form";
 import { TextInput } from "../hook-form/index";
 import { ScrollView } from "react-native-gesture-handler";
 import { AuthContainer } from "../loginComponents/authContainer";
 import { AuthContext } from "../contexts/authContext";
+import { Text } from 'react-native-paper'
+import Background from '../ComponetsLogin/Background'
+import Logo from '../ComponetsLogin/Logo'
+import Header from '../ComponetsLogin/Header'
+import Button from '../ComponetsLogin/Button'
+import BackButton from '../ComponetsLogin/BackButton'
+import { theme } from '../core/theme'
 
-export function LoginScreen({ navigation }) {
+export default function LoginScreen({ navigation }) {
   const { handleSubmit, control, reset, errors } = useForm();
   const { login, loginWithGoogle, loginWithFacebook } = useContext(AuthContext);
 
@@ -51,17 +55,12 @@ export function LoginScreen({ navigation }) {
   console.log(errors);
 
   return (
-    <KeyboardAvoidingView
-      style={styles.scrollView}
-      behavior={
-        Platform.OS === "ios" || Platform.OS === "android" ? "padding" : null
-      }
-    >
-      <ScrollView>
+    <ScrollView>
+      <Background>
+        <BackButton goBack={navigation.goBack} />
+        <Logo />
+        <Header>Bienvenido de nuevo</Header>
         <AuthContainer>
-          <Heading style={styles.title}>ReportsMyCity</Heading>
-          <Heading style={styles.title}>LOGIN</Heading>
-
           <TextInput
             title="Correo Electrónico"
             control={control}
@@ -79,6 +78,10 @@ export function LoginScreen({ navigation }) {
             }}
             defaultValue=""
             errorMessage={errors?.email?.message}
+            autoCompleteType="email"
+            textContentType="emailAddress"
+            keyboardType="email-address"
+            returnKeyType="next"
           />
           <TextInput
             title="Contraseña"
@@ -98,36 +101,26 @@ export function LoginScreen({ navigation }) {
             defaultValue=""
             errorMessage={errors?.password?.message}
           />
-          <TouchableOpacity
-            style={styles.RegisterButton}
-            onPress={handleSubmit(onSubmitLogin)}
-          >
-            <Text style={styles.buttonText}>Entrar</Text>
-          </TouchableOpacity>
+          <View style={styles.forgotPassword}>
+            <TouchableOpacity
+              onPress={() => navigation.navigate('ResetPasswordScreen')}
+            >
+              <Text style={styles.forgot}>Olvido su contraseña?</Text>
+            </TouchableOpacity>
+          </View>
 
-          <TouchableOpacity
-            style={styles.RegisterButton}
-            onPress={() => loginWithGoogle()}
-          >
-            <Text style={styles.buttonTextGoogle}>Entrar con Google</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            style={styles.RegisterButton}
-            onPress={() => loginWithFacebook()}
-          >
-            <Text style={styles.buttonTextFacebook}>Entrar con Facebook</Text>
-          </TouchableOpacity>
-
-          <TextButton
-            title={"¿No tienes una cuenta? Crea una"}
-            onPress={() => {
-              navigation.navigate("RegisterScreen");
-            }}
-          />
+          <Button mode="contained" onPress={handleSubmit(onSubmitLogin)}>
+            Login
+            </Button>
+          <Button mode="outlined" onPress={() => loginWithGoogle()}>
+            Google
+            </Button>
+          <Button mode="outlined" onPress={() => loginWithFacebook()}>
+            Facebook
+            </Button>
         </AuthContainer>
-      </ScrollView>
-    </KeyboardAvoidingView>
+      </Background>
+    </ScrollView >
   );
 }
 
@@ -161,5 +154,22 @@ const styles = StyleSheet.create({
     width: Dimensions.get("window").width,
     height: Dimensions.get("window").height,
     backgroundColor: "white",
+  },
+  forgotPassword: {
+    width: '100%',
+    alignItems: 'flex-end',
+    marginBottom: 24,
+  },
+  row: {
+    flexDirection: 'row',
+    marginTop: 4,
+  },
+  forgot: {
+    fontSize: 13,
+    color: theme.colors.secondary,
+  },
+  link: {
+    fontWeight: 'bold',
+    color: theme.colors.primary,
   },
 });

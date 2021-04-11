@@ -37,7 +37,7 @@ export default ({
 const styles = StyleSheet.create({
   label: {
     margin: 20,
-    marginTop: 25,
+    marginTop: '10%',
     marginLeft: 40,
     fontSize: 18,
   },
@@ -48,10 +48,10 @@ const styles = StyleSheet.create({
   input: {
     backgroundColor: "white",
     height: 40,
-    padding: 10,
+    padding: '5%',
     borderRadius: 4,
     borderWidth: 1,
-    marginLeft: 30,
-    marginRight: 30,
+    marginLeft: '5%',
+    marginRight: '5%',
   },
 });

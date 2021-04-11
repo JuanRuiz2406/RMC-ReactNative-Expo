@@ -2,20 +2,23 @@ import React, { useContext } from "react";
 import {
   Alert,
   StyleSheet,
-  TouchableOpacity,
   Dimensions,
-  Text,
-  KeyboardAvoidingView,
-  Platform,
 } from "react-native";
-import { Heading } from "../loginComponents/heading";
 import { AuthContainer } from "../loginComponents/authContainer";
 import { AuthContext } from "../contexts/authContext";
 import { useForm } from "react-hook-form";
 import { TextInput } from "../hook-form/index";
 import { ScrollView } from "react-native-gesture-handler";
 
-export function RegisterScreen({ navigation }) {
+import { Text } from 'react-native-paper'
+import Background from '../ComponetsLogin/Background'
+import Logo from '../ComponetsLogin/Logo'
+import Header from '../ComponetsLogin/Header'
+import Button from '../ComponetsLogin/Button'
+import BackButton from '../ComponetsLogin/BackButton'
+import { theme } from '../core/theme'
+
+export default function RegisterScreen({ navigation }) {
   const { handleSubmit, control, reset, errors } = useForm();
   const { register } = useContext(AuthContext);
 
@@ -75,16 +78,12 @@ export function RegisterScreen({ navigation }) {
   };
 
   return (
-    <KeyboardAvoidingView
-      style={styles.scrollView}
-      behavior={
-        Platform.OS === "ios" || Platform.OS === "android" ? "padding" : null
-      }
-    >
-      <ScrollView>
+    <ScrollView>
+      <Background>
+        <BackButton goBack={navigation.goBack} />
+        <Logo />
+        <Header>Crea una cuenta</Header>
         <AuthContainer>
-          <Heading style={styles.title}>REGISTRO</Heading>
-
           <TextInput
             title="Nombre"
             control={control}
@@ -186,15 +185,12 @@ export function RegisterScreen({ navigation }) {
             errorMessage={errors?.direction?.message}
           />
 
-          <TouchableOpacity
-            style={styles.RegisterButton}
-            onPress={handleSubmit(onSubmitRegister)}
-          >
-            <Text style={styles.buttonText}>Registrar</Text>
-          </TouchableOpacity>
+          <Button mode="contained" onPress={handleSubmit(onSubmitRegister)}>
+            Registrar
+            </Button>
         </AuthContainer>
-      </ScrollView>
-    </KeyboardAvoidingView>
+      </Background>
+    </ScrollView>
   );
 }
 

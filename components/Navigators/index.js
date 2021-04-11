@@ -1,3 +1,7 @@
 export { default as AuthStackNavigator } from './AuthStackNavigator'
 export { default as FormReportStack } from './FormReportStack'
 export { default as NavBar } from './navbarTap'
+export { default as StartScreen } from '../screens/StartScreen'
+export { default as LoginScreen } from '../screens/loginScreen'
+export { default as RegisterScreen } from '../screens/registerScreen'
+export { default as ResetPasswordScreen } from '../screens/ResetPasswordScreen'

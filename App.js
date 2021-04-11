@@ -3,9 +3,12 @@ import React, { useState, useEffect, useReducer, useMemo } from "react";
 import * as Google from "expo-google-app-auth";
 import * as Facebook from "expo-facebook";
 
+import { Provider } from 'react-native-paper';
+import { theme } from './components/core/theme';
 import { createStackNavigator } from "@react-navigation/stack";
 import { NavigationContainer } from "@react-navigation/native";
 import { NavBar } from "./components/Navigators/index";
+import { StartScreen, LoginScreen, RegisterScreen, ResetPasswordScreen } from "./components/Navigators/index";
 
 import AuthStackNavigator from "./components/Navigators/AuthStackNavigator";
 import { AuthContext } from "./components/contexts/authContext";
@@ -23,7 +26,7 @@ firebase.initializeApp(firebaseConfig);
 
 const Stack = createStackNavigator();
 
-export default () => {
+export default function App() {
 
   const initialLoginState = {
     isLoading: false,
@@ -139,9 +142,6 @@ export default () => {
         const {
           type,
           token,
-          expirationDate,
-          permissions,
-          declinedPermissions,
         } = await Facebook.logInWithReadPermissionsAsync({
           permissions: ['public_profile', 'email', 'user_friends'],
         });
@@ -179,38 +179,47 @@ export default () => {
 
   if (loginState.isLoading) {
     return (
-      <NavigationContainer>
-        <Stack.Navigator initialRouteName="ReportsMyCity">
-          <Stack.Screen
-            name="ReportsMyCity"
-            component={NavBar}
-            options={{ headerStyle: { backgroundColor: "#008652" } }}
-          />
-        </Stack.Navigator>
-      </NavigationContainer>
-    );
-  }
-  return (
-    <AuthContext.Provider value={auth}>
-      <NavigationContainer >
-        {loginState.userToken !== null ? (
-          <Stack.Navigator initialRouteName="ReportsMyCity">
+      <Provider theme={theme}>
+        <NavigationContainer>
+          <Stack.Navigator initialRouteName="ReportsMyCity" screenOptions={{
+            headerShown: false,
+          }}>
             <Stack.Screen
               name="ReportsMyCity"
               component={NavBar}
               options={{ headerStyle: { backgroundColor: "#008652" } }}
             />
           </Stack.Navigator>
-        ) : (
-          <Stack.Navigator
-            screenOptions={{
-              headerShown: false,
-            }}
-          >
-            <Stack.Screen name={"AuthStack2"} component={AuthStackNavigator} />
-          </Stack.Navigator>
-        )}
-      </NavigationContainer>
-    </AuthContext.Provider>
+        </NavigationContainer>
+      </Provider>
+    );
+  }
+  return (
+    <Provider theme={theme}>
+      <AuthContext.Provider value={auth}>
+        <NavigationContainer >
+          {loginState.userToken !== null ? (
+            <Stack.Navigator initialRouteName="ReportsMyCity">
+              <Stack.Screen
+                name="ReportsMyCity"
+                component={NavBar}
+                options={{ headerStyle: { backgroundColor: "#008652" } }}
+              />
+            </Stack.Navigator>
+          ) : (
+            <Stack.Navigator
+              screenOptions={{
+                headerShown: false,
+              }}
+            >
+              <Stack.Screen name="StartScreen" component={StartScreen} />
+              <Stack.Screen name="LoginScreen" component={LoginScreen} />
+              <Stack.Screen name="RegisterScreen" component={RegisterScreen} />
+              <Stack.Screen name="ResetPasswordScreen" component={ResetPasswordScreen} />
+            </Stack.Navigator>
+          )}
+        </NavigationContainer>
+      </AuthContext.Provider>
+    </Provider>
   );
 };

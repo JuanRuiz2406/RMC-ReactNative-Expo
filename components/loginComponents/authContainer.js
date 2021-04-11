@@ -7,8 +7,9 @@ export function AuthContainer({ children }) {
 
 const styles = StyleSheet.create({
   container: {
+    width: '100%',
     flex: 1,
     padding: 5,
-    paddingTop: 100,
+    paddingTop: 25,
   },
 });
