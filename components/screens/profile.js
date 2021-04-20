@@ -5,13 +5,12 @@ import {
   View,
   Image,
   ScrollView,
-  TouchableOpacity
+  TouchableOpacity,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { AuthContext } from "../contexts/authContext";
 
 export default function Profile() {
-
   const { logout } = useContext(AuthContext);
 
   return (
@@ -32,10 +31,10 @@ export default function Profile() {
       <View style={styles.infoContainer}>
         <Text style={[styles.text, { fontWeight: "200", fontSize: 36 }]}>
           Diego
-            </Text>
+        </Text>
         <Text style={[styles.text, { color: "#AEB5BC", fontSize: 14 }]}>
           Villarreal
-            </Text>
+        </Text>
       </View>
 
       <View style={styles.infoUserContainer}>
@@ -55,9 +54,24 @@ export default function Profile() {
 
       <TouchableOpacity
         style={styles.RegisterButton}
-        onPress={() => { logout() }}
+        onPress={() => {
+          logout();
+        }}
       >
         <Text style={styles.buttonText}>Cerrar Sesion</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity
+        style={[styles.button, styles.green]}
+        onPress={
+          () => {}
+          // navigate("Mapa", {
+          //   setLatitude: setLatitude,
+          //   setLongitude: setLongitude,
+          // })
+        }
+      >
+        <Text style={styles.buttonText}>Mis Reportes</Text>
       </TouchableOpacity>
     </ScrollView>
   );
@@ -123,5 +137,18 @@ const styles = StyleSheet.create({
   },
   RegisterButton: {
     marginVertical: 32,
+  },
+  green: {
+    backgroundColor: "#008652",
+  },
+  button: {
+    padding: 7,
+    marginTop: 25,
+    marginLeft: 40,
+    marginRight: 40,
+    marginBottom: 50,
+    borderWidth: 1,
+    borderRadius: 10,
+    borderColor: "black",
   },
 });

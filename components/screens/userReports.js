@@ -8,13 +8,14 @@ export default ({ navigation: { navigate } }) => {
   const [loading, setLoading] = useState(true);
   const [reports, setReports] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
+  const userEmail = "juan@rmc.com";
 
   useEffect(() => {
     fetchReports();
   }, [refreshing]);
 
   const fetchReports = useCallback(async () => {
-    await fetch("http://192.168.0.2:8080/report/byPublicPrivacyAndVisibleState", {
+    await fetch("http://192.168.0.2:8080/report/byUserEmail/" + userEmail, {
       headers: {
         Accept: "application/json",
         Authorization: "Bearer " + (await AsyncStorage.getItem("userToken")),
