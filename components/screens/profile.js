@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   StyleSheet,
   Text,
@@ -29,7 +29,7 @@ export default function Profile() {
   }, []);
 
   const fetchUser = async () => {
-    await fetch("http://192.168.0.8:8080/user/byEmail/" + (await AsyncStorage.getItem('userEmail')), {
+    await fetch("http://192.168.0.2:8080/user/byEmail/" + (await AsyncStorage.getItem('userEmail')), {
       headers: {
         Accept: "application/json",
         Authorization: "Bearer " + (await AsyncStorage.getItem('userToken')),
