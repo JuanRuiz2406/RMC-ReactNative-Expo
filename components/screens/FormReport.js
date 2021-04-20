@@ -68,7 +68,7 @@ export default ({ navigation: { navigate } }) => {
       description: "",
     });
 
-    fetch("http://192.168.0.2:8080/report/city/" + String(cityName), {
+    fetch("http://192.168.0.3:8080/report/city/" + String(cityName), {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -171,10 +171,10 @@ const styles = StyleSheet.create({
     fontSize: 18,
   },
   green: {
-    backgroundColor: "#008652",
+    backgroundColor: "#3CBA69",
   },
   orange: {
-    backgroundColor: "#FEB139",
+    backgroundColor: "#F8A513",
   },
   button: {
     padding: 7,

@@ -31,7 +31,7 @@ export default function LoginScreen({ navigation }) {
       token: "",
     });
 
-    fetch("http://192.168.0.2:8080/auth/login", {
+    fetch("http://192.168.0.8:8080/auth/login", {
       method: "POST",
       headers: {
         Accept: "application/json",

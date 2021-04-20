@@ -5,13 +5,48 @@ import {
   View,
   Image,
   ScrollView,
-  TouchableOpacity,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { AuthContext } from "../contexts/authContext";
+import AsyncStorage from "@react-native-community/async-storage";
+import Button from '../ComponetsLogin/Button';
 
 export default function Profile() {
   const { logout } = useContext(AuthContext);
+  const { name, setName } = useState('');
+
+  const user = {
+    name: "",
+    lastName: "",
+    email: "",
+    password: "",
+    idCard: "",
+    direction: "",
+  };
+
+  useEffect(() => {
+    fetchUser();
+  }, []);
+
+  const fetchUser = async () => {
+    await fetch("http://192.168.0.8:8080/user/byEmail/" + (await AsyncStorage.getItem('userEmail')), {
+      headers: {
+        Accept: "application/json",
+        Authorization: "Bearer " + (await AsyncStorage.getItem('userToken')),
+      },
+    })
+      .then((response) => response.json())
+      .then((responseJson) => {
+        const userTemp = JSON.parse(JSON.stringify(responseJson));
+        setName(userTemp.name);
+        user.lastName = userTemp.lastname;
+        user.email = userTemp.email;
+        user.password = userTemp.password;
+        user.idCard = userTemp.idCard;
+        user.direction = userTemp.direction;
+        console.log(name);
+      })
+  }
 
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
@@ -30,49 +65,30 @@ export default function Profile() {
 
       <View style={styles.infoContainer}>
         <Text style={[styles.text, { fontWeight: "200", fontSize: 36 }]}>
-          Diego
+          {name}
         </Text>
         <Text style={[styles.text, { color: "#AEB5BC", fontSize: 14 }]}>
-          Villarreal
+          {user.lastName}
         </Text>
       </View>
 
       <View style={styles.infoUserContainer}>
         <Text style={styles.textTitle}>Cédula:</Text>
-        <Text style={styles.textSecond}>5 0420 0201</Text>
+        <Text style={styles.textSecond}>{user.idCard}</Text>
         <Text style={styles.textTitle}>Correo Electrónico:</Text>
-        <Text style={styles.textSecond}>diegovillatj@gmail.com</Text>
+        <Text style={styles.textSecond}>{user.email}</Text>
         <Text style={styles.textTitle}>Contraseña:</Text>
         <Text style={styles.textSecond}>*******</Text>
-        <Text style={styles.textTitle}>Provincia:</Text>
-        <Text style={styles.textSecond}>Guanacaste</Text>
-        <Text style={styles.textTitle}>Cantón:</Text>
-        <Text style={styles.textSecond}>Liberia</Text>
-        <Text style={styles.textTitle}>Numero de Celular:</Text>
-        <Text style={styles.textSecond}>+506 8888 8888</Text>
+        <Text style={styles.textTitle}>Ciudad:</Text>
+        <Text style={styles.textSecond}>{user.direction}</Text>
       </View>
 
-      <TouchableOpacity
-        style={styles.RegisterButton}
-        onPress={() => {
-          logout();
-        }}
+      <Button
+        mode="outlined"
+        onPress={() => logout()}
       >
-        <Text style={styles.buttonText}>Cerrar Sesion</Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity
-        style={[styles.button, styles.green]}
-        onPress={
-          () => {}
-          // navigate("Mapa", {
-          //   setLatitude: setLatitude,
-          //   setLongitude: setLongitude,
-          // })
-        }
-      >
-        <Text style={styles.buttonText}>Mis Reportes</Text>
-      </TouchableOpacity>
+        Cerrar sesion
+      </Button>
     </ScrollView>
   );
 }
@@ -137,18 +153,5 @@ const styles = StyleSheet.create({
   },
   RegisterButton: {
     marginVertical: 32,
-  },
-  green: {
-    backgroundColor: "#008652",
-  },
-  button: {
-    padding: 7,
-    marginTop: 25,
-    marginLeft: 40,
-    marginRight: 40,
-    marginBottom: 50,
-    borderWidth: 1,
-    borderRadius: 10,
-    borderColor: "black",
   },
 });

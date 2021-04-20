@@ -22,7 +22,11 @@ import { androidClientId } from "./components/config/superKeyAndroid";
 import { iosClientId } from "./components/config/superKeyIOS";
 import { idAppFacebook } from "./components/config/idKeyFacebook";
 
-firebase.initializeApp(firebaseConfig);
+if (!firebase.apps.length) {
+  firebase.initializeApp(firebaseConfig);
+}
+
+
 
 const Stack = createStackNavigator();
 
@@ -81,6 +85,7 @@ export default function App() {
             userToken = token;
             console.log("user token: ", userToken);
             await AsyncStorage.setItem('userToken', userToken);
+            await AsyncStorage.setItem('userEmail', userName);
           } catch (e) {
             console.log(e);
           }
@@ -89,12 +94,13 @@ export default function App() {
           console.log("Error en el login");
         }
       } else {
-        console.log("El correo no esta registrado");
+        console.log("El usuario no esta registrado");
       }
     },
     logout: async () => {
       try {
         await AsyncStorage.removeItem('userToken');
+        await AsyncStorage.removeItem('userEmail');
       } catch (e) {
         console.log(e);
       }
@@ -107,12 +113,13 @@ export default function App() {
           userToken = token;
           console.log("user token: ", userToken);
           await AsyncStorage.setItem('userToken', userToken);
+          await AsyncStorage.setItem('userEmail', emailApi);
         } catch (e) {
           console.log(e);
         }
         dispatch({ type: "REGISTER", id: emailApi, token: userToken });
       } else {
-        console.log("No se puede registrar, error");
+        console.log("Problemas al registrar usuario, error");
       }
     },
     loginWithGoogle: async () => {
@@ -126,6 +133,7 @@ export default function App() {
         if (result.type === 'success') {
           console.log(result);
           await AsyncStorage.setItem('userToken', result.accessToken);
+          await AsyncStorage.setItem('userEmail', result.user.email);
           dispatch({ type: "LOGIN", id: result.user.email, token: result.accessToken });
         } else {
           console.log("Cancelado");
@@ -149,7 +157,7 @@ export default function App() {
           // Get the user's name using Facebook's Graph API
           const response = await fetch(`https://graph.facebook.com/me?access_token=${token}&fields=id,name,email,about,picture`);
           const resJSON = JSON.stringify(await response.json())
-          console.log(resJSON);
+          console.log(resJSON, " ");
           await AsyncStorage.setItem('userToken', token);
           dispatch({ type: "LOGIN", id: resJSON.email, token: token });
         } else {
@@ -165,11 +173,13 @@ export default function App() {
 
   useEffect(() => {
     setTimeout(async () => {
-      let userToken;
+      let userToken, userName;
       userToken = null;
+      userName = null;
       try {
         userToken = await AsyncStorage.getItem('userToken');
-        console.log(userToken);
+        userName = await AsyncStorage.getItem('userEmail');
+        console.log(userToken, userName);
       } catch (e) {
         console.log(e);
       }
@@ -187,7 +197,7 @@ export default function App() {
             <Stack.Screen
               name="ReportsMyCity"
               component={NavBar}
-              options={{ headerStyle: { backgroundColor: "#008652" } }}
+              options={{ headerStyle: { backgroundColor: "#3E5EAB" } }}
             />
           </Stack.Navigator>
         </NavigationContainer>
@@ -203,7 +213,7 @@ export default function App() {
               <Stack.Screen
                 name="ReportsMyCity"
                 component={NavBar}
-                options={{ headerStyle: { backgroundColor: "#008652" } }}
+                options={{ headerStyle: { backgroundColor: "#3E5EAB" } }}
               />
             </Stack.Navigator>
           ) : (

@@ -11,8 +11,8 @@ export default navBar = () => {
   return (
     <Tab.Navigator
       initialRouteName="Home"
-      activeColor="#feB139"
-      tabBarOptions={{ activeTintColor: "#FEB139" }}
+      activeColor="#F8A513"
+      tabBarOptions={{ activeTintColor: "#F8A513" }}
       style={{ backgroundColor: "white" }}
     >
       <Tab.Screen
