@@ -1,9 +1,9 @@
 import * as React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { AntDesign } from "@expo/vector-icons";
-import { Profile } from "../screens/index";
 import FormReportStack from "./FormReportStack";
 import ReportStack from "./ReportsStack";
+import ProfileStack from "./ProfileStack";
 
 const Tab = createBottomTabNavigator();
 
@@ -37,7 +37,7 @@ export default navBar = () => {
       />
       <Tab.Screen
         name="Perfil"
-        component={Profile}
+        component={ProfileStack}
         options={{
           tabBarLabel: "Perfil",
           tabBarIcon: ({ color }) => (

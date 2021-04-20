@@ -1,19 +1,13 @@
 import React, { useState, useEffect, useContext } from "react";
-import {
-  StyleSheet,
-  Text,
-  View,
-  Image,
-  ScrollView,
-} from "react-native";
+import { StyleSheet, Text, View, Image, ScrollView } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { AuthContext } from "../contexts/authContext";
 import AsyncStorage from "@react-native-community/async-storage";
-import Button from '../ComponetsLogin/Button';
+import Button from "../ComponetsLogin/Button";
 
-export default function Profile() {
+export default function Profile({ navigation: { navigate } }) {
   const { logout } = useContext(AuthContext);
-  const { name, setName } = useState('');
+  const { name, setName } = useState("");
 
   const user = {
     name: "",
@@ -29,12 +23,16 @@ export default function Profile() {
   }, []);
 
   const fetchUser = async () => {
-    await fetch("http://192.168.0.2:8080/user/byEmail/" + (await AsyncStorage.getItem('userEmail')), {
-      headers: {
-        Accept: "application/json",
-        Authorization: "Bearer " + (await AsyncStorage.getItem('userToken')),
-      },
-    })
+    await fetch(
+      "http://192.168.0.2:8080/user/byEmail/" +
+        (await AsyncStorage.getItem("userEmail")),
+      {
+        headers: {
+          Accept: "application/json",
+          Authorization: "Bearer " + (await AsyncStorage.getItem("userToken")),
+        },
+      }
+    )
       .then((response) => response.json())
       .then((responseJson) => {
         const userTemp = JSON.parse(JSON.stringify(responseJson));
@@ -45,8 +43,8 @@ export default function Profile() {
         user.idCard = userTemp.idCard;
         user.direction = userTemp.direction;
         console.log(name);
-      })
-  }
+      });
+  };
 
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
@@ -83,11 +81,12 @@ export default function Profile() {
         <Text style={styles.textSecond}>{user.direction}</Text>
       </View>
 
-      <Button
-        mode="outlined"
-        onPress={() => logout()}
-      >
+      <Button mode="outlined" onPress={() => logout()}>
         Cerrar sesion
+      </Button>
+
+      <Button mode="outlined" onPress={() => navigate("Reportes del Usuario")}>
+        Mis Reportes
       </Button>
     </ScrollView>
   );
@@ -153,5 +152,18 @@ const styles = StyleSheet.create({
   },
   RegisterButton: {
     marginVertical: 32,
+  },
+  green: {
+    backgroundColor: "#008652",
+  },
+  button: {
+    padding: 7,
+    marginTop: 25,
+    marginLeft: 40,
+    marginRight: 40,
+    marginBottom: 50,
+    borderWidth: 1,
+    borderRadius: 10,
+    borderColor: "black",
   },
 });
