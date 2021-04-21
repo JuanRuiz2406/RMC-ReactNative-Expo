@@ -35,6 +35,7 @@ export default ({ navigation: { navigate } }) => {
   const onPress = (report) => {
     navigate("Reporte Específico", {
       report: report,
+      canDelete: true,
     });
   };
 

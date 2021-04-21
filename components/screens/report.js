@@ -8,6 +8,7 @@ export default () => {
   const route = useRoute();
 
   const report = route.params.report;
+  const canDelete = route.params.canDelete;
   const [loadingDetails, setLoadingDetails] = useState(true);
   const [details, setDetails] = useState([]);
 
@@ -29,7 +30,7 @@ export default () => {
       {loadingDetails ? (
         <ActivityIndicator />
       ) : (
-        <ShowReport report={report} details={details} />
+        <ShowReport report={report} details={details} canDelete={canDelete} />
       )}
     </View>
   );

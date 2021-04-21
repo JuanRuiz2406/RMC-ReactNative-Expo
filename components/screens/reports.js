@@ -14,12 +14,15 @@ export default ({ navigation: { navigate } }) => {
   }, [refreshing]);
 
   const fetchReports = useCallback(async () => {
-    await fetch("http://192.168.0.2:8080/report/byPublicPrivacyAndVisibleState", {
-      headers: {
-        Accept: "application/json",
-        Authorization: "Bearer " + (await AsyncStorage.getItem("userToken")),
-      },
-    })
+    await fetch(
+      "http://192.168.0.2:8080/report/byPublicPrivacyAndVisibleState",
+      {
+        headers: {
+          Accept: "application/json",
+          Authorization: "Bearer " + (await AsyncStorage.getItem("userToken")),
+        },
+      }
+    )
       .then((response) => response.json())
       .then((data) => {
         setLoading(false);
@@ -31,6 +34,7 @@ export default ({ navigation: { navigate } }) => {
   const onPress = (report) => {
     navigate("Reporte Específico", {
       report: report,
+      canDelete: false,
     });
   };
 

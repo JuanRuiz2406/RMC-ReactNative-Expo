@@ -1,7 +1,32 @@
 import React from "react";
-import { StyleSheet, Image, Text, View } from "react-native";
+import { Alert, StyleSheet, Image, Text, View } from "react-native";
+import Button from "../ComponetsLogin/Button";
+import AsyncStorage from "@react-native-community/async-storage";
+import { useRoute } from "@react-navigation/native";
 
 export default ({ report, details }) => {
+  const route = useRoute();
+
+  const canDelete = route.params.canDelete;
+
+  const onDeleteReport = async (reportId) => {
+    await fetch("http://192.168.0.2:8080/report/" + String(reportId), {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + (await AsyncStorage.getItem("userToken")),
+      },
+    })
+      .then((response) => response.json())
+      .then((responseJson) => {
+        console.log(responseJson);
+        Alert.alert("Reporte", responseJson.message);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+
   return (
     <View style={styles.report}>
       <Text style={styles.title}>{report.title}</Text>
@@ -17,9 +42,7 @@ export default ({ report, details }) => {
       </Text>
       <Text style={[styles.titleLeft, styles.bold]}>Descripción: </Text>
       <Text style={styles.description}>{report.description}</Text>
-
       <Text style={[styles.titleLeft, styles.bold]}>Detalles:</Text>
-
       {details.length > 0 ? (
         details.map((x) => (
           <Text style={styles.description} key={x.id}>
@@ -27,13 +50,19 @@ export default ({ report, details }) => {
           </Text>
         ))
       ) : (
-        <Text style={styles.description}>No hay Detalles sobre este Reporte</Text>
+        <Text style={styles.description}>
+          No hay Detalles sobre este Reporte
+        </Text>
       )}
-
       <Image
         source={require("../../image/arbol-carretera.jpg")}
         style={styles.image}
       />
+      {canDelete && (
+        <Button mode="outlined" onPress={() => onDeleteReport(report.id)}>
+          Eliminar
+        </Button>
+      )}
     </View>
   );
 };
