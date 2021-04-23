@@ -68,7 +68,7 @@ export default ({ navigation: { navigate } }) => {
       description: "",
     });
 
-    fetch("http://192.168.0.3:8080/report/city/" + String(cityName), {
+    fetch("http://192.168.0.2:8080/report/city/" + String(cityName), {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -85,6 +85,7 @@ export default ({ navigation: { navigate } }) => {
     })
       .then((response) => response.json())
       .then((responseJson) => {
+        console.log(responseJson);
         Alert.alert("Reporte", responseJson.message);
       })
       .catch((error) => {
@@ -148,9 +149,19 @@ export default ({ navigation: { navigate } }) => {
           <Text style={styles.buttonText}>*Seleccionar Ubicación*</Text>
         </TouchableOpacity>
 
-        <Text style={styles.textPhoto}>City: {cityName}</Text>
+        <TouchableOpacity
+          style={[styles.button, styles.orange]}
+          onPress={() => navigate("Cámara")}
+        >
+          <Text style={styles.buttonText}>Tomar Foto</Text>
+        </TouchableOpacity>
 
-        <Text style={styles.textPhoto}>*Fotos*</Text>
+        <TouchableOpacity
+          style={[styles.button, styles.orange]}
+          onPress={() => navigate("Seleccionar Fotos")}
+        >
+          <Text style={styles.buttonText}>Seleccionar Fotos</Text>
+        </TouchableOpacity>
 
         <TouchableOpacity
           style={[styles.button, styles.green]}

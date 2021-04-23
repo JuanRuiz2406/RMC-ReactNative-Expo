@@ -1,22 +1,18 @@
 import React, { useContext } from "react";
-import {
-  Alert,
-  StyleSheet,
-  Dimensions,
-} from "react-native";
+import { Alert, StyleSheet, Dimensions } from "react-native";
 import { AuthContainer } from "../loginComponents/authContainer";
 import { AuthContext } from "../contexts/authContext";
 import { useForm } from "react-hook-form";
 import { TextInput } from "../hook-form/index";
 import { ScrollView } from "react-native-gesture-handler";
 
-import { Text } from 'react-native-paper'
-import Background from '../ComponetsLogin/Background'
-import Logo from '../ComponetsLogin/Logo'
-import Header from '../ComponetsLogin/Header'
-import Button from '../ComponetsLogin/Button'
-import BackButton from '../ComponetsLogin/BackButton'
-import { theme } from '../core/theme'
+import { Text } from "react-native-paper";
+import Background from "../ComponetsLogin/Background";
+import Logo from "../ComponetsLogin/Logo";
+import Header from "../ComponetsLogin/Header";
+import Button from "../ComponetsLogin/Button";
+import BackButton from "../ComponetsLogin/BackButton";
+import { theme } from "../core/theme";
 
 export default function RegisterScreen({ navigation }) {
   const { handleSubmit, control, reset, errors } = useForm();
@@ -187,7 +183,7 @@ export default function RegisterScreen({ navigation }) {
 
           <Button mode="contained" onPress={handleSubmit(onSubmitRegister)}>
             Registrar
-            </Button>
+          </Button>
         </AuthContainer>
       </Background>
     </ScrollView>

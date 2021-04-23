@@ -39,7 +39,9 @@
     "react-native-svg": "12.1.0",
     "react-native-web": "^0.15.3",
     "react-navigation": "^4.4.4",
-    "react-navigation-stack": "^2.10.3"
+    "react-navigation-stack": "^2.10.3",
+    "expo-camera": "~9.1.0",
+    "expo-image-picker": "~9.2.0"
   },
   "devDependencies": {
     "@babel/core": "~7.12.13"
