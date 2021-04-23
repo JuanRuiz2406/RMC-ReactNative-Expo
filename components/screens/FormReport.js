@@ -95,7 +95,7 @@ export default ({ navigation: { navigate } }) => {
   console.log(errors);
 
   return (
-    <View>
+    <View style={styles.container}>
       <ScrollView style={styles.scrollView}>
         <TextInput
           title="Título"
@@ -194,9 +194,7 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    justifyContent: "center",
-    padding: 8,
-    backgroundColor: "#0e101c",
+    backgroundColor: "#fff",
   },
   scrollView: {
     width: Dimensions.get("window").width,

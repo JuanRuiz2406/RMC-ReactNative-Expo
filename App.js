@@ -21,6 +21,7 @@ import Expo from "expo";
 import { androidClientId } from "./components/config/superKeyAndroid";
 import { iosClientId } from "./components/config/superKeyIOS";
 import { idAppFacebook } from "./components/config/idKeyFacebook";
+import { Alert } from "react-native";
 
 if (!firebase.apps.length) {
   firebase.initializeApp(firebaseConfig);
@@ -92,9 +93,11 @@ export default function App() {
           dispatch({ type: "LOGIN", id: userName, token: userToken });
         } else {
           console.log("Error en el login");
+          Alert.alert("Error en el login");
         }
       } else {
         console.log("El usuario no esta registrado");
+        Alert.alert("El usuario no esta registrado");
       }
     },
     logout: async () => {

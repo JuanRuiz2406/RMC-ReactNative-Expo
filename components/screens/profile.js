@@ -1,22 +1,20 @@
 import React, { useState, useEffect, useContext } from "react";
-import { StyleSheet, Text, View, Image, ScrollView } from "react-native";
+import { StyleSheet, Text, View, Image, ScrollView, Dimensions, Alert } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { AuthContext } from "../contexts/authContext";
+
+import { useForm } from 'react-hook-form';
+import { TextInput } from '../hook-form/index';
+import ActivityIndicator from "./activityIndicator";
+
 import AsyncStorage from "@react-native-community/async-storage";
 import Button from "../ComponetsLogin/Button";
 
 export default function Profile({ navigation: { navigate } }) {
+  const { handleSubmit, control, reset, errors } = useForm();
+  const [loading, setLoading] = useState(true);
   const { logout } = useContext(AuthContext);
-  const { name, setName } = useState("");
-
-  const user = {
-    name: "",
-    lastName: "",
-    email: "",
-    password: "",
-    idCard: "",
-    direction: "",
-  };
+  const [user, setUser] = useState([]);
 
   useEffect(() => {
     fetchUser();
@@ -24,8 +22,8 @@ export default function Profile({ navigation: { navigate } }) {
 
   const fetchUser = async () => {
     await fetch(
-      "http://192.168.0.2:8080/user/byEmail/" +
-        (await AsyncStorage.getItem("userEmail")),
+      "http://192.168.0.8:8080/user/byEmail/" +
+      String((await AsyncStorage.getItem("userEmail"))),
       {
         headers: {
           Accept: "application/json",
@@ -35,60 +33,127 @@ export default function Profile({ navigation: { navigate } }) {
     )
       .then((response) => response.json())
       .then((responseJson) => {
-        const userTemp = JSON.parse(JSON.stringify(responseJson));
-        setName(userTemp.name);
-        user.lastName = userTemp.lastname;
-        user.email = userTemp.email;
-        user.password = userTemp.password;
-        user.idCard = userTemp.idCard;
-        user.direction = userTemp.direction;
-        console.log(name);
+        setUser(responseJson);
+        setLoading(false)
+        console.log(responseJson);
+      });
+  };
+
+  const onDeleteUser = async (userEmail) => {
+    await fetch("http://192.168.0.8:8080/user/" + String(userEmail), {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + (await AsyncStorage.getItem("userToken")),
+      },
+    })
+      .then((response) => response.json())
+      .then((responseJson) => {
+        console.log(responseJson);
+        Alert.alert("Usuario", responseJson.message);
+        logout();
+      })
+      .catch((error) => {
+        console.error(error);
       });
   };
 
   return (
-    <ScrollView showsVerticalScrollIndicator={false}>
-      <View style={{ alignSelf: "center" }}>
-        <View style={styles.profileImage}>
-          <Image
-            source={require("../../image/Diego.jpg")}
-            style={styles.image}
-            resizeMode="center"
-          />
-        </View>
-        <View style={styles.add}>
-          <Ionicons name="ios-add" size={40} color="#FEB139" />
-        </View>
-      </View>
+    <View style={styles.container}>
+      {loading ? (
+        <ActivityIndicator />
+      ) : (
+        <ScrollView showsVerticalScrollIndicator={false} style={styles.scrollView}>
+          <View style={{ alignSelf: "center" }}>
+            <View style={styles.profileImage}>
+              <Image
+                source={require("../../image/Diego.jpg")}
+                style={styles.image}
+                resizeMode="center"
+              />
+            </View>
+            <View style={styles.add}>
+              <Ionicons name="ios-add" size={40} color="#FEB139" />
+            </View>
+          </View>
 
-      <View style={styles.infoContainer}>
-        <Text style={[styles.text, { fontWeight: "200", fontSize: 36 }]}>
-          {name}
-        </Text>
-        <Text style={[styles.text, { color: "#AEB5BC", fontSize: 14 }]}>
-          {user.lastName}
-        </Text>
-      </View>
+          <View style={styles.infoContainer}>
+            <Text style={[styles.text, { fontWeight: "200", fontSize: 36 }]}>
+              {user.name}
+            </Text>
+            <Text style={[styles.text, { color: "#AEB5BC", fontSize: 14 }]}>
+              {user.lastname}
+            </Text>
+          </View>
 
-      <View style={styles.infoUserContainer}>
-        <Text style={styles.textTitle}>Cédula:</Text>
-        <Text style={styles.textSecond}>{user.idCard}</Text>
-        <Text style={styles.textTitle}>Correo Electrónico:</Text>
-        <Text style={styles.textSecond}>{user.email}</Text>
-        <Text style={styles.textTitle}>Contraseña:</Text>
-        <Text style={styles.textSecond}>*******</Text>
-        <Text style={styles.textTitle}>Ciudad:</Text>
-        <Text style={styles.textSecond}>{user.direction}</Text>
-      </View>
+          <View style={styles.infoUserContainer}>
+            <TextInput
+              title="Identificacion"
+              control={control}
+              isPassword={false}
+              name="idCard"
+              rules={{
+                required: {
+                  value: true,
+                  message: "*La Cédula es obligatoria*",
+                },
+              }}
+              defaultValue={user.idCard}
+              errorMessage={errors?.idCard?.message}
+            />
+            <TextInput
+              title="Correo Electrónico"
+              control={control}
+              isPassword={false}
+              name="email"
+              rules={{
+                required: {
+                  value: true,
+                  message: "*El Correo Electrónico es obligatorio*",
+                },
+                pattern: {
+                  value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                  message: "*El Correo Electrónico debe tener un formato válido*",
+                },
+              }}
+              defaultValue={String(user.email)}
+              errorMessage={errors?.email?.message}
+              autoCompleteType="email"
+              textContentType="emailAddress"
+              keyboardType="email-address"
+              returnKeyType="next"
+            />
+            <TextInput
+              title="Dirección"
+              control={control}
+              isPassword={false}
+              name="direction"
+              rules={{
+                required: {
+                  value: true,
+                  message: "*La Dirección es obligatoria*",
+                },
+              }}
+              defaultValue={String(user.direction)}
+              errorMessage={errors?.direction?.message}
+            />
+          </View>
 
-      <Button mode="outlined" onPress={() => logout()}>
-        Cerrar sesion
+          <Button mode="outlined" onPress={() => logout()}>
+            Cerrar sesion
       </Button>
 
-      <Button mode="outlined" onPress={() => navigate("Reportes del Usuario")}>
-        Mis Reportes
+          <Button mode="outlined" onPress={() => navigate("Reportes del Usuario")}>
+            Mis Reportes
       </Button>
-    </ScrollView>
+
+          <Button mode="contained" style={styles.bottonBorrar} onPress={() => onDeleteUser(user.email)}>
+            Eliminar cuenta
+      </Button>
+
+        </ScrollView>
+      )}
+    </View>
   );
 }
 
@@ -129,8 +194,6 @@ const styles = StyleSheet.create({
   },
   infoUserContainer: {
     alignSelf: "auto",
-    alignItems: "flex-start",
-    marginLeft: 20,
     marginTop: 20,
   },
   textTitle: {
@@ -166,4 +229,10 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     borderColor: "black",
   },
+  scrollView: {
+    width: Dimensions.get("window").width,
+  },
+  bottonBorrar: {
+    color: '#f13a59',
+  }
 });

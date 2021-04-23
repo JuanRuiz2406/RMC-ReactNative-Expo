@@ -37,9 +37,9 @@ export default ({
 const styles = StyleSheet.create({
   label: {
     margin: 20,
-    marginTop: '10%',
+    marginTop: '5%',
     marginLeft: 40,
-    fontSize: 18,
+    fontSize: 25,
   },
   errorMessage: {
     marginLeft: 35,
@@ -50,8 +50,9 @@ const styles = StyleSheet.create({
     height: 40,
     padding: 10,
     borderRadius: 4,
-    borderWidth: 1,
+    borderBottomWidth: 1,
     marginLeft: '5%',
     marginRight: '5%',
+    fontSize: 20,
   },
 });
