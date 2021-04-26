@@ -15,7 +15,7 @@ export default ({ navigation: { navigate } }) => {
 
   const fetchReports = useCallback(async () => {
     await fetch(
-      "http://192.168.0.2:8080/report/byPublicPrivacyAndVisibleState",
+      "http://192.168.0.13:8080/report/byPublicPrivacyAndVisibleState",
       {
         headers: {
           Accept: "application/json",

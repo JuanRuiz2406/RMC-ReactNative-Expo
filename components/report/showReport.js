@@ -10,7 +10,7 @@ export default ({ report, details }) => {
   const canDelete = route.params.canDelete;
 
   const onDeleteReport = async (reportId) => {
-    await fetch("http://192.168.0.2:8080/report/" + String(reportId), {
+    await fetch("http://192.168.0.13:8080/report/" + String(reportId), {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",

@@ -29,7 +29,7 @@ export default function RegisterScreen({ navigation }) {
       direction: "",
     });
     console.log(data);
-    fetch("http://192.168.0.8:8080/auth/new", {
+    fetch("http://192.168.0.13:8080/auth/new", {
       method: "POST",
       headers: {
         Accept: "application/json",
@@ -49,7 +49,7 @@ export default function RegisterScreen({ navigation }) {
       .then((responseJson) => {
         console.log(responseJson.code);
         if (responseJson.code == 201) {
-          fetch("http://192.168.0.8:8080/auth/login", {
+          fetch("http://192.168.0.13:8080/auth/login", {
             method: "POST",
             headers: {
               Accept: "application/json",

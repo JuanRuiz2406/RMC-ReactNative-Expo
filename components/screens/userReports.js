@@ -15,8 +15,8 @@ export default ({ navigation: { navigate } }) => {
 
   const fetchReports = useCallback(async () => {
     await fetch(
-      "http://192.168.0.2:8080/report/byUserEmail/" +
-        (await AsyncStorage.getItem("userEmail")),
+      "http://192.168.0.8:8080/report/byUserEmail/" +
+      (await AsyncStorage.getItem("userEmail")),
       {
         headers: {
           Accept: "application/json",

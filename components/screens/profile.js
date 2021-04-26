@@ -22,7 +22,7 @@ export default function Profile({ navigation: { navigate } }) {
 
   const fetchUser = async () => {
     await fetch(
-      "http://192.168.0.8:8080/user/byEmail/" +
+      "http://192.168.0.13:8080/user/byEmail/" +
       String((await AsyncStorage.getItem("userEmail"))),
       {
         headers: {
@@ -216,9 +216,6 @@ const styles = StyleSheet.create({
   RegisterButton: {
     marginVertical: 32,
   },
-  green: {
-    backgroundColor: "#008652",
-  },
   button: {
     padding: 7,
     marginTop: 25,
@@ -233,6 +230,7 @@ const styles = StyleSheet.create({
     width: Dimensions.get("window").width,
   },
   bottonBorrar: {
-    color: '#f13a59',
+    backgroundColor: "#FF0000",
+    margin: '5%',
   }
 });

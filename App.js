@@ -33,6 +33,8 @@ const Stack = createStackNavigator();
 
 export default function App() {
 
+  const [userTemp, setUserTemp] = useState();
+
   const initialLoginState = {
     isLoading: false,
     userName: null,
@@ -77,20 +79,19 @@ export default function App() {
   const [loginState, dispatch] = useReducer(loginReducer, initialLoginState);
 
   const auth = useMemo(() => ({
-    login: async (apiEmail, userName, token) => {
-      let userToken;
+    login: async (apiEmail, userName, token, user) => {
       console.log(userName, apiEmail);
       if (userName == apiEmail) {
         if (token != null) {
           try {
-            userToken = token;
-            console.log("user token: ", userToken);
-            await AsyncStorage.setItem('userToken', userToken);
+            console.log("user token: ", token);
+            await AsyncStorage.setItem('userToken', token);
             await AsyncStorage.setItem('userEmail', userName);
+            await AsyncStorage.setItem('user', JSON.stringify(user));
           } catch (e) {
             console.log(e);
           }
-          dispatch({ type: "LOGIN", id: userName, token: userToken });
+          dispatch({ type: "LOGIN", id: userName, token: token });
         } else {
           console.log("Error en el login");
           Alert.alert("Error en el login");

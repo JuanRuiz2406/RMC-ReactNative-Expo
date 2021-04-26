@@ -1,0 +1,1 @@
+{"ast":null,"code":"export var idAppFacebook = \"490117555335289\";","map":{"version":3,"sources":["C:/xampp/htdocs/Front-End-RMC-Expo/components/config/idKeyFacebook.js"],"names":["idAppFacebook"],"mappings":"AAAA,OAAO,IAAMA,aAAa,GACtB,iBADG","sourcesContent":["export const idAppFacebook =\r\n    \"490117555335289\""]},"metadata":{},"sourceType":"module"}
