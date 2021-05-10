@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback } from "react";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, View, Alert } from "react-native";
 import ActivityIndicator from "./activityIndicator";
 import { List } from "../report/index";
 import { getReports } from "../services/reports";
@@ -15,16 +15,13 @@ export default ({ navigation: { navigate } }) => {
 
   const fetchReports = useCallback(async () => {
     const reportsResponse = await getReports();
-    console.log(reportsResponse);
     if (reportsResponse.code !== null) {
       setLoading(false);
       setRefreshing(false);
       setReports(reportsResponse);
-    } else if (reportsResponse.status === 401) {
-      Alert.alert(
-        "Error",
-        reportsResponse.error
-      );
+    }
+    if (reportsResponse.status === 401) {
+      Alert.alert("Error", reportsResponse.error);
     }
   });
 

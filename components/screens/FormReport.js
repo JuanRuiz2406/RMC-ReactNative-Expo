@@ -63,7 +63,8 @@ export default ({ navigation: { navigate } }) => {
     console.log(reportResponse);
     if (reportResponse.code === 200) {
       Alert.alert("Reporte", reportResponse.message);
-    } else if (reportResponse.status === 401) {
+    }
+    if (reportResponse.status === 401) {
       Alert.alert(
         "Error de Autenticación (logee nuevamente o *retirar user*)",
         reportResponse.error
