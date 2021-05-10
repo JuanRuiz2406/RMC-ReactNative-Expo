@@ -3,19 +3,24 @@ import React, { useState, useEffect, useReducer, useMemo } from "react";
 import * as Google from "expo-google-app-auth";
 import * as Facebook from "expo-facebook";
 
-import { Provider } from 'react-native-paper';
-import { theme } from './components/core/theme';
+import { Provider } from "react-native-paper";
+import { theme } from "./components/core/theme";
 import { createStackNavigator } from "@react-navigation/stack";
 import { NavigationContainer } from "@react-navigation/native";
 import { NavBar } from "./components/Navigators/index";
-import { StartScreen, LoginScreen, RegisterScreen, ResetPasswordScreen } from "./components/Navigators/index";
+import {
+  StartScreen,
+  LoginScreen,
+  RegisterScreen,
+  ResetPasswordScreen,
+} from "./components/Navigators/index";
 
 import AuthStackNavigator from "./components/Navigators/AuthStackNavigator";
 import { AuthContext } from "./components/contexts/authContext";
 //Storage
-import AsyncStorage from '@react-native-community/async-storage';
+import AsyncStorage from "@react-native-community/async-storage";
 //Login with google and facebook
-import firebase from 'firebase';
+import firebase from "firebase";
 import { firebaseConfig } from "./components/config/firebaseConfig";
 import Expo from "expo";
 import { androidClientId } from "./components/config/superKeyAndroid";
@@ -27,12 +32,9 @@ if (!firebase.apps.length) {
   firebase.initializeApp(firebaseConfig);
 }
 
-
-
 const Stack = createStackNavigator();
 
 export default function App() {
-
   const [userTemp, setUserTemp] = useState();
 
   const initialLoginState = {
@@ -85,9 +87,9 @@ export default function App() {
         if (token != null) {
           try {
             console.log("user token: ", token);
-            await AsyncStorage.setItem('userToken', token);
-            await AsyncStorage.setItem('userEmail', userName);
-            await AsyncStorage.setItem('user', JSON.stringify(user));
+            await AsyncStorage.setItem("userToken", token);
+            await AsyncStorage.setItem("userEmail", userName);
+            await AsyncStorage.setItem("user", JSON.stringify(user));
           } catch (e) {
             console.log(e);
           }
@@ -103,8 +105,8 @@ export default function App() {
     },
     logout: async () => {
       try {
-        await AsyncStorage.removeItem('userToken');
-        await AsyncStorage.removeItem('userEmail');
+        await AsyncStorage.removeItem("userToken");
+        await AsyncStorage.removeItem("userEmail");
       } catch (e) {
         console.log(e);
       }
@@ -116,8 +118,8 @@ export default function App() {
         try {
           userToken = token;
           console.log("user token: ", userToken);
-          await AsyncStorage.setItem('userToken', userToken);
-          await AsyncStorage.setItem('userEmail', emailApi);
+          await AsyncStorage.setItem("userToken", userToken);
+          await AsyncStorage.setItem("userEmail", emailApi);
         } catch (e) {
           console.log(e);
         }
@@ -131,14 +133,18 @@ export default function App() {
         const result = await Google.logInAsync({
           androidClientId: androidClientId,
           iosClientId: iosClientId,
-          scopes: ['profile', 'email'],
+          scopes: ["profile", "email"],
         });
 
-        if (result.type === 'success') {
+        if (result.type === "success") {
           console.log(result);
-          await AsyncStorage.setItem('userToken', result.accessToken);
-          await AsyncStorage.setItem('userEmail', result.user.email);
-          dispatch({ type: "LOGIN", id: result.user.email, token: result.accessToken });
+          await AsyncStorage.setItem("userToken", result.accessToken);
+          await AsyncStorage.setItem("userEmail", result.user.email);
+          dispatch({
+            type: "LOGIN",
+            id: result.user.email,
+            token: result.accessToken,
+          });
         } else {
           console.log("Cancelado");
         }
@@ -149,29 +155,27 @@ export default function App() {
     loginWithFacebook: async () => {
       try {
         await Facebook.initializeAsync({
-          appId: '<APP_ID>',
+          appId: "<APP_ID>",
         });
-        const {
-          type,
-          token,
-        } = await Facebook.logInWithReadPermissionsAsync({
-          permissions: ['public_profile', 'email', 'user_friends'],
+        const { type, token } = await Facebook.logInWithReadPermissionsAsync({
+          permissions: ["public_profile", "email", "user_friends"],
         });
-        if (type === 'success') {
+        if (type === "success") {
           // Get the user's name using Facebook's Graph API
-          const response = await fetch(`https://graph.facebook.com/me?access_token=${token}&fields=id,name,email,about,picture`);
-          const resJSON = JSON.stringify(await response.json())
+          const response = await fetch(
+            `https://graph.facebook.com/me?access_token=${token}&fields=id,name,email,about,picture`
+          );
+          const resJSON = JSON.stringify(await response.json());
           console.log(resJSON, " ");
-          await AsyncStorage.setItem('userToken', token);
+          await AsyncStorage.setItem("userToken", token);
           dispatch({ type: "LOGIN", id: resJSON.email, token: token });
         } else {
           // type === 'cancel'
-          Alert.alert("cancel")
+          Alert.alert("cancel");
         }
       } catch ({ message }) {
         alert(`Facebook Login Error: ${message}`);
       }
-
     },
   }));
 
@@ -181,8 +185,8 @@ export default function App() {
       userToken = null;
       userName = null;
       try {
-        userToken = await AsyncStorage.getItem('userToken');
-        userName = await AsyncStorage.getItem('userEmail');
+        userToken = await AsyncStorage.getItem("userToken");
+        userName = await AsyncStorage.getItem("userEmail");
         console.log(userToken, userName);
       } catch (e) {
         console.log(e);
@@ -194,24 +198,29 @@ export default function App() {
   if (loginState.isLoading) {
     return (
       <Provider theme={theme}>
-        <NavigationContainer>
-          <Stack.Navigator initialRouteName="ReportsMyCity" screenOptions={{
-            headerShown: false,
-          }}>
-            <Stack.Screen
-              name="ReportsMyCity"
-              component={NavBar}
-              options={{ headerStyle: { backgroundColor: "#3E5EAB" } }}
-            />
-          </Stack.Navigator>
-        </NavigationContainer>
+        <AuthContext.Provider value={auth}>
+          <NavigationContainer>
+            <Stack.Navigator
+              initialRouteName="ReportsMyCity"
+              screenOptions={{
+                headerShown: false,
+              }}
+            >
+              <Stack.Screen
+                name="ReportsMyCity"
+                component={NavBar}
+                options={{ headerStyle: { backgroundColor: "#3E5EAB" } }}
+              />
+            </Stack.Navigator>
+          </NavigationContainer>
+        </AuthContext.Provider>
       </Provider>
     );
   }
   return (
     <Provider theme={theme}>
       <AuthContext.Provider value={auth}>
-        <NavigationContainer >
+        <NavigationContainer>
           {loginState.userToken !== null ? (
             <Stack.Navigator initialRouteName="ReportsMyCity">
               <Stack.Screen
@@ -229,11 +238,14 @@ export default function App() {
               <Stack.Screen name="StartScreen" component={StartScreen} />
               <Stack.Screen name="LoginScreen" component={LoginScreen} />
               <Stack.Screen name="RegisterScreen" component={RegisterScreen} />
-              <Stack.Screen name="ResetPasswordScreen" component={ResetPasswordScreen} />
+              <Stack.Screen
+                name="ResetPasswordScreen"
+                component={ResetPasswordScreen}
+              />
             </Stack.Navigator>
           )}
         </NavigationContainer>
       </AuthContext.Provider>
     </Provider>
   );
-};
+}

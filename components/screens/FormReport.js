@@ -11,29 +11,20 @@ import {
 import { useForm } from "react-hook-form";
 import { TextInput, Picker } from "../hook-form/index";
 import { reverseGeocodeAsync } from "expo-location";
-import AsyncStorage from "@react-native-community/async-storage";
+import { newReport } from "../services/reports";
 
 export default ({ navigation: { navigate } }) => {
   const { handleSubmit, control, reset, errors } = useForm();
   const [cityName, setCityName] = useState("");
   const [latitude, setLatitude] = useState(0);
   const [longitude, setLongitude] = useState(0);
-  const [token, setToken] = useState("");
   const pickerOptions = ["Público", "Privado"];
 
   useEffect(() => {
-    if (token === "") {
-      getToken();
-    } else {
+    if (latitude !== 0) {
       updateCoordenadesAndCityName();
     }
   }, [latitude, longitude]);
-
-  const getToken = async () => {
-    const tokenInStorage = await AsyncStorage.getItem("userToken");
-
-    setToken(tokenInStorage);
-  };
 
   const updateCoordenadesAndCityName = async () => {
     let locationData = await reverseGeocodeAsync({
@@ -60,7 +51,7 @@ export default ({ navigation: { navigate } }) => {
     direction: "Casa",
   };
 
-  const onSubmitReport = (data) => {
+  const onSubmitReport = async (data) => {
     console.log(data);
 
     reset({
@@ -68,29 +59,16 @@ export default ({ navigation: { navigate } }) => {
       description: "",
     });
 
-    fetch("http://192.168.0.2:8080/report/city/" + String(cityName), {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + token,
-      },
-      body: JSON.stringify({
-        title: data.title,
-        description: data.description,
-        state: "Nuevo",
-        privacy: data.privacy,
-        user: user,
-        coordenates: coordenates,
-      }),
-    })
-      .then((response) => response.json())
-      .then((responseJson) => {
-        console.log(responseJson);
-        Alert.alert("Reporte", responseJson.message);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+    const reportResponse = await newReport(data, user, coordenates, cityName);
+    console.log(reportResponse);
+    if (reportResponse.code === 200) {
+      Alert.alert("Reporte", reportResponse.message);
+    } else if (reportResponse.status === 401) {
+      Alert.alert(
+        "Error de Autenticación (logee nuevamente o *retirar user*)",
+        reportResponse.error
+      );
+    }
   };
 
   console.log(errors);
@@ -153,14 +131,14 @@ export default ({ navigation: { navigate } }) => {
           style={[styles.button, styles.orange]}
           onPress={() => navigate("Cámara")}
         >
-          <Text style={styles.buttonText}>Tomar Foto</Text>
+          <Text style={styles.buttonText}>*Tomar Foto*</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
           style={[styles.button, styles.orange]}
           onPress={() => navigate("Seleccionar Fotos")}
         >
-          <Text style={styles.buttonText}>Seleccionar Fotos</Text>
+          <Text style={styles.buttonText}>*Seleccionar Fotos*</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
