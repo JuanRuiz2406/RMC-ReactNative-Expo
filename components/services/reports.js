@@ -57,3 +57,17 @@ export const getUserReports = async () => {
 };
 
 // getDetailReport
+
+export const deleteReport = async (reportId) => {
+  return fetch(API_URL + "report/" + String(reportId), {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + (await token),
+    },
+  })
+    .then((response) => response.json())
+    .then((responseJson) => {
+      return responseJson;
+    });
+};

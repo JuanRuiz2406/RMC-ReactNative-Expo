@@ -3,6 +3,7 @@ import { Alert, StyleSheet, Image, Text, View } from "react-native";
 import Button from "../ComponetsLogin/Button";
 import AsyncStorage from "@react-native-community/async-storage";
 import { useRoute } from "@react-navigation/native";
+import { deleteReport } from "../services/reports";
 
 export default ({ report, details }) => {
   const route = useRoute();
@@ -10,21 +11,13 @@ export default ({ report, details }) => {
   const canDelete = route.params.canDelete;
 
   const onDeleteReport = async (reportId) => {
-    await fetch("http://192.168.0.13:8080/report/" + String(reportId), {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + (await AsyncStorage.getItem("userToken")),
-      },
-    })
-      .then((response) => response.json())
-      .then((responseJson) => {
-        console.log(responseJson);
-        Alert.alert("Reporte", responseJson.message);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+    const deleteReportResponse = await deleteReport(reportId);
+    if (deleteReportResponse.code === 200) {
+      Alert.alert("Reporte", deleteReportResponse.message);
+    }
+    if (deleteReportResponse.status === 401) {
+      Alert.alert("Error", deleteReportResponse.error);
+    }
   };
 
   return (

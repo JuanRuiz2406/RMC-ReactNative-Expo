@@ -15,7 +15,6 @@ export default ({ navigation: { navigate } }) => {
 
   const fetchReports = useCallback(async () => {
     const userReportsResponse = await getUserReports();
-    console.log(userReportsResponse);
     if (userReportsResponse.code !== null) {
       setLoading(false);
       setRefreshing(false);
