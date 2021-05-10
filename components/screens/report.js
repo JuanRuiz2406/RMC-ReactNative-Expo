@@ -3,6 +3,7 @@ import { StyleSheet, View } from "react-native";
 import ActivityIndicator from "./activityIndicator";
 import { ShowReport } from "../report/index";
 import { useRoute } from "@react-navigation/native";
+import { getReportDetails } from "../services/reports";
 
 export default () => {
   const route = useRoute();
@@ -13,13 +14,14 @@ export default () => {
   const [details, setDetails] = useState([]);
 
   const fetchDetails = async () => {
-    const response = await fetch(
-      "http://192.168.0.2:8080/detailReport/byReport/" + report.id
-    );
-    const data = await response.json();
-    console.log(data);
-    setDetails(data);
-    setLoadingDetails(false);
+    const reportDetailsResponse = await getReportDetails(report.id);
+    if (reportDetailsResponse !== null) {
+      setLoadingDetails(false);
+      setDetails(reportDetailsResponse);
+    }
+    if (reportDetailsResponse.status === 401) {
+      Alert.alert("Error Unauthorized", reportDetailsResponse.error);
+    }
   };
 
   useEffect(() => {

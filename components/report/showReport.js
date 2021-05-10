@@ -1,7 +1,6 @@
 import React from "react";
 import { Alert, StyleSheet, Image, Text, View } from "react-native";
 import Button from "../ComponetsLogin/Button";
-import AsyncStorage from "@react-native-community/async-storage";
 import { useRoute } from "@react-navigation/native";
 import { deleteReport } from "../services/reports";
 
