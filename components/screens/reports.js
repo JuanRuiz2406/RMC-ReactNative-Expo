@@ -2,7 +2,7 @@ import React, { useEffect, useState, useCallback } from "react";
 import { StyleSheet, View } from "react-native";
 import ActivityIndicator from "./activityIndicator";
 import { List } from "../report/index";
-import AsyncStorage from "@react-native-community/async-storage";
+import { getReports } from "../services/reports";
 
 export default ({ navigation: { navigate } }) => {
   const [loading, setLoading] = useState(true);
@@ -14,21 +14,18 @@ export default ({ navigation: { navigate } }) => {
   }, [refreshing]);
 
   const fetchReports = useCallback(async () => {
-    await fetch(
-      "http://192.168.0.13:8080/report/byPublicPrivacyAndVisibleState",
-      {
-        headers: {
-          Accept: "application/json",
-          Authorization: "Bearer " + (await AsyncStorage.getItem("userToken")),
-        },
-      }
-    )
-      .then((response) => response.json())
-      .then((data) => {
-        setLoading(false);
-        setRefreshing(false);
-        setReports(data);
-      });
+    const reportsResponse = await getReports();
+    console.log(reportsResponse);
+    if (reportsResponse.code !== null) {
+      setLoading(false);
+      setRefreshing(false);
+      setReports(reportsResponse);
+    } else if (reportsResponse.status === 401) {
+      Alert.alert(
+        "Error",
+        reportsResponse.error
+      );
+    }
   });
 
   const onPress = (report) => {

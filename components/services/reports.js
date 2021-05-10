@@ -4,7 +4,6 @@ import AsyncStorage from "@react-native-community/async-storage";
 const token = AsyncStorage.getItem("userToken");
 
 export const newReport = async (report, user, coordenates, cityName) => {
-  console.log(API_URL + "report/city/" + String(cityName));
   return fetch(API_URL + "report/city/" + String(cityName), {
     method: "POST",
     headers: {
@@ -31,10 +30,10 @@ export const newReport = async (report, user, coordenates, cityName) => {
 };
 
 export const getReports = async () => {
-  return fetch(baseUrl + "report", {
+  return fetch(API_URL + "report/byPublicPrivacyAndVisibleState", {
     headers: {
-      "Content-Type": "application/x-www-form-urlencoded",
-      Authorization: localStorage.getItem("token"),
+      Accept: "application/json",
+      Authorization: "Bearer " + (await token),
     },
   })
     .then((response) => response.json())

@@ -17,6 +17,7 @@ export default () => {
       "http://192.168.0.2:8080/detailReport/byReport/" + report.id
     );
     const data = await response.json();
+    console.log(data);
     setDetails(data);
     setLoadingDetails(false);
   };
