@@ -17,8 +17,10 @@
     "@react-navigation/stack": "^5.14.2",
     "axios": "^0.21.1",
     "expo": "~40.0.1",
+    "expo-camera": "~9.1.0",
     "expo-facebook": "^10.0.0",
     "expo-google-app-auth": "^8.1.4",
+    "expo-image-picker": "~9.2.0",
     "expo-location": "~9.0.0",
     "expo-status-bar": "~1.0.3",
     "expo-updates": "~0.3.3",
@@ -27,6 +29,7 @@
     "react-dom": "17.0.1",
     "react-hook-form": "^6.13.1",
     "react-native": "https://github.com/expo/react-native/archive/sdk-39.0.3.tar.gz",
+    "react-native-elements": "^3.4.1",
     "react-native-fbsdk": "^3.0.0",
     "react-native-gesture-handler": "~1.8.0",
     "react-native-ionicons": "^4.6.5",
@@ -37,11 +40,10 @@
     "react-native-screens": "~2.15.2",
     "react-native-status-bar-height": "^2.6.0",
     "react-native-svg": "12.1.0",
+    "react-native-vector-icons": "^8.1.0",
     "react-native-web": "^0.15.3",
     "react-navigation": "^4.4.4",
-    "react-navigation-stack": "^2.10.3",
-    "expo-camera": "~9.1.0",
-    "expo-image-picker": "~9.2.0"
+    "react-navigation-stack": "^2.10.3"
   },
   "devDependencies": {
     "@babel/core": "~7.12.13"

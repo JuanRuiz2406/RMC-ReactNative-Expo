@@ -107,6 +107,7 @@ export default function App() {
       try {
         await AsyncStorage.removeItem("userToken");
         await AsyncStorage.removeItem("userEmail");
+        await AsyncStorage.removeItem("user");
       } catch (e) {
         console.log(e);
       }
@@ -138,8 +139,8 @@ export default function App() {
 
         if (result.type === "success") {
           console.log(result);
-          await AsyncStorage.setItem("userToken", result.accessToken);
-          await AsyncStorage.setItem("userEmail", result.user.email);
+          await AsyncStorage.setItem("userToken", result.idToken);
+          await AsyncStorage.setItem("user", JSON.stringify(result.user));
           dispatch({
             type: "LOGIN",
             id: result.user.email,

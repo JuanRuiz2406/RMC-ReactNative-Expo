@@ -1,6 +1,8 @@
 import React from "react";
 import { StyleSheet, TextInput, Text } from "react-native";
 import { Controller } from "react-hook-form";
+import Icon from "react-native-vector-icons/FontAwesome";
+import { Input } from "react-native-elements";
 
 export default ({
   title,
@@ -10,6 +12,7 @@ export default ({
   rules,
   defaultValue,
   errorMessage,
+  leftIconName,
 }) => {
   return (
     <>
@@ -17,9 +20,10 @@ export default ({
       <Controller
         control={control}
         render={({ onChange, onBlur, value }) => (
-          <TextInput
+          <Input
+            leftIcon={{ type: 'font-awesome', name: leftIconName }}
             secureTextEntry={isPassword}
-            style={styles.input}
+            //style={styles.input}
             onBlur={onBlur}
             onChangeText={(value) => onChange(value)}
             value={value}
@@ -37,9 +41,10 @@ export default ({
 const styles = StyleSheet.create({
   label: {
     margin: 20,
-    marginTop: '5%',
-    marginLeft: 40,
-    fontSize: 25,
+    marginTop: '1%',
+    marginLeft: 7,
+    fontSize: 22,
+    fontWeight: "bold",
   },
   errorMessage: {
     marginLeft: 35,
@@ -47,12 +52,12 @@ const styles = StyleSheet.create({
   },
   input: {
     backgroundColor: "white",
-    height: 40,
-    padding: 10,
+    height: 30,
+    padding: 2,
     borderRadius: 4,
     borderBottomWidth: 1,
-    marginLeft: '5%',
-    marginRight: '5%',
+    marginLeft: '1%',
+    marginRight: '1%',
     fontSize: 20,
   },
 });

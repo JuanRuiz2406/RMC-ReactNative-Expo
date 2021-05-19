@@ -15,31 +15,30 @@ export default function ResetPasswordScreen({ navigation }) {
     <Background>
       <BackButton goBack={navigation.goBack} />
       <Logo />
-      <Header>Restore Password</Header>
-      <View styles={styles.input}>
-        <TextInput
-          title="Correo Electrónico"
-          control={control}
-          isPassword={false}
-          name="email"
-          rules={{
-            required: {
-              value: true,
-              message: "*El Correo Electrónico es obligatorio*",
-            },
-            pattern: {
-              value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-              message: "*El Correo Electrónico debe tener un formato válido*",
-            },
-          }}
-          defaultValue=""
-          errorMessage={errors?.email?.message}
-          autoCompleteType="email"
-          textContentType="emailAddress"
-          keyboardType="email-address"
-          returnKeyType="next"
-        />
-      </View>
+      <Header>Restaurar Contraseña</Header>
+      <TextInput
+        title="Correo Electrónico"
+        control={control}
+        isPassword={false}
+        name="email"
+        rules={{
+          required: {
+            value: true,
+            message: "*El Correo Electrónico es obligatorio*",
+          },
+          pattern: {
+            value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+            message: "*El Correo Electrónico debe tener un formato válido*",
+          },
+        }}
+        defaultValue=""
+        errorMessage={errors?.email?.message}
+        autoCompleteType="email"
+        textContentType="emailAddress"
+        keyboardType="email-address"
+        returnKeyType="next"
+        leftIconName="unlock"
+      />
       <Button mode="contained">
         Enviar codigo
             </Button>

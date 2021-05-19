@@ -10,6 +10,8 @@ import ActivityIndicator from "./activityIndicator";
 import AsyncStorage from "@react-native-community/async-storage";
 import Button from "../ComponetsLogin/Button";
 
+import { deleteUser } from "../services/user";
+
 export default function Profile({ navigation: { navigate } }) {
   const { handleSubmit, control, reset, errors } = useForm();
   const [loading, setLoading] = useState(true);
@@ -17,45 +19,28 @@ export default function Profile({ navigation: { navigate } }) {
   const [user, setUser] = useState([]);
 
   useEffect(() => {
-    fetchUser();
+    loadUser();
+    //fetchUser();
   }, []);
 
-  const fetchUser = async () => {
-    await fetch(
-      "http://192.168.0.13:8080/user/byEmail/" +
-      String((await AsyncStorage.getItem("userEmail"))),
-      {
-        headers: {
-          Accept: "application/json",
-          Authorization: "Bearer " + (await AsyncStorage.getItem("userToken")),
-        },
-      }
-    )
-      .then((response) => response.json())
-      .then((responseJson) => {
-        setUser(responseJson);
-        setLoading(false)
-        console.log(responseJson);
-      });
-  };
+
+  const loadUser = async () => {
+    setUser(JSON.parse(await AsyncStorage.getItem("user")));
+    setLoading(false);
+    console.log(user);
+  }
 
   const onDeleteUser = async (userEmail) => {
-    await fetch("http://192.168.0.8:8080/user/" + String(userEmail), {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + (await AsyncStorage.getItem("userToken")),
-      },
-    })
-      .then((response) => response.json())
-      .then((responseJson) => {
-        console.log(responseJson);
-        Alert.alert("Usuario", responseJson.message);
-        logout();
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+
+    const deleteResponse = await deleteUser(userEmail);
+    console.log(deleteResponse);
+    if (deleteResponse.code === 200) {
+      Alert.alert(deleteResponse.message);
+      logout();
+    }
+    if (deleteResponse.code === 401) {
+      Alert.alert("Error al eliminar: ", deleteResponse.error);
+    }
   };
 
   return (
@@ -79,7 +64,7 @@ export default function Profile({ navigation: { navigate } }) {
 
           <View style={styles.infoContainer}>
             <Text style={[styles.text, { fontWeight: "200", fontSize: 36 }]}>
-              {user.name}
+              {String(user.name)}
             </Text>
             <Text style={[styles.text, { color: "#AEB5BC", fontSize: 14 }]}>
               {user.lastname}
