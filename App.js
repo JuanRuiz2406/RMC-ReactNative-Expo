@@ -1,4 +1,3 @@
-//import { StatusBar } from 'expo-status-bar';
 import React, { useState, useEffect, useReducer, useMemo } from "react";
 import * as Google from "expo-google-app-auth";
 import * as Facebook from "expo-facebook";
@@ -13,7 +12,10 @@ import {
   LoginScreen,
   RegisterScreen,
   ResetPasswordScreen,
+  CompleteUser,
 } from "./components/Navigators/index";
+
+import { loginUser } from "./components/services/user"
 
 import AuthStackNavigator from "./components/Navigators/AuthStackNavigator";
 import { AuthContext } from "./components/contexts/authContext";
@@ -21,8 +23,8 @@ import { AuthContext } from "./components/contexts/authContext";
 import AsyncStorage from "@react-native-community/async-storage";
 //Login with google and facebook
 import firebase from "firebase";
+import expo from "expo";
 import { firebaseConfig } from "./components/config/firebaseConfig";
-import Expo from "expo";
 import { androidClientId } from "./components/config/superKeyAndroid";
 import { iosClientId } from "./components/config/superKeyIOS";
 import { idAppFacebook } from "./components/config/idKeyFacebook";
@@ -35,7 +37,6 @@ if (!firebase.apps.length) {
 const Stack = createStackNavigator();
 
 export default function App() {
-  const [userTemp, setUserTemp] = useState();
 
   const initialLoginState = {
     isLoading: false,
@@ -139,29 +140,36 @@ export default function App() {
 
         if (result.type === "success") {
           console.log(result);
-          await AsyncStorage.setItem("userToken", result.idToken);
+
           await AsyncStorage.setItem("user", JSON.stringify(result.user));
-          dispatch({
-            type: "LOGIN",
-            id: result.user.email,
-            token: result.accessToken,
-          });
+          const resposeLoginG = await loginUser(result.user, "google", result.user.id);
+          await AsyncStorage.setItem("userToken", resposeLoginG.token);
+          if (resposeLoginG.token != null) {
+            dispatch({
+              type: "LOGIN",
+              id: result.user.email,
+              token: resposeLoginG.token,
+            });
+          } else {
+            NavigationContainer.Navigator('CompleteUser');
+            console.log("Error en el inicio de sesion");
+          }
         } else {
-          console.log("Cancelado");
+          Alert.alert("Cancelado")
         }
       } catch (e) {
-        console.log("Error", e);
+        Alert.alert("Error", e);
       }
     },
     loginWithFacebook: async () => {
       try {
         await Facebook.initializeAsync({
-          appId: "<APP_ID>",
+          appId: idAppFacebook,
         });
         const { type, token } = await Facebook.logInWithReadPermissionsAsync({
-          permissions: ["public_profile", "email", "user_friends"],
+          permissions: ["public_profile", "email"],
         });
-        if (type === "success") {
+        if (type === 'success') {
           // Get the user's name using Facebook's Graph API
           const response = await fetch(
             `https://graph.facebook.com/me?access_token=${token}&fields=id,name,email,about,picture`
@@ -169,9 +177,15 @@ export default function App() {
           const resJSON = JSON.stringify(await response.json());
           console.log(resJSON, " ");
           await AsyncStorage.setItem("userToken", token);
-          dispatch({ type: "LOGIN", id: resJSON.email, token: token });
+          await AsyncStorage.setItem("user", resJSON);
+          const resposeLoginFB = await loginUser(resJSON, "facebook", resJSON.id);
+          if (resposeLoginFB.token != null) {
+            dispatch({ type: "LOGIN", id: resJSON.email, token: token });
+          } else {
+            NavigationContainer.Navigator('CompleteUser');
+            console.log("Error en el inicio de sesion");
+          }
         } else {
-          // type === 'cancel'
           Alert.alert("cancel");
         }
       } catch ({ message }) {
@@ -243,6 +257,7 @@ export default function App() {
                 name="ResetPasswordScreen"
                 component={ResetPasswordScreen}
               />
+              <Stack.Screen name="CompleteUser" component={CompleteUser} />
             </Stack.Navigator>
           )}
         </NavigationContainer>

@@ -38,6 +38,7 @@ export default function RegisterScreen({ navigation }) {
       console.log(responseLogin);
       if (responseLogin.code === 200) {
         console.log("El usuario ser loguio correctamente");
+        register(responseLogin.user.email, responseLogin.token);
       }
       if (responseLogin.code === 401) {
         Alert.alert("Problemas para iniciar sesion, vuelva a intentar");

@@ -34,7 +34,7 @@ export default function LoginScreen({ navigation }) {
       token: "",
     });
 
-    const createResponse = await loginUser(data);
+    const createResponse = await loginUser(data, "normal", data.password);
     console.log(createResponse);
     if (createResponse.email != null) {
       login(createResponse.email, data.email, createResponse.token, createResponse.user);
