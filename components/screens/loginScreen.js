@@ -36,10 +36,10 @@ export default function LoginScreen({ navigation }) {
 
     const createResponse = await loginUser(data);
     console.log(createResponse);
-    if (createResponse.code === 200) {
+    if (createResponse.email != null) {
       login(createResponse.email, data.email, createResponse.token, createResponse.user);
     }
-    if (createResponse.code === 401) {
+    else {
       Alert.alert("Campos mal rellenados, revise y vuelva a intentar");
     }
   };
