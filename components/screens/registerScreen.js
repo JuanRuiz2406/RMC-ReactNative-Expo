@@ -15,6 +15,8 @@ import Button from "../ComponetsLogin/Button";
 import BackButton from "../ComponetsLogin/BackButton";
 import { theme } from "../core/theme";
 
+import AsyncStorage from "@react-native-community/async-storage";
+
 export default function RegisterScreen({ navigation }) {
   const { handleSubmit, control, reset, errors } = useForm();
   const { register } = useContext(AuthContext);
@@ -32,15 +34,15 @@ export default function RegisterScreen({ navigation }) {
     console.log(data);
     const saveUser = await newUser(data);
     console.log(saveUser);
-    if (saveUser.code === 200) {
+    if (saveUser.code === 201) {
       console.log("El usuario ser registro correctamente")
-      const responseLogin = await loginUser(data);
+      const responseLogin = await loginUser(data, "normal", data.password);
       console.log(responseLogin);
-      if (responseLogin.code === 200) {
+      if (responseLogin.token != null) {
         console.log("El usuario ser loguio correctamente");
         register(responseLogin.user.email, responseLogin.token);
       }
-      if (responseLogin.code === 401) {
+      if (responseLogin.token === null) {
         Alert.alert("Problemas para iniciar sesion, vuelva a intentar");
       }
     }

@@ -15,7 +15,7 @@ import {
   CompleteUser,
 } from "./components/Navigators/index";
 
-import { loginUser } from "./components/services/user"
+import { loginUser, newUserThird, loginUserThird } from "./components/services/user"
 
 import AuthStackNavigator from "./components/Navigators/AuthStackNavigator";
 import { AuthContext } from "./components/contexts/authContext";
@@ -114,17 +114,16 @@ export default function App() {
       }
       dispatch({ type: "LOGOUT" });
     },
-    register: async (emailApi, token) => {
+    register: async (emailApi, token, user) => {
+      console.log(token);
       if (token != null) {
         let userToken;
-        try {
-          userToken = token;
-          console.log("user token: ", userToken);
-          await AsyncStorage.setItem("userToken", userToken);
-          await AsyncStorage.setItem("userEmail", emailApi);
-        } catch (e) {
-          console.log(e);
-        }
+        userToken = token;
+        console.log("user token: ", userToken);
+        await AsyncStorage.setItem("userToken", userToken);
+        await AsyncStorage.setItem("userEmail", emailApi);
+        await AsyncStorage.setItem("user", JSON.stringify(user));
+
         dispatch({ type: "REGISTER", id: emailApi, token: userToken });
       } else {
         console.log("Problemas al registrar usuario, error");
@@ -142,21 +141,23 @@ export default function App() {
           console.log(result);
 
           await AsyncStorage.setItem("user", JSON.stringify(result.user));
-          const resposeLoginG = await loginUser(result.user, "google", result.user.id);
+          const usertemp = JSON.parse(result.user);
+          console.log(usertemp);
+          const resposeLoginGSave = await newUserThird(usertemp, "google");
           await AsyncStorage.setItem("userToken", resposeLoginG.token);
-          if (resposeLoginG.token != null) {
-            dispatch({
-              type: "LOGIN",
-              id: result.user.email,
-              token: resposeLoginG.token,
-            });
-          } else {
-            NavigationContainer.Navigator('CompleteUser');
+          if (resposeLoginGSave.code === 200) {
+            //if (responseLoginG.token != null) {
+            //dispatch({
+            //type: "LOGIN",
+            //id: result.user.email,
+            //token: resposeLoginG.token,
+            //});
+            Alert.alert("Se guardo usuario")
+          } else if (resposeLoginGSave.code === 401) {
             console.log("Error en el inicio de sesion");
           }
-        } else {
-          Alert.alert("Cancelado")
         }
+
       } catch (e) {
         Alert.alert("Error", e);
       }
@@ -164,11 +165,13 @@ export default function App() {
     loginWithFacebook: async () => {
       try {
         await Facebook.initializeAsync({
-          appId: idAppFacebook,
+          appId: '490117555335289',
         });
-        const { type, token } = await Facebook.logInWithReadPermissionsAsync({
-          permissions: ["public_profile", "email"],
-        });
+        const { type, token, expirationDate,
+          permissions,
+          declinedPermissions } = await Facebook.logInWithReadPermissionsAsync({
+            permissions: ['public_profile', 'email'],
+          });
         if (type === 'success') {
           // Get the user's name using Facebook's Graph API
           const response = await fetch(
@@ -176,9 +179,12 @@ export default function App() {
           );
           const resJSON = JSON.stringify(await response.json());
           console.log(resJSON, " ");
-          await AsyncStorage.setItem("userToken", token);
+          const usertemp = JSON.parse(resJSON);
+
           await AsyncStorage.setItem("user", resJSON);
-          const resposeLoginFB = await loginUser(resJSON, "facebook", resJSON.id);
+          console.log(usertemp.email);
+          const resposeLoginFB = await loginUserThird(usertemp, "facebook", "123456789");
+          await AsyncStorage.setItem("userToken", resposeLoginFB.token);
           if (resposeLoginFB.token != null) {
             dispatch({ type: "LOGIN", id: resJSON.email, token: token });
           } else {

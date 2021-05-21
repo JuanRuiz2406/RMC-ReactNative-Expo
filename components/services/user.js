@@ -23,6 +23,30 @@ export const deleteUser = async (userEmail) => {
 };
 
 export const loginUser = async (user, provider, pass) => {
+    return fetch(API_URL + "auth/login", {
+        method: "POST",
+        headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+            email: user.email,
+            lastName: user.lastName,
+            name: user.name,
+            password: pass,
+            provider: provider
+        }),
+    })
+        .then((response) => response.json())
+        .then((responseJson) => {
+            return responseJson;
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+}
+
+export const loginUserThird = async (user, provider, pass) => {
     return fetch(API_URL + "auth/loginproviders", {
         method: "POST",
         headers: {
@@ -35,6 +59,9 @@ export const loginUser = async (user, provider, pass) => {
             name: user.name,
             password: pass,
             provider: provider,
+            direction: "direccion",
+            idCard: user.idCard,
+            role: "user"
         }),
     })
         .then((response) => response.json())
@@ -61,8 +88,8 @@ export const newUser = async (user) => {
             lastName: user.lastName,
             name: user.name,
             password: user.password,
-            role: "user",
-            state: "activo"
+            provider: "normal",
+            role: "user"
         }),
     })
         .then((response) => response.json())
@@ -77,7 +104,7 @@ export const newUser = async (user) => {
 
 }
 
-export const newUserThird = async (user) => {
+export const newUserThird = async (user, provider) => {
     return fetch(API_URL + "auth/new", {
         method: "POST",
         headers: {
@@ -85,14 +112,13 @@ export const newUserThird = async (user) => {
             "Content-Type": "application/json",
         },
         body: JSON.stringify({
-            direction: user.direction,
-            email: userTemp.email,
-            idCard: user.idCard,
-            lastName: userTemp.lastName,
-            name: userTemp.name,
-            password: user.password,
+            direction: "direccion",
+            email: user.email,
+            idCard: "123456789",
+            lastName: "apellido",
+            name: user.givenName,
+            password: "123456789",
             role: "user",
-            state: "activo"
         }),
     })
         .then((response) => response.json())

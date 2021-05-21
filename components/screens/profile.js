@@ -64,10 +64,10 @@ export default function Profile({ navigation: { navigate } }) {
 
           <View style={styles.infoContainer}>
             <Text style={[styles.text, { fontWeight: "200", fontSize: 36 }]}>
-              {String(user.name)}
+              hola
             </Text>
             <Text style={[styles.text, { color: "#AEB5BC", fontSize: 14 }]}>
-              {user.lastname}
+              hola
             </Text>
           </View>
 
@@ -83,7 +83,7 @@ export default function Profile({ navigation: { navigate } }) {
                   message: "*La Cédula es obligatoria*",
                 },
               }}
-              defaultValue={user.idCard}
+              defaultValue="504200201"
               errorMessage={errors?.idCard?.message}
             />
             <TextInput
