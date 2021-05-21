@@ -6,7 +6,7 @@ import {
   FlatList,
   TouchableOpacity,
 } from "react-native";
-
+let Image_Http_URL ={ uri: 'https://firebasestorage.googleapis.com/v0/b/reportmycity-5912e.appspot.com/o/032AE213-6C21-43EB-B433-139DFF5833E01621595712843.png?alt=media&token=8a52011c-c8da-4b2b-9cc2-82c9dcbc0b8f'};
 export default ({ onRefresh, refreshing, reports, onPress }) => {
   return (
     <FlatList
@@ -26,7 +26,8 @@ export default ({ onRefresh, refreshing, reports, onPress }) => {
           <Text style={styles.description}>{item.description}</Text>
 
           <Image
-            source={require("../../image/arbol-carretera.jpg")}
+          
+            source={{ uri: item.imgURL}}
             style={styles.image}
           />
         </TouchableOpacity>

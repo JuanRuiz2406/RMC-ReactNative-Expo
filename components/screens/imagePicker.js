@@ -56,7 +56,12 @@ async function uploadImageAsync(uri) {
     xhr.send(null);
   });
 
-  const ref = firebase.storage().ref().child("file.png");
+  let filename = uri.substring(uri.lastIndexOf('/') + 1);
+  const extension = filename.split('.').pop();
+  const name = filename.split('.').slice(0,-1).join('.');
+  filename = name + Date.now() + '.' + extension;
+
+  const ref = firebase.storage().ref().child(filename);
   const snapshot = await ref.put(blob);
 
   // We're done with the blob, close and release it

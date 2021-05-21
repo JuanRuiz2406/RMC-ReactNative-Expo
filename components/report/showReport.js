@@ -47,7 +47,7 @@ export default ({ report, details }) => {
         </Text>
       )}
       <Image
-        source={require("../../image/arbol-carretera.jpg")}
+        source={{ uri: report.imgURL}}
         style={styles.image}
       />
       {canDelete && (
