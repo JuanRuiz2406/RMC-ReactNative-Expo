@@ -40,7 +40,7 @@ export default function RegisterScreen({ navigation }) {
       console.log(responseLogin);
       if (responseLogin.token != null) {
         console.log("El usuario ser loguio correctamente");
-        register(responseLogin.user.email, responseLogin.token);
+        register(responseLogin.user.email, responseLogin.token, responseLogin.user);
       }
       if (responseLogin.token === null) {
         Alert.alert("Problemas para iniciar sesion, vuelva a intentar");

@@ -139,25 +139,27 @@ export default function App() {
 
         if (result.type === "success") {
           console.log(result);
+          //const usertemp = JSON.parse(result.user);
+          console.log(result.user.givenName);
+          const resposeLoginGSave = await newUserThird(result.user, "google");
+          console.log(resposeLoginGSave);
+          if (resposeLoginGSave.token != null) {
+            await AsyncStorage.setItem("userToken", resposeLoginGSave.token);
+            await AsyncStorage.setItem("user", JSON.stringify(resposeLoginGSave.user));
+            dispatch({
+              type: "LOGIN",
+              id: result.user.email,
+              token: resposeLoginGSave.token,
+            });
+            console.log("Inicio de sesion correcto");
 
-          await AsyncStorage.setItem("user", JSON.stringify(result.user));
-          const usertemp = JSON.parse(result.user);
-          console.log(usertemp);
-          const resposeLoginGSave = await newUserThird(usertemp, "google");
-          await AsyncStorage.setItem("userToken", resposeLoginG.token);
-          if (resposeLoginGSave.code === 200) {
-            //if (responseLoginG.token != null) {
-            //dispatch({
-            //type: "LOGIN",
-            //id: result.user.email,
-            //token: resposeLoginG.token,
-            //});
-            Alert.alert("Se guardo usuario")
-          } else if (resposeLoginGSave.code === 401) {
-            console.log("Error en el inicio de sesion");
-          }
+          } else
+            if (resposeLoginGSave.code === 400) {
+              console.log(resposeLoginGSave.message);
+            } else if (resposeLoginGSave.code === 404) {
+              console.log(resposeLoginGSave.message);
+            }
         }
-
       } catch (e) {
         Alert.alert("Error", e);
       }

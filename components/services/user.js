@@ -105,7 +105,7 @@ export const newUser = async (user) => {
 }
 
 export const newUserThird = async (user, provider) => {
-    return fetch(API_URL + "auth/new", {
+    return fetch(API_URL + "auth/loginWithGoogle", {
         method: "POST",
         headers: {
             Accept: "application/json",
@@ -115,10 +115,11 @@ export const newUserThird = async (user, provider) => {
             direction: "direccion",
             email: user.email,
             idCard: "123456789",
-            lastName: "apellido",
+            lastName: user.familyName,
             name: user.givenName,
             password: "123456789",
-            role: "user",
+            provider: provider,
+            role: "user"
         }),
     })
         .then((response) => response.json())
