@@ -5,8 +5,8 @@ const token = AsyncStorage.getItem("userToken");
 const userTemp = AsyncStorage.getItem("user");
 
 export const deleteUser = async (userEmail) => {
-    return fetch(API_URL + "user/" + String(userEmail), {
-        method: "DELETE",
+    return fetch(API_URL + "user/state/" + String(userEmail), {
+        method: "PUT",
         headers: {
             "Content-Type": "application/json",
             Authorization: "Bearer " + (await token),
