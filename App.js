@@ -15,7 +15,7 @@ import {
   CompleteUser,
 } from "./components/Navigators/index";
 
-import { loginUser, newUserThird, loginUserThird } from "./components/services/user"
+import { loginUser, newUserThird, loginUserThird, newUserFB } from "./components/services/user"
 
 import AuthStackNavigator from "./components/Navigators/AuthStackNavigator";
 import { AuthContext } from "./components/contexts/authContext";
@@ -182,15 +182,14 @@ export default function App() {
           const resJSON = JSON.stringify(await response.json());
           console.log(resJSON, " ");
           const usertemp = JSON.parse(resJSON);
-
-          await AsyncStorage.setItem("user", resJSON);
           console.log(usertemp.email);
-          const resposeLoginFB = await loginUserThird(usertemp, "facebook", "123456789");
-          await AsyncStorage.setItem("userToken", resposeLoginFB.token);
+          const resposeLoginFB = await newUserFB(usertemp, "facebook");
           if (resposeLoginFB.token != null) {
-            dispatch({ type: "LOGIN", id: resJSON.email, token: token });
+            await AsyncStorage.setItem("userToken", resposeLoginFB.token);
+            await AsyncStorage.setItem("user", JSON.stringify(resposeLoginFB.user));
+            dispatch({ type: "LOGIN", id: usertemp.email, token: resposeLoginFB.token });
           } else {
-            NavigationContainer.Navigator('CompleteUser');
+            //NavigationContainer.Navigator('CompleteUser');
             console.log("Error en el inicio de sesion");
           }
         } else {

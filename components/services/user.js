@@ -131,3 +131,31 @@ export const newUserThird = async (user, provider) => {
             console.error(error);
         });
 }
+
+export const newUserFB = async (user, provider) => {
+    return fetch(API_URL + "auth/loginWithGoogle", {
+        method: "POST",
+        headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+            direction: "direccion",
+            email: user.email,
+            idCard: "123456789",
+            lastName: "Apellidos",
+            name: user.name,
+            password: "123456789",
+            provider: provider,
+            role: "user"
+        }),
+    })
+        .then((response) => response.json())
+        .then((responseJson) => {
+            console.log(responseJson);
+            return responseJson;
+        })
+        .catch((error) => {
+            console.error(error);
+        });
+}
