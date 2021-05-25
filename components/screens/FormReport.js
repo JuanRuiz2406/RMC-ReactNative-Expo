@@ -12,8 +12,12 @@ import {
 import { useForm } from "react-hook-form";
 import { TextInput, Picker } from "../hook-form/index";
 import { reverseGeocodeAsync } from "expo-location";
-import { getReportById, getReportDetails, newReport } from "../services/reports";
-import * as ImagePicker from 'expo-image-picker';
+import {
+  getReportById,
+  getReportDetails,
+  newReport,
+} from "../services/reports";
+import * as ImagePicker from "expo-image-picker";
 import * as firebase from "firebase";
 import { newPhotography } from "../services/photography";
 
@@ -30,10 +34,11 @@ export default ({ navigation: { navigate } }) => {
       updateCoordenadesAndCityName();
     }
     (async () => {
-      if (Platform.OS !== 'web') {
-        const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
-        if (status !== 'granted') {
-          alert('Sorry, we need camera roll permissions to make this work!');
+      if (Platform.OS !== "web") {
+        const { status } =
+          await ImagePicker.requestMediaLibraryPermissionsAsync();
+        if (status !== "granted") {
+          alert("Sorry, we need camera roll permissions to make this work!");
         }
       }
     })();
@@ -85,11 +90,23 @@ export default ({ navigation: { navigate } }) => {
     });
     const uploadUrl = await uploadImageAsync(image);
     console.log(uploadUrl);
-    const reportResponse = await newReport(data, user, coordenates, cityName, uploadUrl.toString());
+    const reportResponse = await newReport(
+      data,
+      user,
+      coordenates,
+      cityName,
+      uploadUrl.toString()
+    );
+
+
     Alert.alert("Reporte", reportResponse.message);
     console.log(reportResponse);
-    if (reportResponse.code === 200) {
-      Alert.alert("Reporte", reportResponse.message);
+    if (reportResponse != null) {
+
+      responsePhotography = await newPhotography(uploadUrl, reportResponse);
+      console.log(responsePhotography);
+
+      Alert.alert("Reporte", "Reporte Guardado exitosamente");
     }
     if (reportResponse.status === 401) {
       Alert.alert(
@@ -235,10 +252,10 @@ async function uploadImageAsync(uri) {
     xhr.send(null);
   });
 
-  let filename = uri.substring(uri.lastIndexOf('/') + 1);
-  const extension = filename.split('.').pop();
-  const name = filename.split('.').slice(0,-1).join('.');
-  filename = name + Date.now() + '.' + extension;
+  let filename = uri.substring(uri.lastIndexOf("/") + 1);
+  const extension = filename.split(".").pop();
+  const name = filename.split(".").slice(0, -1).join(".");
+  filename = name + Date.now() + "." + extension;
 
   const ref = firebase.storage().ref().child(filename);
   const snapshot = await ref.put(blob);
