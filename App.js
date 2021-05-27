@@ -15,7 +15,7 @@ import {
   CompleteUser,
 } from "./components/Navigators/index";
 
-import { loginUser, newUserThird, loginUserThird, newUserFB } from "./components/services/user"
+import { newUserThird, newUserFB } from "./components/services/user"
 
 import AuthStackNavigator from "./components/Navigators/AuthStackNavigator";
 import { AuthContext } from "./components/contexts/authContext";
@@ -139,7 +139,6 @@ export default function App() {
 
         if (result.type === "success") {
           console.log(result);
-          //const usertemp = JSON.parse(result.user);
           console.log(result.user.givenName);
           const resposeLoginGSave = await newUserThird(result.user, "google");
           console.log(resposeLoginGSave);
@@ -189,7 +188,6 @@ export default function App() {
             await AsyncStorage.setItem("user", JSON.stringify(resposeLoginFB.user));
             dispatch({ type: "LOGIN", id: usertemp.email, token: resposeLoginFB.token });
           } else {
-            //NavigationContainer.Navigator('CompleteUser');
             console.log("Error en el inicio de sesion");
           }
         } else {
@@ -216,29 +214,6 @@ export default function App() {
       dispatch({ type: "RETRIEVE_TOKEN", token: userToken });
     }, 1000);
   }, []);
-
-  if (loginState.isLoading) {
-    return (
-      <Provider theme={theme}>
-        <AuthContext.Provider value={auth}>
-          <NavigationContainer>
-            <Stack.Navigator
-              initialRouteName="ReportsMyCity"
-              screenOptions={{
-                headerShown: false,
-              }}
-            >
-              <Stack.Screen
-                name="ReportsMyCity"
-                component={NavBar}
-                options={{ headerStyle: { backgroundColor: "#3E5EAB" } }}
-              />
-            </Stack.Navigator>
-          </NavigationContainer>
-        </AuthContext.Provider>
-      </Provider>
-    );
-  }
   return (
     <Provider theme={theme}>
       <AuthContext.Provider value={auth}>

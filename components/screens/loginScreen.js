@@ -5,10 +5,13 @@ import {
   Dimensions,
   View,
   Alert,
+  ScrollView,
+  KeyboardAvoidingView,
+  Keyboard,
+  Platform
 } from "react-native";
 import { useForm } from "react-hook-form";
 import { TextInput } from "../hook-form/index";
-import { ScrollView } from "react-native-gesture-handler";
 import { AuthContainer } from "../loginComponents/authContainer";
 import { AuthContext } from "../contexts/authContext";
 import { loginUser } from "../services/user";
@@ -49,70 +52,76 @@ export default function LoginScreen({ navigation }) {
   return (
     <Background>
       <BackButton goBack={navigation.goBack} />
-      <Logo />
-      <Header>Bienvenido de nuevo</Header>
-      <AuthContainer>
-        <TextInput
-          title="Correo Electrónico"
-          control={control}
-          isPassword={false}
-          name="email"
-          rules={{
-            required: {
-              value: true,
-              message: "*El Correo Electrónico es obligatorio*",
-            },
-            pattern: {
-              value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-              message: "*El Correo Electrónico debe tener un formato válido*",
-            },
-          }}
-          defaultValue=""
-          errorMessage={errors?.email?.message}
-          autoCompleteType="email"
-          textContentType="emailAddress"
-          keyboardType="email-address"
-          returnKeyType="next"
-          leftIconName="at"
-        />
-        <TextInput
-          title="Contraseña"
-          control={control}
-          isPassword={true}
-          name="password"
-          rules={{
-            required: {
-              value: true,
-              message: "*La Contraseña es obligatoria*",
-            },
-            minLength: {
-              value: 8,
-              message: "*La Contraseña debe tener 8 caracteres mínimo*",
-            },
-          }}
-          defaultValue=""
-          errorMessage={errors?.password?.message}
-          leftIconName="lock"
-        />
-        <View style={styles.forgotPassword}>
-          <TouchableOpacity
-            onPress={() => navigation.navigate('ResetPasswordScreen')}
-          >
-            <Text style={styles.forgot}>Olvido su contraseña?</Text>
-          </TouchableOpacity>
-        </View>
+      <ScrollView
+        ref={(ref) => (scrollView = ref)}
+        style={styles.scrollView} bounces={false}>
+        <Logo />
+        <Header>Bienvenido de nuevo</Header>
+        <AuthContainer>
+          <TextInput
+            title="Correo Electrónico"
+            control={control}
+            isPassword={false}
+            name="email"
+            rules={{
+              required: {
+                value: true,
+                message: "*El Correo Electrónico es obligatorio*",
+              },
+              pattern: {
+                value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                message: "*El Correo Electrónico debe tener un formato válido*",
+              },
+            }}
+            defaultValue=""
+            errorMessage={errors?.email?.message}
+            autoCompleteType="email"
+            textContentType="emailAddress"
+            keyboardType="email-address"
+            returnKeyType="next"
+            leftIconName="at"
+          />
+          <TextInput
+            title="Contraseña"
+            control={control}
+            isPassword={true}
+            name="password"
+            rules={{
+              required: {
+                value: true,
+                message: "*La Contraseña es obligatoria*",
+              },
+              minLength: {
+                value: 8,
+                message: "*La Contraseña debe tener 8 caracteres mínimo*",
+              },
+            }}
+            defaultValue=""
+            errorMessage={errors?.password?.message}
+            leftIconName="lock"
+          />
+          <View style={styles.forgotPassword}>
+            <TouchableOpacity
+              onPress={() => navigation.navigate('ResetPasswordScreen')}
+            >
+              <Text style={styles.forgot}>Olvido su contraseña?</Text>
+            </TouchableOpacity>
+          </View>
 
-        <Button mode="contained" onPress={handleSubmit(onSubmitLogin)}>
-          Iniciar Sesion
+          <Button mode="contained" onPress={handleSubmit(onSubmitLogin)}>
+            Iniciar Sesion
             </Button>
-        <Button mode="outlined" onPress={() => loginWithGoogle()}>
-          Google
+          <Button mode="outlined" onPress={() => loginWithGoogle()}>
+            Google
             </Button>
-        <Button mode="outlined" onPress={() => loginWithFacebook()}>
-          Facebook
+          <Button mode="outlined" onPress={() => loginWithFacebook()}>
+            Facebook
             </Button>
-      </AuthContainer>
+        </AuthContainer>
+      </ScrollView>
     </Background>
+
+    //</KeyboardAvoidingView >
   );
 }
 
@@ -145,7 +154,6 @@ const styles = StyleSheet.create({
   scrollView: {
     width: Dimensions.get("window").width,
     height: Dimensions.get("window").height,
-    backgroundColor: "white",
   },
   forgotPassword: {
     width: '100%',

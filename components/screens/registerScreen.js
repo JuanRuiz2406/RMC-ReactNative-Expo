@@ -1,13 +1,21 @@
 import React, { useContext } from "react";
-import { Alert, StyleSheet, Dimensions } from "react-native";
+import {
+  Alert,
+  StyleSheet,
+  Dimensions,
+  KeyboardAvoidingView,
+  ScrollView,
+  Platform,
+  StatusBar,
+  View,
+  TouchableWithoutFeedback,
+  Keyboard
+} from "react-native";
 import { AuthContainer } from "../loginComponents/authContainer";
 import { AuthContext } from "../contexts/authContext";
 import { useForm } from "react-hook-form";
 import { TextInput } from "../hook-form/index";
-import { ScrollView } from "react-native-gesture-handler";
 import { newUser, loginUser } from "../services/user";
-
-import { Text } from "react-native-paper";
 import Background from "../ComponetsLogin/Background";
 import Logo from "../ComponetsLogin/Logo";
 import Header from "../ComponetsLogin/Header";
@@ -52,9 +60,13 @@ export default function RegisterScreen({ navigation }) {
   };
 
   return (
-    <ScrollView>
-      <Background>
-        <BackButton goBack={navigation.goBack} />
+    <Background>
+      <BackButton goBack={navigation.goBack} />
+      <ScrollView
+        style={styles.scrollView}
+      //ref={(ref) => (scrollView = ref)}
+      //bounces={false}
+      >
         <Logo />
         <Header>Crea una cuenta</Header>
         <AuthContainer>
@@ -169,8 +181,8 @@ export default function RegisterScreen({ navigation }) {
             Registrar
           </Button>
         </AuthContainer>
-      </Background>
-    </ScrollView>
+      </ScrollView>
+    </Background>
   );
 }
 
@@ -198,7 +210,9 @@ const styles = StyleSheet.create({
   },
   scrollView: {
     width: Dimensions.get("window").width,
-    height: Dimensions.get("window").height,
-    backgroundColor: "white",
+  },
+  container: {
+    flex: 1,
+    justifyContent: 'center',
   },
 });

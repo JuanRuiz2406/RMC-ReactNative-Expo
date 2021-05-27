@@ -6,7 +6,7 @@ const userEmail = AsyncStorage.getItem("userEmail");
 
 export const newReport = async (report, user, coordenates, cityName, uploadUrl) => {
   console.log("------------------.....");
-  console.log(uploadUrl);
+  console.log(coordenates);
   return fetch(API_URL + "report/city/" + String(cityName), {
     method: "POST",
     headers: {
