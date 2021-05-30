@@ -5,10 +5,7 @@ import {
   Dimensions,
   View,
   Alert,
-  ScrollView,
-  KeyboardAvoidingView,
-  Keyboard,
-  Platform
+  ScrollView
 } from "react-native";
 import { useForm } from "react-hook-form";
 import { TextInput } from "../hook-form/index";
@@ -50,14 +47,17 @@ export default function LoginScreen({ navigation }) {
   console.log(errors);
 
   return (
+
     <Background>
       <BackButton goBack={navigation.goBack} />
       <ScrollView
         ref={(ref) => (scrollView = ref)}
         style={styles.scrollView} bounces={false}>
+
         <Logo />
         <Header>Bienvenido de nuevo</Header>
         <AuthContainer>
+
           <TextInput
             title="Correo Electrónico"
             control={control}
@@ -120,8 +120,6 @@ export default function LoginScreen({ navigation }) {
         </AuthContainer>
       </ScrollView>
     </Background>
-
-    //</KeyboardAvoidingView >
   );
 }
 

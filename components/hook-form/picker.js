@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { StyleSheet, Text } from "react-native";
+import { StyleSheet, Text, Pi } from "react-native";
 import { Controller } from "react-hook-form";
 import { Picker } from "@react-native-picker/picker";
 
@@ -22,7 +22,6 @@ export default ({
           <Picker
             onBlur={onBlur}
             selectedValue={pickerSelectedOption}
-            style={styles.picker}
             onValueChange={(itemValue, itemPosition) => {
               onChange(itemValue);
               setPickerSelectedOption(itemValue);
@@ -48,9 +47,10 @@ export default ({
 const styles = StyleSheet.create({
   label: {
     margin: 20,
-    marginTop: 25,
-    marginLeft: 40,
-    fontSize: 18,
+    marginTop: '1%',
+    marginLeft: 7,
+    fontSize: 22,
+    fontWeight: "bold",
   },
   errorMessage: {
     marginLeft: 35,
@@ -60,8 +60,8 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     borderRadius: 4,
     borderWidth: 1,
-    height: 50,
-    marginLeft: 30,
-    marginRight: 30,
+    height: '10%',
+    marginLeft: '5%',
+    marginRight: '5%',
   },
 });

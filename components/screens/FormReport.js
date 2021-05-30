@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from "react";
 import {
-  Text,
   View,
   StyleSheet,
-  TouchableOpacity,
   Alert,
   ScrollView,
   Dimensions,
@@ -20,6 +18,9 @@ import {
 import * as ImagePicker from "expo-image-picker";
 import * as firebase from "firebase";
 import { newPhotography } from "../services/photography";
+
+import Button from "../ComponetsLogin/Button";
+import Icon from "react-native-vector-icons/FontAwesome";
 
 export default ({ navigation: { navigate } }) => {
   const { handleSubmit, control, reset, errors } = useForm();
@@ -121,77 +122,85 @@ export default ({ navigation: { navigate } }) => {
   return (
     <View style={styles.container}>
       <ScrollView style={styles.scrollView}>
-        <TextInput
-          title="Título"
-          control={control}
-          isPassword={false}
-          name="title"
-          rules={{
-            required: {
-              value: true,
-              message: "*El título es requerido*",
-            },
-          }}
-          defaultValue=""
-          errorMessage={errors?.title?.message}
-        />
+        <View style={styles.viewIn}>
+          <TextInput
+            title="Título"
+            control={control}
+            isPassword={false}
+            name="title"
+            rules={{
+              required: {
+                value: true,
+                message: "*El título es requerido*",
+              },
+            }}
+            defaultValue=""
+            errorMessage={errors?.title?.message}
+          />
 
-        <TextInput
-          title="Descripción"
-          control={control}
-          isPassword={false}
-          name="description"
-          rules={{
-            required: {
-              value: true,
-              message: "*Por favor describa su reporte*",
-            },
-          }}
-          defaultValue=""
-          errorMessage={errors?.description?.message}
-        />
+          <TextInput
+            title="Descripción"
+            control={control}
+            isPassword={false}
+            name="description"
+            rules={{
+              required: {
+                value: true,
+                message: "*Por favor describa su reporte*",
+              },
+            }}
+            defaultValue=""
+            errorMessage={errors?.description?.message}
+          />
 
-        <Picker
-          title="Privacidad"
-          control={control}
-          name="privacy"
-          error={errors.privacy}
-          errorMessage="*Selecciona alguna opción*"
-          pickerOptions={pickerOptions}
-        />
+          <Picker
+            title="Privacidad"
+            control={control}
+            name="privacy"
+            error={errors.privacy}
+            errorMessage="*Selecciona alguna opción*"
+            pickerOptions={pickerOptions}
+          />
 
-        <TouchableOpacity
-          style={[styles.button, styles.orange]}
-          onPress={() =>
-            navigate("Mapa", {
-              setLatitude: setLatitude,
-              setLongitude: setLongitude,
-            })
-          }
-        >
-          <Text style={styles.buttonText}>*Seleccionar Ubicación*</Text>
-        </TouchableOpacity>
+          <Button
+            mode="contained"
+            onPress={() =>
+              navigate("Mapa", {
+                setLatitude: setLatitude,
+                setLongitude: setLongitude,
+              })
+            }
+          >
+            <Icon style={styles.icon} name="location-arrow" />
+          </Button>
 
-        <TouchableOpacity
-          style={[styles.button, styles.orange]}
-          onPress={() => navigate("Cámara")}
-        >
-          <Text style={styles.buttonText}>*Tomar Foto*</Text>
-        </TouchableOpacity>
+          <View style={styles.buttonViewContainer}>
+            <Button
+              style={styles.button}
+              mode="contained"
+              onPress={() => navigate("Cámara")}
+            >
+              <Icon style={styles.icon} name="camera" />
+            </Button>
 
-        <TouchableOpacity
-          style={[styles.button, styles.orange]}
-          onPress={pickImage}
-        >
-          <Text style={styles.buttonText}>*Seleccionar Fotos*</Text>
-        </TouchableOpacity>
+            <Button
+              style={styles.button}
+              mode="contained"
+              onPress={pickImage}
+            >
+              <Icon style={styles.icon} name="image" />
+            </Button>
+          </View>
 
-        <TouchableOpacity
-          style={[styles.button, styles.green]}
-          onPress={handleSubmit(onSubmitReport)}
-        >
-          <Text style={styles.buttonText}>Reportar</Text>
-        </TouchableOpacity>
+
+          <Button
+            mode="contained"
+            style={styles.green}
+            onPress={handleSubmit(onSubmitReport)}
+          >
+            Reportar
+          </Button>
+        </View>
       </ScrollView>
     </View>
   );
@@ -206,19 +215,13 @@ const styles = StyleSheet.create({
   },
   green: {
     backgroundColor: "#3CBA69",
+    margin: '10%',
   },
   orange: {
     backgroundColor: "#F8A513",
   },
   button: {
-    padding: 7,
-    marginTop: 25,
-    marginLeft: 40,
-    marginRight: 40,
-    marginBottom: 50,
-    borderWidth: 1,
-    borderRadius: 10,
-    borderColor: "black",
+    width: '45%',
   },
   buttonText: {
     fontSize: 20,
@@ -229,10 +232,21 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
-  },
-  scrollView: {
     width: Dimensions.get("window").width,
   },
+  scrollView: {
+    backgroundColor: "#fff",
+  },
+  viewIn: {
+    margin: '3%',
+  },
+  buttonViewContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+  },
+  icon: {
+    fontSize: 26,
+  }
 });
 
 async function uploadImageAsync(uri) {

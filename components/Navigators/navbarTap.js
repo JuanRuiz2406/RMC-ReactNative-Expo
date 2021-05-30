@@ -1,4 +1,5 @@
 import * as React from "react";
+import { StyleSheet } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { AntDesign } from "@expo/vector-icons";
 import FormReportStack from "./FormReportStack";
@@ -17,9 +18,9 @@ export default navBar = () => {
     >
       <Tab.Screen
         name="Home"
+        style={styles.container}
         component={ReportStack}
         options={{
-          tabBarLabel: "Reportes",
           tabBarIcon: ({ color }) => (
             <AntDesign name="bells" color={color} size={30} />
           ),
@@ -27,9 +28,9 @@ export default navBar = () => {
       />
       <Tab.Screen
         name="Crear Reporte"
+        style={styles.container}
         component={FormReportStack}
         options={{
-          tabBarLabel: "Crear Reporte",
           tabBarIcon: ({ color }) => (
             <AntDesign name="plus" color={color} size={40} />
           ),
@@ -39,7 +40,6 @@ export default navBar = () => {
         name="Perfil"
         component={ProfileStack}
         options={{
-          tabBarLabel: "Perfil",
           tabBarIcon: ({ color }) => (
             <AntDesign name="user" color={color} size={30} />
           ),
@@ -48,3 +48,10 @@ export default navBar = () => {
     </Tab.Navigator>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    backgroundColor: "#fff",
+    margin: '5%',
+  },
+})
