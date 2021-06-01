@@ -13,6 +13,7 @@ export default ({
   defaultValue,
   errorMessage,
   leftIconName,
+  placeholder,
 }) => {
   return (
     <>
@@ -27,6 +28,7 @@ export default ({
             onBlur={onBlur}
             onChangeText={(value) => onChange(value)}
             value={value}
+            placeholder={placeholder}
           />
         )}
         name={name}

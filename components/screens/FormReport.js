@@ -6,6 +6,7 @@ import {
   ScrollView,
   Dimensions,
   Image,
+  Text
 } from "react-native";
 import { useForm } from "react-hook-form";
 import { TextInput, Picker } from "../hook-form/index";
@@ -123,6 +124,7 @@ export default ({ navigation: { navigate } }) => {
     <View style={styles.container}>
       <ScrollView style={styles.scrollView}>
         <View style={styles.viewIn}>
+          <Text style={styles.label}>Información</Text>
           <TextInput
             title="Título"
             control={control}
@@ -131,11 +133,13 @@ export default ({ navigation: { navigate } }) => {
             rules={{
               required: {
                 value: true,
-                message: "*El título es requerido*",
+                message: "¡El título es requerido!",
               },
             }}
             defaultValue=""
             errorMessage={errors?.title?.message}
+            placeholder={"Escriba aquí"}
+
           />
 
           <TextInput
@@ -146,11 +150,12 @@ export default ({ navigation: { navigate } }) => {
             rules={{
               required: {
                 value: true,
-                message: "*Por favor describa su reporte*",
+                message: "¡Por favor describa su reporte!",
               },
             }}
             defaultValue=""
             errorMessage={errors?.description?.message}
+            placeholder={"Escriba aquí"}
           />
 
           <Picker
@@ -161,6 +166,16 @@ export default ({ navigation: { navigate } }) => {
             errorMessage="*Selecciona alguna opción*"
             pickerOptions={pickerOptions}
           />
+
+          <View
+            style={{
+              borderBottomColor: 'black',
+              borderBottomWidth: 0.5,
+              marginBottom: '4%',
+              marginTop: '4%',
+            }}></View>
+
+          <Text style={styles.label}>Multimedia</Text>
 
           <Button
             mode="contained"
@@ -192,6 +207,13 @@ export default ({ navigation: { navigate } }) => {
             </Button>
           </View>
 
+          <View
+            style={{
+              borderBottomColor: 'black',
+              borderBottomWidth: 0.5,
+              marginBottom: '4%',
+              marginTop: '4%',
+            }}></View>
 
           <Button
             mode="contained"
@@ -246,7 +268,14 @@ const styles = StyleSheet.create({
   },
   icon: {
     fontSize: 26,
-  }
+  },
+  label: {
+    textAlign: 'center',
+    marginTop: '1%',
+    marginBottom: '2%',
+    fontSize: 25,
+
+  },
 });
 
 async function uploadImageAsync(uri) {

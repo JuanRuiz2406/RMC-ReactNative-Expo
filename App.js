@@ -2,7 +2,7 @@ import React, { useState, useEffect, useReducer, useMemo } from "react";
 import * as Google from "expo-google-app-auth";
 import * as Facebook from "expo-facebook";
 
-import { Provider } from "react-native-paper";
+import { Provider, IconButton, Colors } from "react-native-paper";
 import { theme } from "./components/core/theme";
 import { createStackNavigator } from "@react-navigation/stack";
 import { NavigationContainer } from "@react-navigation/native";
@@ -29,6 +29,7 @@ import { androidClientId } from "./components/config/superKeyAndroid";
 import { iosClientId } from "./components/config/superKeyIOS";
 import { idAppFacebook } from "./components/config/idKeyFacebook";
 import { Alert } from "react-native";
+import { Button } from "react-native";
 
 if (!firebase.apps.length) {
   firebase.initializeApp(firebaseConfig);
@@ -223,7 +224,18 @@ export default function App() {
               <Stack.Screen
                 name="ReportsMyCity"
                 component={NavBar}
-                options={{ headerStyle: { backgroundColor: "#3E5EAB" } }}
+                options={{
+                  headerStyle: { backgroundColor: "#3E5EAB" },
+                  headerRight: () => (
+                    <IconButton
+                      icon="logout"
+                      color={Colors.white}
+                      size={25}
+                      onPress={() => Alert.alert("Salir de RMC")}
+                    />
+                  ),
+                }}
+
               />
             </Stack.Navigator>
           ) : (

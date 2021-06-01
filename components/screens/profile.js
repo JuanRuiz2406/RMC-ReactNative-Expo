@@ -9,6 +9,7 @@ import ActivityIndicator from "./activityIndicator";
 
 import AsyncStorage from "@react-native-community/async-storage";
 import Button from "../ComponetsLogin/Button";
+import { IconButton, Colors } from "react-native-paper";
 
 import { deleteUser } from "../services/user";
 
@@ -20,7 +21,6 @@ export default function Profile({ navigation: { navigate } }) {
 
   useEffect(() => {
     loadUser();
-    //fetchUser();
   }, []);
 
 
@@ -58,16 +58,16 @@ export default function Profile({ navigation: { navigate } }) {
               />
             </View>
             <View style={styles.add}>
-              <Ionicons name="ios-add" size={40} color="#FEB139" />
+              <IconButton icon="pencil" size={30} color="#FEB139" />
             </View>
           </View>
 
           <View style={styles.infoContainer}>
             <Text style={[styles.text, { fontWeight: "200", fontSize: 36 }]}>
-              hola
+              {user.name}
             </Text>
             <Text style={[styles.text, { color: "#AEB5BC", fontSize: 14 }]}>
-              hola
+              {user.lastname}
             </Text>
           </View>
 
@@ -85,6 +85,7 @@ export default function Profile({ navigation: { navigate } }) {
               }}
               defaultValue="504200201"
               errorMessage={errors?.idCard?.message}
+              leftIconName="id-card"
             />
             <TextInput
               title="Correo Electrónico"
@@ -107,7 +108,9 @@ export default function Profile({ navigation: { navigate } }) {
               textContentType="emailAddress"
               keyboardType="email-address"
               returnKeyType="next"
+              leftIconName="at"
             />
+
             <TextInput
               title="Dirección"
               control={control}
@@ -121,20 +124,42 @@ export default function Profile({ navigation: { navigate } }) {
               }}
               defaultValue={String(user.direction)}
               errorMessage={errors?.direction?.message}
+              leftIconName="location-arrow"
             />
+
+            <TextInput
+              title="Contraseña"
+              control={control}
+              isPassword={true}
+              name="password"
+              rules={{
+                required: {
+                  value: true,
+                  message: "*La Contraseña es obligatoria*",
+                },
+                minLength: {
+                  value: 8,
+                  message: "*La Contraseña debe tener 8 caracteres mínimo*",
+                },
+              }}
+              defaultValue={String(user.passdecode)}
+              errorMessage={errors?.password?.message}
+              leftIconName="lock"
+            />
+            <Button mode="outlined" onPress={() => logout()}>
+              Cambiar Contraseña
+              </Button>
+
+            <Button mode="outlined" onPress={() => navigate("Reportes del Usuario")}>
+              Mis Reportes
+            </Button>
+
+            <Button mode="contained" style={styles.bottonBorrar} onPress={() => onDeleteUser(user.email)}>
+              Eliminar cuenta
+            </Button>
           </View>
 
-          <Button mode="outlined" onPress={() => logout()}>
-            Cerrar sesion
-      </Button>
 
-          <Button mode="outlined" onPress={() => navigate("Reportes del Usuario")}>
-            Mis Reportes
-      </Button>
-
-          <Button mode="contained" style={styles.bottonBorrar} onPress={() => onDeleteUser(user.email)}>
-            Eliminar cuenta
-      </Button>
 
         </ScrollView>
       )}
@@ -156,6 +181,7 @@ const styles = StyleSheet.create({
     height: undefined,
   },
   profileImage: {
+    marginTop: '4%',
     width: 200,
     height: 200,
     borderRadius: 200,
@@ -180,6 +206,8 @@ const styles = StyleSheet.create({
   infoUserContainer: {
     alignSelf: "auto",
     marginTop: 20,
+    marginLeft: '3%',
+    marginRight: '3%',
   },
   textTitle: {
     fontSize: 30,
@@ -217,5 +245,10 @@ const styles = StyleSheet.create({
   bottonBorrar: {
     backgroundColor: "#FF0000",
     margin: '5%',
-  }
+    marginTop: '10%'
+  },
+  viewPass: {
+    flexDirection: 'row',
+    //justifyContent: 'space-around',
+  },
 });

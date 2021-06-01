@@ -6,7 +6,11 @@ const FormReportStack = createStackNavigator();
 
 export default () => {
   return (
-    <FormReportStack.Navigator>
+    <FormReportStack.Navigator
+      screenOptions={{
+        headerShown: false,
+      }}
+    >
       <FormReportStack.Screen name="Crear Reporte" component={FormReport} />
       <FormReportStack.Screen name="Mapa" component={Map} />
       <FormReportStack.Screen name="Cámara" component={Camera} />
