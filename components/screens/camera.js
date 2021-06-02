@@ -1,9 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
+import { StyleSheet, Text, View, TouchableOpacity, Dimensions, Image } from "react-native";
 import { Camera } from "expo-camera";
+import { IconButton, Colors } from "react-native-paper";
 
 export default () => {
   const [hasPermission, setHasPermission] = useState(null);
+  const [camera, setCamera] = useState(null);
+  const [image, setImage] = useState(null);
+  const [preview, setPreview] = useState(false);
   const [type, setType] = useState(Camera.Constants.Type.back);
 
   useEffect(() => {
@@ -13,18 +17,65 @@ export default () => {
     })();
   }, []);
 
+  const takePicture = async () => {
+    if (camera) {
+      const data = await camera.takePictureAsync(null);
+      console.log(data.uri);
+      setImage(data.uri);
+      setPreview(true);
+    }
+  }
+
   if (hasPermission === null) {
     return <View />;
   }
   if (hasPermission === false) {
     return <Text>No access to camera</Text>;
   }
+
+  if (preview === true) {
+    return (
+      <View style={styles.imageContainer}>
+        {image && <Image source={{ uri: image }} style={styles.imageContainer} />}
+        <View style={styles.buttonViewContainer}>
+
+          <IconButton
+            icon="window-close"
+            color={'#a8a8a8'}
+            size={75}
+            onPress={() => setPreview(false)}
+          />
+
+          <IconButton
+            icon="dots-vertical"
+            color={'#a8a8a8'}
+            size={75}
+            onPress={() => takePicture()}
+          />
+
+          <IconButton
+            icon="check"
+            color={'#a8a8a8'}
+            size={75}
+            onPress={() => { }}
+          />
+
+        </View>
+      </View>
+    );
+  }
   return (
     <View style={styles.container}>
-      <Camera style={styles.camera} type={type}>
-        <View style={styles.buttonContainer}>
-          <TouchableOpacity
-            style={styles.button}
+      <View style={styles.cameraContainer}>
+        <Camera ref={ref => setCamera(ref)} style={styles.camera} type={type} ratio={'4:3'} />
+      </View>
+
+      <View style={styles.buttonContainer}>
+        <View style={styles.iconFlip}>
+          <IconButton
+            icon="camera-front"
+            color={'#a8a8a8'}
+            size={40}
             onPress={() => {
               setType(
                 type === Camera.Constants.Type.back
@@ -32,27 +83,52 @@ export default () => {
                   : Camera.Constants.Type.back
               );
             }}
-          >
-            <Text style={styles.text}> Flip </Text>
-          </TouchableOpacity>
+          />
         </View>
-      </Camera>
+        <View style={styles.iconTakePicture}>
+          <IconButton
+            icon="circle-slice-8"
+            color={'#a8a8a8'}
+            size={75}
+            onPress={() => takePicture()}
+          />
+        </View>
+      </View>
     </View>
   );
 };
 
+
+
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: '#fff',
   },
   camera: {
     flex: 1,
+    aspectRatio: 0.8,
+  },
+  cameraContainer: {
+    width: Dimensions.get("window").width,
+    height: Dimensions.get("window").height - 200,
   },
   buttonContainer: {
-    flex: 1,
     backgroundColor: "transparent",
     flexDirection: "row",
-    margin: 20,
+    justifyContent: 'flex-start',
+    backgroundColor: '#fff',
+    marginLeft: '11.5%',
+  },
+  iconFlip: {
+    marginTop: '7%',
+  },
+  iconTakePicture: {
+    margin: '-3%',
+    marginEnd: '5%',
+    marginRight: '10%',
+    marginLeft: '5%',
   },
   button: {
     flex: 0.1,
@@ -60,7 +136,18 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   text: {
-    fontSize: 18,
-    color: "white",
+    fontSize: 25,
+    color: "#3E5EAB",
+    marginBottom: '30%'
+  },
+  imageContainer: {
+    flex: 1,
+  },
+  buttonViewContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    position: "absolute",
+    bottom: '2%',
+    marginLeft: '2%',
   },
 });

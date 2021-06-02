@@ -12,6 +12,9 @@ import {
   requestPermissionsAsync,
   getCurrentPositionAsync,
 } from "expo-location";
+
+import Button from "../ComponetsLogin/Button";
+
 import { useRoute } from "@react-navigation/native";
 
 export default ({ navigation: { goBack } }) => {
@@ -63,6 +66,7 @@ export default ({ navigation: { goBack } }) => {
 
   return (
     <View style={styles.container}>
+
       <MapView
         style={styles.map}
         showsUserLocation
@@ -84,13 +88,17 @@ export default ({ navigation: { goBack } }) => {
         ) : null}
       </MapView>
 
-      <TouchableOpacity style={styles.button} onPress={chooseActualCoordenates}>
-        <Text style={styles.buttonText}>Enviar Mi Ubicación Actual</Text>
-      </TouchableOpacity>
+      <View style={styles.buttonViewContainer}>
 
-      <TouchableOpacity style={styles.button} onPress={chooseLocation}>
-        <Text style={styles.buttonText}>Enviar Punto Seleccionado</Text>
-      </TouchableOpacity>
+        <Button style={{ backgroundColor: "#3CBA69" }} mode="contained" onPress={chooseActualCoordenates}>
+          Enviar Mi Ubicación
+      </Button>
+
+        <Button style={{ backgroundColor: "#3CBA69" }} mode="contained" onPress={chooseLocation}>
+          Punto Seleccionado
+      </Button>
+
+      </View>
     </View>
   );
 };
@@ -104,21 +112,28 @@ const styles = StyleSheet.create({
   },
   map: {
     width: Dimensions.get("window").width,
-    height: Dimensions.get("window").height - 255,
+    height: Dimensions.get("window").height,
   },
   button: {
-    backgroundColor: "#008652",
-    padding: 7,
-    width: Dimensions.get("window").width,
-    marginBottom: 5,
-    borderWidth: 1,
-    borderRadius: 10,
-    borderColor: "black",
+    backgroundColor: "#F8A513"
   },
   buttonText: {
     fontSize: 20,
     textAlign: "center",
     color: "#fff",
     fontWeight: "bold",
+  },
+  buttonViewContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: "center",
+    position: "absolute",
+    bottom: '2%',
+  },
+  label: {
+    textAlign: 'center',
+    marginTop: '1%',
+    marginBottom: '2%',
+    fontSize: 25,
   },
 });

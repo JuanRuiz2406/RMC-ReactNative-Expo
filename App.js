@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useReducer, useMemo } from "react";
+import React, { useState, useEffect, useReducer, useMemo, useContext } from "react";
 import * as Google from "expo-google-app-auth";
 import * as Facebook from "expo-facebook";
 
@@ -34,7 +34,6 @@ import { Button } from "react-native";
 if (!firebase.apps.length) {
   firebase.initializeApp(firebaseConfig);
 }
-
 const Stack = createStackNavigator();
 
 export default function App() {
@@ -231,7 +230,7 @@ export default function App() {
                       icon="logout"
                       color={Colors.white}
                       size={25}
-                      onPress={() => Alert.alert("Salir de RMC")}
+                      onPress={() => auth.logout()}
                     />
                   ),
                 }}
