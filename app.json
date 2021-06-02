@@ -4,10 +4,10 @@
     "slug": "reports-my-city-expo",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/CopiaLogoFondoReportsMyCity.png",
     "facebookScheme": "fb1213603305321250",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/Cargando.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -22,7 +22,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/CopiaLogoReportsMyCity.png",
         "backgroundColor": "#FFFFFF"
       }
     },
