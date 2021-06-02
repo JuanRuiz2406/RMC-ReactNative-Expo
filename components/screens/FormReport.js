@@ -6,7 +6,7 @@ import {
   ScrollView,
   Dimensions,
   Image,
-  Text
+  Text,
 } from "react-native";
 import { useForm } from "react-hook-form";
 import { TextInput, Picker } from "../hook-form/index";
@@ -19,6 +19,7 @@ import {
 import * as ImagePicker from "expo-image-picker";
 import * as firebase from "firebase";
 import { newPhotography } from "../services/photography";
+import AsyncStorage from "@react-native-community/async-storage";
 
 import Button from "../ComponetsLogin/Button";
 import Icon from "react-native-vector-icons/FontAwesome";
@@ -30,12 +31,17 @@ export default ({ navigation: { navigate } }) => {
   const [longitude, setLongitude] = useState(0);
   const pickerOptions = ["Público", "Privado"];
   const [image, setImage] = useState(null);
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
     if (latitude !== 0) {
       updateCoordenadesAndCityName();
     }
     (async () => {
+      if (user === null) {
+        setUser(JSON.parse(await AsyncStorage.getItem("user")));
+      }
+
       if (Platform.OS !== "web") {
         const { status } =
           await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -72,16 +78,6 @@ export default ({ navigation: { navigate } }) => {
     latitude: latitude,
     longitude: longitude,
   };
-  const user = {
-    id: 1,
-    idCard: "117990636",
-    name: "Juan",
-    lastname: "Ruiz",
-    email: "juan@rmc.com",
-    password: "$2a$10$gcYU0ucYM4vk3kG5LBKP8u9cm1Jg/x02SjP4DDtoY2AQvJpitwDtm",
-    role: "RMCTeam",
-    direction: "Casa",
-  };
 
   const onSubmitReport = async (data) => {
     console.log(data);
@@ -100,11 +96,9 @@ export default ({ navigation: { navigate } }) => {
       uploadUrl.toString()
     );
 
-
     Alert.alert("Reporte", reportResponse.message);
     console.log(reportResponse);
     if (reportResponse != null) {
-
       responsePhotography = await newPhotography(uploadUrl, reportResponse);
       console.log(responsePhotography);
 
@@ -139,7 +133,6 @@ export default ({ navigation: { navigate } }) => {
             defaultValue=""
             errorMessage={errors?.title?.message}
             placeholder={"Escriba aquí"}
-
           />
 
           <TextInput
@@ -169,11 +162,12 @@ export default ({ navigation: { navigate } }) => {
 
           <View
             style={{
-              borderBottomColor: 'black',
+              borderBottomColor: "black",
               borderBottomWidth: 0.5,
-              marginBottom: '4%',
-              marginTop: '4%',
-            }}></View>
+              marginBottom: "4%",
+              marginTop: "4%",
+            }}
+          ></View>
 
           <Text style={styles.label}>Multimedia</Text>
 
@@ -198,22 +192,19 @@ export default ({ navigation: { navigate } }) => {
               <Icon style={styles.icon} name="camera" />
             </Button>
 
-            <Button
-              style={styles.button}
-              mode="contained"
-              onPress={pickImage}
-            >
+            <Button style={styles.button} mode="contained" onPress={pickImage}>
               <Icon style={styles.icon} name="image" />
             </Button>
           </View>
 
           <View
             style={{
-              borderBottomColor: 'black',
+              borderBottomColor: "black",
               borderBottomWidth: 0.5,
-              marginBottom: '4%',
-              marginTop: '4%',
-            }}></View>
+              marginBottom: "4%",
+              marginTop: "4%",
+            }}
+          ></View>
 
           <Button
             mode="contained"
@@ -237,13 +228,13 @@ const styles = StyleSheet.create({
   },
   green: {
     backgroundColor: "#3CBA69",
-    margin: '10%',
+    margin: "10%",
   },
   orange: {
     backgroundColor: "#F8A513",
   },
   button: {
-    width: '45%',
+    width: "45%",
   },
   buttonText: {
     fontSize: 20,
@@ -260,21 +251,20 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
   },
   viewIn: {
-    margin: '3%',
+    margin: "3%",
   },
   buttonViewContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
+    flexDirection: "row",
+    justifyContent: "space-around",
   },
   icon: {
     fontSize: 26,
   },
   label: {
-    textAlign: 'center',
-    marginTop: '1%',
-    marginBottom: '2%',
+    textAlign: "center",
+    marginTop: "1%",
+    marginBottom: "2%",
     fontSize: 25,
-
   },
 });
 

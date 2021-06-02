@@ -4,9 +4,13 @@ import AsyncStorage from "@react-native-community/async-storage";
 const token = AsyncStorage.getItem("userToken");
 const userEmail = AsyncStorage.getItem("userEmail");
 
-export const newReport = async (report, user, coordenates, cityName, uploadUrl) => {
-  console.log("------------------.....");
-  console.log(coordenates);
+export const newReport = async (
+  report,
+  user,
+  coordenates,
+  cityName,
+  uploadUrl
+) => {
   return fetch(API_URL + "report/city/" + String(cityName), {
     method: "POST",
     headers: {
@@ -83,7 +87,6 @@ export const getReportDetails = async (reportId) => {
       return responseJson;
     });
 };
-
 
 export const deleteReport = async (reportId) => {
   return fetch(API_URL + "report/" + String(reportId), {
