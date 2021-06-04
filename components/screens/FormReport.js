@@ -199,7 +199,12 @@ export default ({ navigation: { navigate } }) => {
               <Icon style={styles.icon} name="image" />
             </Button>
           </View>
-
+          <View>
+          <Image
+          source={{ uri: image}}
+          style={styles.image}
+        />
+          </View>
           <View
             style={{
               borderBottomColor: "black",
@@ -223,6 +228,10 @@ export default ({ navigation: { navigate } }) => {
 };
 
 const styles = StyleSheet.create({
+  image: {
+    width: 350,
+    height: 250,
+  },
   textPhoto: {
     margin: 20,
     marginTop: 25,

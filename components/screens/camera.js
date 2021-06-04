@@ -45,7 +45,7 @@ export default ({ navigation: { goBack } }) => {
           <IconButton
             icon="window-close"
             color={'#a8a8a8'}
-            size={60}
+            size={50}
             onPress={() => setPreview(false)}
           />
 
@@ -55,7 +55,7 @@ export default ({ navigation: { goBack } }) => {
         <IconButton
           icon="check"
           color={'#a8a8a8'}
-          size={60}
+          size={50}
           
           onPress={() => goBack()}
         />
@@ -147,15 +147,15 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     position: "absolute",
-    bottom: '2%',
+    bottom: '0%',
     marginLeft: '2%',
   },
   buttonViewContainerCheck: {
     alignSelf: 'flex-end',
     flexDirection: 'row',
     justifyContent: 'center',
-    position: "absolute",
-    bottom: '2%',
+    position: "relative",
+    bottom: '0%',
     marginLeft: '2%',
   },
 });
