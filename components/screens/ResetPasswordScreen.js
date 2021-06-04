@@ -6,16 +6,36 @@ import Button from '../ComponetsLogin/Button'
 import BackButton from '../ComponetsLogin/BackButton'
 import { useForm } from "react-hook-form";
 import { TextInput } from "../hook-form/index";
-import { StyleSheet, Dimensions, View } from "react-native";
+import { StyleSheet, Dimensions, View, Alert } from "react-native";
+import { updateVerificationCode } from "../services/user";
+import AsyncStorage from "@react-native-community/async-storage";
+
 
 export default function ResetPasswordScreen({ navigation }) {
   const { handleSubmit, control, reset, errors } = useForm();
+
+
+  const onSubmit = async (data) => {
+    await AsyncStorage.setItem("emailCode", data.email);
+    responseUpdateVerificationCode = await updateVerificationCode(data.email);
+    console.log(responseUpdateVerificationCode);
+    if(responseUpdateVerificationCode.code === 201){
+      
+      console.log("inside");
+      Alert.alert("Código Enviado", "Revisa tu correo electrónico para encontrar tu código.");
+      navigation.navigate('updatePasswordWithCode');
+    }else{
+      Alert.alert("ERROR", "No existe el usuario.");
+    }
+    
+  }
+
 
   return (
     <Background>
       <BackButton goBack={navigation.goBack} />
       <Logo />
-      <Header>Restaurar Contraseña</Header>
+      <Header>Restaurar Contraseñas</Header>
       <TextInput
         title="Correo Electrónico"
         control={control}
@@ -39,9 +59,11 @@ export default function ResetPasswordScreen({ navigation }) {
         returnKeyType="next"
         leftIconName="unlock"
       />
-      <Button mode="contained">
-        Enviar codigo
-            </Button>
+      <Button mode="contained"
+      onPress={handleSubmit(onSubmit)}
+      >
+      Enviar codigo
+      </Button>
     </Background>
   )
 }

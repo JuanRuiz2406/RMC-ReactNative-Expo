@@ -30,6 +30,7 @@ import { iosClientId } from "./components/config/superKeyIOS";
 import { idAppFacebook } from "./components/config/idKeyFacebook";
 import { Alert } from "react-native";
 import { Button } from "react-native";
+import updatePasswordWithCode from "./components/screens/updatePasswordWithCode";
 
 if (!firebase.apps.length) {
   firebase.initializeApp(firebaseConfig);
@@ -246,6 +247,7 @@ export default function App() {
               <Stack.Screen name="StartScreen" component={StartScreen} />
               <Stack.Screen name="LoginScreen" component={LoginScreen} />
               <Stack.Screen name="RegisterScreen" component={RegisterScreen} />
+              <Stack.Screen name="updatePasswordWithCode" component={updatePasswordWithCode} />
               <Stack.Screen
                 name="ResetPasswordScreen"
                 component={ResetPasswordScreen}

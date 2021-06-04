@@ -159,3 +159,40 @@ export const newUserFB = async (user, provider) => {
             console.error(error);
         });
 }
+
+export const updateVerificationCode = async (userEmail) => {
+    return fetch(API_URL + "user/verificationCode/"+  String(userEmail), {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json",
+        },
+    })
+        .then((response) => response.json())
+        .then((responseJson) => {
+            console.log(responseJson);
+            return responseJson;
+        })
+        .catch((error) => {
+            console.error(error);
+        });
+};
+
+
+export const verificationCode = async (email, code, password) => {
+    return fetch(API_URL + "user/verificationCode/"+ String(email) + "/" + String(code) + "/" + String(password), {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => response.json())
+      .then((responseJson) => {
+        console.log(responseJson);
+        return responseJson;
+      })
+      .catch((error) => {
+        console.log(error);
+        return error;
+      });
+  };
