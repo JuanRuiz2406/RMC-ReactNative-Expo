@@ -23,10 +23,14 @@ export default ({ navigation: { goBack } }) => {
     if (camera) {
       const data = await camera.takePictureAsync(null);
       console.log(data);
-      route.params.setImage(data.uri);
       setImage(data.uri);
       setPreview(true);
     }
+  }
+
+  const saveTempPicture = async (data) => {
+    route.params.setImage(image);
+    goBack();
   }
 
   if (hasPermission === null) {
@@ -52,13 +56,13 @@ export default ({ navigation: { goBack } }) => {
 
         </View>
         <View style={styles.buttonViewContainerCheck}>
-        <IconButton
-          icon="check"
-          color={'#a8a8a8'}
-          size={50}
-          
-          onPress={() => goBack()}
-        />
+          <IconButton
+            icon="check"
+            color={'#a8a8a8'}
+            size={50}
+
+            onPress={() => saveTempPicture(image)}
+          />
 
         </View>
       </View>
@@ -142,6 +146,7 @@ const styles = StyleSheet.create({
   },
   imageContainer: {
     flex: 1,
+    backgroundColor: '#fff',
   },
   buttonViewContainerClose: {
     flexDirection: 'row',

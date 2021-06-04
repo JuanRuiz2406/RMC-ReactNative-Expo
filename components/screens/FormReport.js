@@ -190,7 +190,7 @@ export default ({ navigation: { navigate } }) => {
               onPress={() => navigate("Cámara", {
                 setImage: setImage,
               })
-            }
+              }
             >
               <Icon style={styles.icon} name="camera" />
             </Button>
@@ -200,10 +200,13 @@ export default ({ navigation: { navigate } }) => {
             </Button>
           </View>
           <View>
-          <Image
-          source={{ uri: image}}
-          style={styles.image}
-        />
+            {image === null ? (
+              <View></View>
+            ) : (
+              <Image
+                source={{ uri: image }}
+                style={styles.image}
+              />)}
           </View>
           <View
             style={{
@@ -229,8 +232,9 @@ export default ({ navigation: { navigate } }) => {
 
 const styles = StyleSheet.create({
   image: {
-    width: 350,
+    width: '100%',
     height: 250,
+    borderRadius: 3,
   },
   textPhoto: {
     margin: 20,

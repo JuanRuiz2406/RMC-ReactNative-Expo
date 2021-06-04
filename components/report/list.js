@@ -35,7 +35,7 @@ export default ({ onRefresh, refreshing, reports, onPress }) => {
         data={reports}
         keyExtractor={(item) => String(item.id)}
         renderItem={({ item }) => (
-          <View style={styles.cointarner}>
+          <View>
             <TouchableOpacity
               style={styles.report}
               onPress={() => {
@@ -60,6 +60,14 @@ export default ({ onRefresh, refreshing, reports, onPress }) => {
               </Text>
             </View>
             <Text style={styles.description}>{item.description}</Text>
+            <View
+              style={{
+                borderBottomColor: "black",
+                borderBottomWidth: 0.5,
+                marginBottom: "4%",
+                marginTop: "4%",
+              }}
+            ></View>
           </View>
 
         )}
