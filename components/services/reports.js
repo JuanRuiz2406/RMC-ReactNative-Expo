@@ -20,7 +20,7 @@ export const newReport = async (
     body: JSON.stringify({
       title: report.title,
       description: report.description,
-      state: "Nuevo",
+      state: "Pendiente",
       privacy: report.privacy,
       user: user,
       coordenates: coordenates,

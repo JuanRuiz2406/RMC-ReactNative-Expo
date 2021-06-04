@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback } from "react";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, View, Text } from "react-native";
 import ActivityIndicator from "./activityIndicator";
 import { List } from "../report/index";
 import { getUserReports } from "../services/reports";
@@ -34,6 +34,9 @@ export default ({ navigation: { navigate } }) => {
 
   return (
     <View style={styles.container}>
+      <View style={styles.viewTitle}>
+        <Text style={styles.title}>Tus Reportes</Text>
+      </View>
       {loading ? (
         <ActivityIndicator />
       ) : (
@@ -53,6 +56,15 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#fff",
     alignItems: "stretch",
-    justifyContent: "center",
   },
+  title: {
+    fontSize: 30,
+    marginBottom: '3%',
+    alignSelf: "center",
+    marginTop: '5%',
+  },
+  viewTitle: {
+    borderBottomColor: 'gray',
+    borderBottomWidth: 0.5,
+  }
 });
