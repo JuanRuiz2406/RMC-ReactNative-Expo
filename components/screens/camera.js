@@ -2,8 +2,10 @@ import React, { useState, useEffect } from "react";
 import { StyleSheet, Text, View, TouchableOpacity, Dimensions, Image } from "react-native";
 import { Camera } from "expo-camera";
 import { IconButton, Colors } from "react-native-paper";
+import { useRoute } from "@react-navigation/native";
+export default ({ navigation: { goBack } }) => {
+  const route = useRoute();
 
-export default () => {
   const [hasPermission, setHasPermission] = useState(null);
   const [camera, setCamera] = useState(null);
   const [image, setImage] = useState(null);
@@ -20,7 +22,8 @@ export default () => {
   const takePicture = async () => {
     if (camera) {
       const data = await camera.takePictureAsync(null);
-      console.log(data.uri);
+      console.log(data);
+      route.params.setImage(data.uri);
       setImage(data.uri);
       setPreview(true);
     }
@@ -37,28 +40,25 @@ export default () => {
     return (
       <View style={styles.imageContainer}>
         {image && <Image source={{ uri: image }} style={styles.imageContainer} />}
-        <View style={styles.buttonViewContainer}>
+        <View style={styles.buttonViewContainerClose}>
 
           <IconButton
             icon="window-close"
             color={'#a8a8a8'}
-            size={75}
+            size={60}
             onPress={() => setPreview(false)}
           />
 
-          <IconButton
-            icon="dots-vertical"
-            color={'#a8a8a8'}
-            size={75}
-            onPress={() => takePicture()}
-          />
 
-          <IconButton
-            icon="check"
-            color={'#a8a8a8'}
-            size={75}
-            onPress={() => { }}
-          />
+        </View>
+        <View style={styles.buttonViewContainerCheck}>
+        <IconButton
+          icon="check"
+          color={'#a8a8a8'}
+          size={60}
+          
+          onPress={() => goBack()}
+        />
 
         </View>
       </View>
@@ -143,7 +143,15 @@ const styles = StyleSheet.create({
   imageContainer: {
     flex: 1,
   },
-  buttonViewContainer: {
+  buttonViewContainerClose: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    position: "absolute",
+    bottom: '2%',
+    marginLeft: '2%',
+  },
+  buttonViewContainerCheck: {
+    alignSelf: 'flex-end',
     flexDirection: 'row',
     justifyContent: 'center',
     position: "absolute",

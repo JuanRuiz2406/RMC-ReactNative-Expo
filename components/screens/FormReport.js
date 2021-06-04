@@ -187,7 +187,10 @@ export default ({ navigation: { navigate } }) => {
             <Button
               style={styles.button}
               mode="contained"
-              onPress={() => navigate("Cámara")}
+              onPress={() => navigate("Cámara", {
+                setImage: setImage,
+              })
+            }
             >
               <Icon style={styles.icon} name="camera" />
             </Button>
