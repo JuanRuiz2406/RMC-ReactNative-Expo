@@ -32,6 +32,9 @@ export default ({ report, details }) => {
     <ScrollView>
       <View style={styles.report}>
         <Text style={styles.title}>{report.title}</Text>
+
+        <Text style={styles.title}>{report.createdAt}</Text>
+
         <Text style={styles.titleLeft}>
           <Text style={styles.bold}>Realizado por: </Text>
           <Text>
