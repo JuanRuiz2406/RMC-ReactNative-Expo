@@ -197,7 +197,7 @@ export const verificationCode = async (email, code, password) => {
       });
   };
 
-  export const updateUser = async (user, password) => {
+  export const updateUserPassword = async (user, password) => {
     return fetch(API_URL + "user/", {
         method: "PUT",
         headers: {
@@ -208,10 +208,41 @@ export const verificationCode = async (email, code, password) => {
             id: user.id,
             idCard: user.idCard,
             name: user.name,
-            lastname: user.lastName,
+            lastname: user.lastname,
             email: user.email,
             password: password,
             passdecode: password,
+            role: user.role,
+            direction: user.direction,
+            state: user.state
+        }),
+    })
+        .then((response) => response.json())
+        .then((responseJson) => {
+            console.log(responseJson);
+            return responseJson;
+        })
+        .catch((error) => {
+            console.error(error);
+        });
+};
+
+export const updateUserImage = async (user, image) => {
+    return fetch(API_URL + "user/image/", {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + (await token),
+        },
+        body: JSON.stringify({
+            id: user.id,
+            idCard: user.idCard,
+            name: user.name,
+            lastname: user.lastname,
+            email: user.email,
+            password: user.password,
+            imgURL: image.toString(),
+            passdecode: user.passdecode,
             role: user.role,
             direction: user.direction,
             state: user.state

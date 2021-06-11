@@ -19,7 +19,7 @@ export default function updatePasswordWithPassword({ navigation }) {
     if (data.password1 === data.password2) {
       usuario = JSON.parse(await AsyncStorage.getItem("user"))
       console.log(usuario.lastname); 
-      updateResponse = await updateUser(usuario, data.password2);
+      updateResponse = await updateUserPassword(usuario, data.password2);
       if(updateResponse.code === 201){
         Alert.alert("Felicidades", "Haz logrado cambiar tu contraseña.");
       }
