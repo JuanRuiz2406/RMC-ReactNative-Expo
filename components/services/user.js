@@ -196,3 +196,33 @@ export const verificationCode = async (email, code, password) => {
         return error;
       });
   };
+
+  export const updateUser = async (user, password) => {
+    return fetch(API_URL + "user/", {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + (await token),
+        },
+        body: JSON.stringify({
+            id: user.id,
+            idCard: user.idCard,
+            name: user.name,
+            lastname: user.lastName,
+            email: user.email,
+            password: password,
+            passdecode: password,
+            role: user.role,
+            direction: user.direction,
+            state: user.state
+        }),
+    })
+        .then((response) => response.json())
+        .then((responseJson) => {
+            console.log(responseJson);
+            return responseJson;
+        })
+        .catch((error) => {
+            console.error(error);
+        });
+};

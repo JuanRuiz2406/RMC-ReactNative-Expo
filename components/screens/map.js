@@ -16,7 +16,11 @@ import {
 import Button from "../ComponetsLogin/Button";
 
 import { useRoute } from "@react-navigation/native";
+import { YellowBox } from 'react-native';
 
+YellowBox.ignoreWarnings([
+  'Non-serializable values were found in the navigation state',
+]);
 export default ({ navigation: { goBack } }) => {
   const route = useRoute();
 

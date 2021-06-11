@@ -8,3 +8,4 @@ export { default as Profile } from "./profile";
 export { default as UserReports } from "./userReports";
 export { default as Camera } from "./camera";
 export { default as ImagePicker } from "./imagePicker";
+export { default as UpdatePassword } from "./updatePasswordWithPassword"

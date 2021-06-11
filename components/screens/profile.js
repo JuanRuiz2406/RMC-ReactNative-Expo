@@ -146,7 +146,7 @@ export default function Profile({ navigation: { navigate } }) {
               errorMessage={errors?.password?.message}
               leftIconName="lock"
             />
-            <Button mode="outlined" onPress={() => logout()}>
+            <Button mode="outlined" onPress={() => navigate("Cambiar Contraseña")}>
               Cambiar Contraseña
               </Button>
 
