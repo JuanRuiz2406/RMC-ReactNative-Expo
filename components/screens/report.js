@@ -4,6 +4,7 @@ import ActivityIndicator from "./activityIndicator";
 import { ShowReport } from "../report/index";
 import { useRoute } from "@react-navigation/native";
 import { getReportDetails } from "../services/reports";
+import { getReportPhotos } from "../services/photography";
 
 export default () => {
   const route = useRoute();
@@ -11,7 +12,9 @@ export default () => {
   const report = route.params.report;
   const canDelete = route.params.canDelete;
   const [loadingDetails, setLoadingDetails] = useState(true);
+  const [loadingPhotos, setLoadingPhotos] = useState(true);
   const [details, setDetails] = useState([]);
+  const [photos, setPhotos] = useState([]);
 
   const fetchDetails = async () => {
     const reportDetailsResponse = await getReportDetails(report.id);
@@ -22,7 +25,24 @@ export default () => {
     if (reportDetailsResponse.status === 401) {
       Alert.alert("Error Unauthorized", reportDetailsResponse.error);
     }
+
+    const reportPhotosResponse = await getReportPhotos(report.id);
+    if (reportPhotosResponse !== null) {
+      setLoadingPhotos(false);
+      let uris = "";
+        reportPhotosResponse.map((x) => (
+            uris = (uris +  "," + x.imagePath)
+        ))
+        uris = uris.substring(1);
+        uris = uris.split(",");
+      setPhotos(uris);
+      //console.log(photos);
+    }
+    if (reportPhotosResponse.status === 401) {
+      Alert.alert("Error Unauthorized", reportPhotosResponse.error);
+    }
   };
+
 
   useEffect(() => {
     fetchDetails();
@@ -33,7 +53,7 @@ export default () => {
       {loadingDetails ? (
         <ActivityIndicator />
       ) : (
-        <ShowReport report={report} details={details} canDelete={canDelete} />
+        <ShowReport report={report} details={details} canDelete={canDelete} photos={photos} />
       )}
     </View>
   );

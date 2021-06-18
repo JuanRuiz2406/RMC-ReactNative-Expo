@@ -44,7 +44,7 @@ export default ({ onRefresh, refreshing, reports, onPress }) => {
             >
               <Text style={styles.title}>{item.title}</Text>
               <Image
-                source={{ uri: item.imgURL }}
+                source={{ uri: null }}
                 style={styles.image}
               />
             </TouchableOpacity>

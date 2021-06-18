@@ -13,12 +13,11 @@ import { useRoute } from "@react-navigation/native";
 import { deleteReport } from "../services/reports";
 import MapView, { Marker } from "react-native-maps";
 import { normalizeText } from "react-native-elements/dist/helpers";
-
-export default ({ report, details }) => {
+import { CarouselImg } from "../report/index";
+export default ({ report, details, photos }) => {
   const route = useRoute();
 
   const canDelete = route.params.canDelete;
-
   const onDeleteReport = async (reportId) => {
     const deleteReportResponse = await deleteReport(reportId);
     if (deleteReportResponse.code === 200) {
@@ -130,7 +129,8 @@ export default ({ report, details }) => {
 
         <View>
           <Text style={[styles.titleLeft, styles.bold]}>Fotos:</Text>
-          <Image source={{ uri: report.imgURL }} style={styles.image} />
+          
+          <CarouselImg photos={photos}/>
         </View>
 
         <View

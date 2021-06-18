@@ -20,9 +20,10 @@ import * as ImagePicker from "expo-image-picker";
 import * as firebase from "firebase";
 import { newPhotography } from "../services/photography";
 import AsyncStorage from "@react-native-community/async-storage";
-
 import Button from "../ComponetsLogin/Button";
 import Icon from "react-native-vector-icons/FontAwesome";
+import { CarouselImg } from "../report/index";
+
 
 export default ({ navigation: { navigate } }) => {
   const { handleSubmit, control, reset, errors } = useForm();
@@ -32,7 +33,7 @@ export default ({ navigation: { navigate } }) => {
   const pickerOptions = ["Público", "Privado"];
   const [image, setImage] = useState(null);
   const [user, setUser] = useState(null);
-
+  let images = "";
   useEffect(() => {
     if (latitude !== 0) {
       updateCoordenadesAndCityName();
@@ -53,16 +54,12 @@ export default ({ navigation: { navigate } }) => {
   }, [latitude, longitude]);
 
   const pickImage = async () => {
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
-      allowsEditing: true,
-      aspect: [4, 3],
-      quality: 1,
-    });
-    console.log(result);
-    if (!result.cancelled) {
-      setImage(result.uri);
-    }
+    //console.log(image);
+    navigate("Seleccionar Multiples Fotos", {
+      setImage: setImage,
+    })
+    images = image.split(",");
+    console.log(images);
   };
   const updateCoordenadesAndCityName = async () => {
     let locationData = await reverseGeocodeAsync({
@@ -74,19 +71,32 @@ export default ({ navigation: { navigate } }) => {
     setCityName(locationResponse.city);
   };
 
+  const saveImages = async (reportResponse) =>{
+   const images = image.split(",");
+   for (const img of images){
+     const uploadUrl = await uploadImageAsync(img);
+     await newPhotography(uploadUrl, reportResponse);
+     console.log("subida");
+   }
+  };
+
+  
+
   const coordenates = {
     latitude: latitude,
     longitude: longitude,
   };
 
   const onSubmitReport = async (data) => {
+
     console.log(data);
 
     reset({
       title: "",
       description: "",
     });
-    const uploadUrl = await uploadImageAsync(image);
+    //const uploadUrl = await uploadImageAsync(image);
+    const uploadUrl = "image";
     console.log(uploadUrl);
     const reportResponse = await newReport(
       data,
@@ -99,9 +109,7 @@ export default ({ navigation: { navigate } }) => {
     Alert.alert("Reporte", reportResponse.message);
     console.log(reportResponse);
     if (reportResponse != null) {
-      responsePhotography = await newPhotography(uploadUrl, reportResponse);
-      console.log(responsePhotography);
-
+      saveImages(reportResponse);
       Alert.alert("Reporte", "Reporte Guardado exitosamente");
     }
     if (reportResponse.status === 401) {
@@ -110,6 +118,7 @@ export default ({ navigation: { navigate } }) => {
         reportResponse.error
       );
     }
+    
   };
 
   console.log(errors);
@@ -199,14 +208,12 @@ export default ({ navigation: { navigate } }) => {
               <Icon style={styles.icon} name="image" />
             </Button>
           </View>
-          <View>
+          <View>  
             {image === null ? (
               <View></View>
             ) : (
-              <Image
-                source={{ uri: image }}
-                style={styles.image}
-              />)}
+              <CarouselImg photos={image.split(",")}/>
+              )}
           </View>
           <View
             style={{

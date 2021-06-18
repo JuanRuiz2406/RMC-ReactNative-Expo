@@ -29,7 +29,6 @@ export const newReport = async (
   })
     .then((response) => response.json())
     .then((responseJson) => {
-      console.log(responseJson);
       return responseJson;
     })
     .catch((error) => {

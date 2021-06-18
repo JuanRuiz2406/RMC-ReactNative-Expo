@@ -27,3 +27,17 @@ export const newPhotography = async (uploadUrl, rep) => {
       console.error(error);
     });
 };
+
+export const getReportPhotos = async (reportId) => {
+  return fetch(API_URL + "photography/byReport/" + String(reportId), {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + (await token),
+    },
+  })
+    .then((response) => response.json())
+    .then((responseJson) => {
+      //console.log(responseJson)
+      return responseJson;
+    });
+};
