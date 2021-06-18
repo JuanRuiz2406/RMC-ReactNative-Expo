@@ -1,48 +1,41 @@
 
-import React, { Component } from 'react'
+import React, { Component, useState, useEffect } from 'react'
 import { Animated, View, StyleSheet, Image, Dimensions, ScrollView , Text} from 'react-native'
 import { getReportPhotos } from "../services/photography";
 
-export default class FirstPhoto extends Component {
+export default ({ reportId}) => { 
+    const [image, setImage] = useState(null);
 
-    constructor(props) {
-    super(props);
-    this.state = {
-      url: 'https://firebasestorage.googleapis.com/v0/b/reportmycity-5912e.appspot.com/o/asset1623987485700.PNG%3Fid%3D7302CD32-F38B-4074-BD67-05EFA7290985%26ext%3DPNG?alt=media&token=bf4436c8-c7bf-4768-a621-5e9387883fce'   
-    };
-}
-
-  render() {
-      const url = this.state.url;
-    console.log(this.props.reportId);
-    //let url = 'https://s-media-cache-ak0.pinimg.com/originals/ee/51/39/ee5139157407967591081ee04723259a.png'
+    console.log(reportId);
+    let url = 'https://s-media-cache-ak0.pinimg.com/originals/ee/51/39/ee5139157407967591081ee04723259a.png'
     let uris = "";
-    const getPhotos = async () =>{
-        const apiPhotos = await getReportPhotos(this.props.reportId);
-        apiPhotos.map((x) => (
-                uris = (uris +  "," + x.imagePath)
-            ))
-            uris = uris.substring(1);
-            uris = uris.split(",");
-            //console.log(uris);
-            this.state.url = uris;
+    const fetchDetails = async () => {
+    const apiPhotos = await getReportPhotos(reportId);
+        for (let i = 0; i < apiPhotos.length; i++) {
+            setImage(apiPhotos[i].imagePath);
+            break;
+        }
     }
-      getPhotos()
-      console.log(url)
+    
+    //console.log(image);
 
+    useEffect(() => {
+        fetchDetails();
+    }, []);
+    //
+    console.log(image);
     return (
       <View
         flex={1}
       >
         <Image
               
-        source={{ uri: url }}
+        source={{ uri: image }}
         style={styles.image}
         />
       </View>
-    )
-  }
-}
+    );
+};
 
 
 const styles = StyleSheet.create({

@@ -8,7 +8,7 @@ import {
   Dimensions,
   View
 } from "react-native";
-
+import { FirstPhoto } from "../report/index";
 let Image_Http_URL = { uri: 'https://firebasestorage.googleapis.com/v0/b/reportmycity-5912e.appspot.com/o/032AE213-6C21-43EB-B433-139DFF5833E01621595712843.png?alt=media&token=8a52011c-c8da-4b2b-9cc2-82c9dcbc0b8f' };
 
 const Color = async (text) => {
@@ -43,10 +43,7 @@ export default ({ onRefresh, refreshing, reports, onPress }) => {
               }}
             >
               <Text style={styles.title}>{item.title}</Text>
-              <Image
-                source={{ uri: 'https://firebasestorage.googleapis.com/v0/b/reportmycity-5912e.appspot.com/o/asset1623987485700.PNG%3Fid%3D7302CD32-F38B-4074-BD67-05EFA7290985%26ext%3DPNG?alt=media&token=bf4436c8-c7bf-4768-a621-5e9387883fce' }}
-                style={styles.image}
-              />
+              <FirstPhoto reportId={item.id} />
             </TouchableOpacity>
             <View style={styles.viewRow}>
               <Text style={styles.subTitleLeft}>Descripcion: </Text>
