@@ -44,7 +44,8 @@ export default ({ onRefresh, refreshing, reports, onPress }) => {
             >
               <Text style={styles.title}>{item.title}</Text>
               <Image
-                source={{ uri: null }}
+              
+                source={{ uri: 'https://firebasestorage.googleapis.com/v0/b/reportmycity-5912e.appspot.com/o/asset1623987485700.PNG%3Fid%3D7302CD32-F38B-4074-BD67-05EFA7290985%26ext%3DPNG?alt=media&token=bf4436c8-c7bf-4768-a621-5e9387883fce' }}
                 style={styles.image}
               />
             </TouchableOpacity>
