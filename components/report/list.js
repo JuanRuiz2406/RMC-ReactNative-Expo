@@ -44,26 +44,33 @@ export default ({ onRefresh, refreshing, reports, onPress }) => {
                 />
                 <FirstPhoto reportId={item.id} />
               </TouchableOpacity>
-              <Card.Content>
-                <Chip
-                  style={{
-                    backgroundColor:
-                      item.state === "Aceptado"
-                        ? "#4caf50"
-                        : item.state === "Procesando"
-                        ? "#ff9800"
-                        : item.state === "Rechazado"
-                        ? "#FF0000"
-                        : "#0277BD",
-                    marginRight: "70.5%",
-                  }}
-                  selectedColor="#fff"
-                >
-                  {item.state}
-                </Chip>
-                <Title style={styles.text}>{item.title}</Title>
-                <Paragraph>{item.description}</Paragraph>
-              </Card.Content>
+              <TouchableOpacity
+                style={styles.report}
+                onPress={() => {
+                  onPress(item);
+                }}
+              >
+                <Card.Content>
+                  <Chip
+                    style={{
+                      backgroundColor:
+                        item.state === "Aceptado"
+                          ? "#4caf50"
+                          : item.state === "Procesando"
+                          ? "#ff9800"
+                          : item.state === "Rechazado"
+                          ? "#FF0000"
+                          : "#0277BD",
+                      marginRight: "70.5%",
+                    }}
+                    selectedColor="#fff"
+                  >
+                    {item.state}
+                  </Chip>
+                  <Title style={styles.text}>{item.title}</Title>
+                  <Paragraph>{item.description}</Paragraph>
+                </Card.Content>
+              </TouchableOpacity>
             </Card>
           </View>
         )}

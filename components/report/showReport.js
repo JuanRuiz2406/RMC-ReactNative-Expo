@@ -13,7 +13,7 @@ import { useRoute } from "@react-navigation/native";
 import { deleteReport } from "../services/reports";
 import MapView, { Marker } from "react-native-maps";
 import { normalizeText } from "react-native-elements/dist/helpers";
-import { CarouselImg } from "./carouselImg";
+import { default as CarouselImg } from "./carouselImg";
 export default ({ report, details, photos }) => {
   const route = useRoute();
 
