@@ -30,16 +30,16 @@ export default ({ report, details, photos }) => {
 
   return (
     <ScrollView>
+      <View style={styles.viewTitle}>
+        <Text style={styles.title}>{report.title}</Text>
+      </View>
       <View style={styles.report}>
-
         <View>
-          <View style={styles.viewRow}>
-            <Text style={styles.title}>{report.title}</Text>
-
-            <Text style={styles.bold}>Fecha: <Text style={styles.date}>{report.createdAt}</Text></Text>
-          </View>
-
-
+          <Text style={styles.titleLeft}>
+            <Text style={styles.bold}>
+              Fecha: <Text style={styles.date}>{report.createdAt}</Text>
+            </Text>
+          </Text>
           <Text style={styles.titleLeft}>
             <Text style={styles.bold}>Realizado por: </Text>
             <Text>
@@ -51,9 +51,14 @@ export default ({ report, details, photos }) => {
             <Text style={styles.bold}>Estado: </Text>
             <Text
               style={{
-                color: report.state === "Aceptado" ? '#3CBA69' :
-                  report.state === "Procesando" ? '#fce63f' :
-                    report.state === "Rechazado" ? '#FF0000' : '#F8A513'
+                color:
+                  report.state === "Aceptado"
+                    ? "#3CBA69"
+                    : report.state === "Procesando"
+                    ? "#fce63f"
+                    : report.state === "Rechazado"
+                    ? "#FF0000"
+                    : "#F8A513",
               }}
             >
               {report.state}
@@ -102,7 +107,6 @@ export default ({ report, details, photos }) => {
           }}
         ></View>
 
-
         <View>
           <Text style={[styles.titleLeft, styles.bold]}>Detalles:</Text>
           {details.length > 0 ? (
@@ -129,8 +133,8 @@ export default ({ report, details, photos }) => {
 
         <View>
           <Text style={[styles.titleLeft, styles.bold]}>Fotos:</Text>
-          
-          <CarouselImg photos={photos}/>
+
+          <CarouselImg photos={photos} />
         </View>
 
         <View
@@ -143,7 +147,11 @@ export default ({ report, details, photos }) => {
         ></View>
 
         {canDelete && (
-          <Button style={styles.bottonBorrar} mode="contained" onPress={() => onDeleteReport(report.id)}>
+          <Button
+            style={styles.bottonBorrar}
+            mode="contained"
+            onPress={() => onDeleteReport(report.id)}
+          >
             Eliminar
           </Button>
         )}
@@ -158,20 +166,23 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   image: {
-    width: '100%',
+    width: "100%",
     height: 250,
     borderRadius: 3,
   },
   report: {
-    marginTop: '5%',
-    marginBottom: '5%',
-    marginLeft: '5%',
-    marginRight: '4%',
+    marginTop: "5%",
+    marginBottom: "5%",
+    marginLeft: "5%",
+    marginRight: "4%",
     textAlign: "center",
     paddingBottom: 10,
   },
   title: {
     fontSize: 30,
+    marginBottom: "3%",
+    alignSelf: "center",
+    marginTop: "5%",
   },
   titleLeft: {
     fontSize: 18,
@@ -193,17 +204,22 @@ const styles = StyleSheet.create({
   },
   bottonBorrar: {
     backgroundColor: "#FF0000",
-    margin: '5%',
-    marginTop: '10%'
+    margin: "5%",
+    marginTop: "10%",
   },
   viewRow: {
     flexDirection: "row",
-    justifyContent: 'space-between',
-    marginBottom: '3%',
+    justifyContent: "space-between",
+    marginBottom: "3%",
   },
   date: {
     fontSize: 20,
-    marginTop: '20%',
-    fontWeight: 'normal',
+    marginTop: "20%",
+    fontWeight: "normal",
+  },
+  viewTitle: {
+    backgroundColor: "#fff",
+    borderBottomColor: "gray",
+    borderBottomWidth: 0.5,
   },
 });

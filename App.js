@@ -8,7 +8,7 @@ import React, {
 import * as Google from "expo-google-app-auth";
 import * as Facebook from "expo-facebook";
 
-import { Provider, IconButton, Colors } from "react-native-paper";
+import { Provider, IconButton, Colors, Avatar } from "react-native-paper";
 import { theme } from "./components/core/theme";
 import { createStackNavigator } from "@react-navigation/stack";
 import { NavigationContainer } from "@react-navigation/native";
@@ -20,6 +20,7 @@ import {
   ResetPasswordScreen,
   CompleteUser,
 } from "./components/Navigators/index";
+import logo from "./image/logoBar.png";
 
 import { newUserThird, newUserFB } from "./components/services/user";
 
@@ -243,6 +244,7 @@ export default function App() {
                 component={NavBar}
                 options={{
                   headerStyle: { backgroundColor: "#0277BD" },
+                  headerTintColor: "#fff",
                   headerRight: () => (
                     <IconButton
                       icon="logout"
