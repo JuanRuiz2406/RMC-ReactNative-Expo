@@ -30,11 +30,9 @@ export default () => {
     if (reportPhotosResponse !== null) {
       setLoadingPhotos(false);
       let uris = "";
-        reportPhotosResponse.map((x) => (
-            uris = (uris +  "," + x.imagePath)
-        ))
-        uris = uris.substring(1);
-        uris = uris.split(",");
+      reportPhotosResponse.map((x) => (uris = uris + "," + x.imagePath));
+      uris = uris.substring(1);
+      uris = uris.split(",");
       setPhotos(uris);
       //console.log(photos);
     }
@@ -42,7 +40,6 @@ export default () => {
       Alert.alert("Error Unauthorized", reportPhotosResponse.error);
     }
   };
-
 
   useEffect(() => {
     fetchDetails();
@@ -53,7 +50,12 @@ export default () => {
       {loadingDetails ? (
         <ActivityIndicator />
       ) : (
-        <ShowReport report={report} details={details} canDelete={canDelete} photos={photos} />
+        <ShowReport
+          report={report}
+          details={details}
+          canDelete={canDelete}
+          photos={photos}
+        />
       )}
     </View>
   );
@@ -62,7 +64,7 @@ export default () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: "#F6F7F9",
     alignItems: "stretch",
     justifyContent: "center",
   },

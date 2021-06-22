@@ -51,7 +51,7 @@ export default ({ navigation: { navigate } }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: "#F6F7F9",
     alignItems: "stretch",
   },
 });

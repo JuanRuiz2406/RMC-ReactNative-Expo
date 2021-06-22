@@ -54,17 +54,18 @@ export default ({ navigation: { navigate } }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: "#F6F7F9",
     alignItems: "stretch",
   },
   title: {
     fontSize: 30,
-    marginBottom: '3%',
+    marginBottom: "3%",
     alignSelf: "center",
-    marginTop: '5%',
+    marginTop: "5%",
   },
   viewTitle: {
-    borderBottomColor: 'gray',
+    backgroundColor: "#fff",
+    borderBottomColor: "gray",
     borderBottomWidth: 0.5,
-  }
+  },
 });

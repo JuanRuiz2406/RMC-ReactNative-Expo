@@ -9,7 +9,7 @@
     "splash": {
       "image": "./assets/Cargando.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#F6F7F9"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
@@ -23,7 +23,7 @@
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/CopiaLogoReportsMyCity.png",
-        "backgroundColor": "#FFFFFF"
+        "backgroundColor": "#F6F7F9"
       }
     },
     "web": {

@@ -1,129 +1,122 @@
 import React from "react";
 import {
   StyleSheet,
-  Text,
-  Image,
   FlatList,
   TouchableOpacity,
   Dimensions,
-  View
+  View,
 } from "react-native";
 import { FirstPhoto } from "../report/index";
-let Image_Http_URL = { uri: 'https://firebasestorage.googleapis.com/v0/b/reportmycity-5912e.appspot.com/o/032AE213-6C21-43EB-B433-139DFF5833E01621595712843.png?alt=media&token=8a52011c-c8da-4b2b-9cc2-82c9dcbc0b8f' };
+import { theme } from "../core/theme";
 
-const Color = async (text) => {
-  {
-    if (text === "Aceptado") {
-      <Text style={styles.textGreen}> {text}</Text>
-    }
-    if (text === "Procesando") {
-      <Text style={styles.textYellow}> {text}</Text>
-    }
-    if (text === "Rechazado") {
-      <Text style={styles.textRed}> {text}</Text>
-    }
-    <Text style={styles.textNew}> {text}</Text>
-  }
-}
+import { Card, Paragraph, Chip, Title, Avatar } from "react-native-paper";
+
+let Image_Http_URL = {
+  uri: "https://firebasestorage.googleapis.com/v0/b/reportmycity-5912e.appspot.com/o/032AE213-6C21-43EB-B433-139DFF5833E01621595712843.png?alt=media&token=8a52011c-c8da-4b2b-9cc2-82c9dcbc0b8f",
+};
 
 export default ({ onRefresh, refreshing, reports, onPress }) => {
   return (
-    <View>
+    <View style={styles.container}>
       <FlatList
         onRefresh={onRefresh}
         refreshing={refreshing}
         data={reports}
         keyExtractor={(item) => String(item.id)}
         renderItem={({ item }) => (
-          <View>
-            <TouchableOpacity
-              style={styles.report}
-              onPress={() => {
-                onPress(item);
-              }}
-            >
-              <Text style={styles.title}>{item.title}</Text>
-              <FirstPhoto reportId={item.id} />
-            </TouchableOpacity>
-            <View style={styles.viewRow}>
-              <Text style={styles.subTitleLeft}>Descripcion: </Text>
-              <Text style={styles.subTitleLeft}>Estado:
-              <Text
+          <View style={styles.container2}>
+            <Card>
+              <TouchableOpacity
+                style={styles.report}
+                onPress={() => {
+                  onPress(item);
+                }}
+              >
+                <Card.Title
+                  title={item.user.name + " " + item.user.lastname}
+                  subtitle={item.createdAt}
+                  left={(props) => (
+                    <Avatar.Image
+                      size={45}
+                      source={{ uri: item.user.imgURL }}
+                    />
+                  )}
+                />
+                <FirstPhoto reportId={item.id} />
+              </TouchableOpacity>
+              <Card.Content>
+                <Chip
                   style={{
-                    color: item.state === "Aceptado" ? '#3CBA69' :
-                      item.state === "Procesando" ? '#fce63f' :
-                        item.state === "Rechazado" ? '#FF0000' : '#F8A513'
-                  }}> {item.state}</Text>
-              </Text>
-            </View>
-            <Text style={styles.description}>{item.description}</Text>
-            <View
-              style={{
-                borderBottomColor: "black",
-                borderBottomWidth: 0.5,
-                marginBottom: "4%",
-                marginTop: "4%",
-              }}
-            ></View>
+                    backgroundColor:
+                      item.state === "Aceptado"
+                        ? "#4caf50"
+                        : item.state === "Procesando"
+                        ? "#ff9800"
+                        : item.state === "Rechazado"
+                        ? "#FF0000"
+                        : "#0277BD",
+                    marginRight: "70.5%",
+                  }}
+                  selectedColor="#fff"
+                >
+                  {item.state}
+                </Chip>
+                <Title style={styles.text}>{item.title}</Title>
+                <Paragraph>{item.description}</Paragraph>
+              </Card.Content>
+            </Card>
           </View>
-
         )}
       />
-
     </View>
-
   );
 };
 
 const styles = StyleSheet.create({
-  cointarner: {
-    borderBottomWidth: 0.5,
+  container: {
+    margin: "3%",
+    marginBottom: "15%",
+  },
+  container2: {
+    marginTop: "5%",
+    marginBottom: "5%",
   },
   image: {
-    width: '96%',
+    width: "96%",
     height: 200,
     borderRadius: 7,
-    marginLeft: '2%'
+    marginLeft: "2%",
   },
   report: {
-    marginTop: '3%',
+    marginTop: "3%",
     textAlign: "center",
-    paddingBottom: '2%',
+    paddingBottom: "2%",
   },
   title: {
     fontSize: 25,
-    marginBottom: '3%',
+    marginBottom: "3%",
     alignSelf: "center",
   },
   subTitleLeft: {
     fontSize: 20,
-    marginTop: '3%',
-    marginLeft: '3%',
-    marginBottom: '1%',
+    marginTop: "3%",
+    marginLeft: "3%",
+    marginBottom: "1%",
     fontWeight: "bold",
   },
   description: {
     fontSize: 16,
     marginTop: 10,
-    marginLeft: '5%',
+    marginLeft: "5%",
     marginBottom: 10,
   },
   viewRow: {
     flexDirection: "row",
-    justifyContent: 'space-between',
-    marginRight: '1%',
+    justifyContent: "space-between",
+    marginRight: "1%",
   },
-  textGreen: {
-    color: '#3CBA69',
+  text: {
+    fontSize: 20,
+    marginTop: 15,
   },
-  textRed: {
-    color: '#FF0000',
-  },
-  textYellow: {
-    color: '#fce63f',
-  },
-  textNew: {
-    color: '#F8A513',
-  }
-
 });

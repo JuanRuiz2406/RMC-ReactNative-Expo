@@ -24,7 +24,6 @@ import Button from "../ComponetsLogin/Button";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { CarouselImg } from "../report/index";
 
-
 export default ({ navigation: { navigate } }) => {
   const { handleSubmit, control, reset, errors } = useForm();
   const [cityName, setCityName] = useState("");
@@ -57,7 +56,7 @@ export default ({ navigation: { navigate } }) => {
     //console.log(image);
     navigate("Seleccionar Multiples Fotos", {
       setImage: setImage,
-    })
+    });
     images = image.split(",");
     console.log(images);
   };
@@ -71,16 +70,14 @@ export default ({ navigation: { navigate } }) => {
     setCityName(locationResponse.city);
   };
 
-  const saveImages = async (reportResponse) =>{
-   const images = image.split(",");
-   for (const img of images){
-     const uploadUrl = await uploadImageAsync(img);
-     await newPhotography(uploadUrl, reportResponse);
-     console.log("subida");
-   }
+  const saveImages = async (reportResponse) => {
+    const images = image.split(",");
+    for (const img of images) {
+      const uploadUrl = await uploadImageAsync(img);
+      await newPhotography(uploadUrl, reportResponse);
+      console.log("subida");
+    }
   };
-
-  
 
   const coordenates = {
     latitude: latitude,
@@ -88,7 +85,6 @@ export default ({ navigation: { navigate } }) => {
   };
 
   const onSubmitReport = async (data) => {
-
     console.log(data);
 
     reset({
@@ -118,7 +114,6 @@ export default ({ navigation: { navigate } }) => {
         reportResponse.error
       );
     }
-    
   };
 
   console.log(errors);
@@ -196,9 +191,10 @@ export default ({ navigation: { navigate } }) => {
             <Button
               style={styles.button}
               mode="contained"
-              onPress={() => navigate("Cámara", {
-                setImage: setImage,
-              })
+              onPress={() =>
+                navigate("Cámara", {
+                  setImage: setImage,
+                })
               }
             >
               <Icon style={styles.icon} name="camera" />
@@ -208,12 +204,12 @@ export default ({ navigation: { navigate } }) => {
               <Icon style={styles.icon} name="image" />
             </Button>
           </View>
-          <View>  
+          <View>
             {image === null ? (
               <View></View>
             ) : (
-              <CarouselImg photos={image.split(",")}/>
-              )}
+              <CarouselImg photos={image.split(",")} />
+            )}
           </View>
           <View
             style={{
@@ -239,7 +235,7 @@ export default ({ navigation: { navigate } }) => {
 
 const styles = StyleSheet.create({
   image: {
-    width: '100%',
+    width: "100%",
     height: 250,
     borderRadius: 3,
   },
@@ -267,7 +263,7 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: "#F6F7F9",
     width: Dimensions.get("window").width,
   },
   scrollView: {

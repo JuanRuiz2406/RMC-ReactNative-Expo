@@ -51,7 +51,7 @@ export default navBar = () => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#fff",
-    margin: '5%',
+    backgroundColor: "#F6F7F9",
+    margin: "5%",
   },
-})
+});

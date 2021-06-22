@@ -1,4 +1,10 @@
-import React, { useState, useEffect, useReducer, useMemo, useContext } from "react";
+import React, {
+  useState,
+  useEffect,
+  useReducer,
+  useMemo,
+  useContext,
+} from "react";
 import * as Google from "expo-google-app-auth";
 import * as Facebook from "expo-facebook";
 
@@ -15,7 +21,7 @@ import {
   CompleteUser,
 } from "./components/Navigators/index";
 
-import { newUserThird, newUserFB } from "./components/services/user"
+import { newUserThird, newUserFB } from "./components/services/user";
 
 import AuthStackNavigator from "./components/Navigators/AuthStackNavigator";
 import { AuthContext } from "./components/contexts/authContext";
@@ -38,7 +44,6 @@ if (!firebase.apps.length) {
 const Stack = createStackNavigator();
 
 export default function App() {
-
   const initialLoginState = {
     isLoading: false,
     userName: null,
@@ -145,20 +150,21 @@ export default function App() {
           console.log(resposeLoginGSave);
           if (resposeLoginGSave.token != null) {
             await AsyncStorage.setItem("userToken", resposeLoginGSave.token);
-            await AsyncStorage.setItem("user", JSON.stringify(resposeLoginGSave.user));
+            await AsyncStorage.setItem(
+              "user",
+              JSON.stringify(resposeLoginGSave.user)
+            );
             dispatch({
               type: "LOGIN",
               id: result.user.email,
               token: resposeLoginGSave.token,
             });
             console.log("Inicio de sesion correcto");
-
-          } else
-            if (resposeLoginGSave.code === 400) {
-              console.log(resposeLoginGSave.message);
-            } else if (resposeLoginGSave.code === 404) {
-              console.log(resposeLoginGSave.message);
-            }
+          } else if (resposeLoginGSave.code === 400) {
+            console.log(resposeLoginGSave.message);
+          } else if (resposeLoginGSave.code === 404) {
+            console.log(resposeLoginGSave.message);
+          }
         }
       } catch (e) {
         Alert.alert("Error", e);
@@ -167,14 +173,18 @@ export default function App() {
     loginWithFacebook: async () => {
       try {
         await Facebook.initializeAsync({
-          appId: '490117555335289',
+          appId: "490117555335289",
         });
-        const { type, token, expirationDate,
+        const {
+          type,
+          token,
+          expirationDate,
           permissions,
-          declinedPermissions } = await Facebook.logInWithReadPermissionsAsync({
-            permissions: ['public_profile', 'email'],
-          });
-        if (type === 'success') {
+          declinedPermissions,
+        } = await Facebook.logInWithReadPermissionsAsync({
+          permissions: ["public_profile", "email"],
+        });
+        if (type === "success") {
           // Get the user's name using Facebook's Graph API
           const response = await fetch(
             `https://graph.facebook.com/me?access_token=${token}&fields=id,name,email,about,picture`
@@ -186,8 +196,15 @@ export default function App() {
           const resposeLoginFB = await newUserFB(usertemp, "facebook");
           if (resposeLoginFB.token != null) {
             await AsyncStorage.setItem("userToken", resposeLoginFB.token);
-            await AsyncStorage.setItem("user", JSON.stringify(resposeLoginFB.user));
-            dispatch({ type: "LOGIN", id: usertemp.email, token: resposeLoginFB.token });
+            await AsyncStorage.setItem(
+              "user",
+              JSON.stringify(resposeLoginFB.user)
+            );
+            dispatch({
+              type: "LOGIN",
+              id: usertemp.email,
+              token: resposeLoginFB.token,
+            });
           } else {
             console.log("Error en el inicio de sesion");
           }
@@ -225,7 +242,7 @@ export default function App() {
                 name="ReportsMyCity"
                 component={NavBar}
                 options={{
-                  headerStyle: { backgroundColor: "#3E5EAB" },
+                  headerStyle: { backgroundColor: "#0277BD" },
                   headerRight: () => (
                     <IconButton
                       icon="logout"
@@ -235,7 +252,6 @@ export default function App() {
                     />
                   ),
                 }}
-
               />
             </Stack.Navigator>
           ) : (
@@ -247,7 +263,10 @@ export default function App() {
               <Stack.Screen name="StartScreen" component={StartScreen} />
               <Stack.Screen name="LoginScreen" component={LoginScreen} />
               <Stack.Screen name="RegisterScreen" component={RegisterScreen} />
-              <Stack.Screen name="updatePasswordWithCode" component={updatePasswordWithCode} />
+              <Stack.Screen
+                name="updatePasswordWithCode"
+                component={updatePasswordWithCode}
+              />
               <Stack.Screen
                 name="ResetPasswordScreen"
                 component={ResetPasswordScreen}
