@@ -243,7 +243,7 @@ export default function App() {
                 name="ReportsMyCity"
                 component={NavBar}
                 options={{
-                  headerStyle: { backgroundColor: "#0277BD" },
+                  headerStyle: { backgroundColor: "#009de0" },
                   headerTintColor: "#fff",
                   headerRight: () => (
                     <IconButton
