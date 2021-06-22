@@ -1,49 +1,52 @@
-
-import React, { Component } from 'react'
-import { Animated, View, StyleSheet, Image, Dimensions, ScrollView , Text} from 'react-native'
+import React, { Component } from "react";
+import {
+  Animated,
+  View,
+  StyleSheet,
+  Image,
+  Dimensions,
+  ScrollView,
+  Text,
+} from "react-native";
 import { getReportPhotos } from "../services/photography";
 
-const deviceWidth = 340
-const FIXED_BAR_WIDTH = 280
-const BAR_SPACE = 10
+const deviceWidth = Dimensions.get("window").width - 38;
+const FIXED_BAR_WIDTH = 280;
+const BAR_SPACE = 10;
 
 let images = [
-  'https://s-media-cache-ak0.pinimg.com/originals/ee/51/39/ee5139157407967591081ee04723259a.png',
-  'https://s-media-cache-ak0.pinimg.com/originals/40/4f/83/404f83e93175630e77bc29b3fe727cbe.jpg',
-  'https://s-media-cache-ak0.pinimg.com/originals/8d/1a/da/8d1adab145a2d606c85e339873b9bb0e.jpg',
-]
+  "https://s-media-cache-ak0.pinimg.com/originals/ee/51/39/ee5139157407967591081ee04723259a.png",
+  "https://s-media-cache-ak0.pinimg.com/originals/40/4f/83/404f83e93175630e77bc29b3fe727cbe.jpg",
+  "https://s-media-cache-ak0.pinimg.com/originals/8d/1a/da/8d1adab145a2d606c85e339873b9bb0e.jpg",
+];
 
 export default class App extends Component {
-
-
-  numItems = images.length
-  itemWidth = (FIXED_BAR_WIDTH / this.numItems) - ((this.numItems - 1) * BAR_SPACE)
-  animVal = new Animated.Value(0)
+  numItems = images.length;
+  itemWidth = FIXED_BAR_WIDTH / this.numItems - (this.numItems - 1) * BAR_SPACE;
+  animVal = new Animated.Value(0);
 
   render() {
     let uris = "";
-    let imageArray = []
-    let barArray = []
-
-
+    let imageArray = [];
+    let barArray = [];
 
     console.log(this.props.photos);
     this.props.photos.forEach((image, i) => {
-      console.log(image, i)
+      console.log(image, i);
       const thisImage = (
         <Image
           key={`image${i}`}
-          source={{uri: image}}
+          source={{ uri: image }}
           style={{ width: deviceWidth }}
         />
-      )
-      imageArray.push(thisImage)
+      );
+      imageArray.push(thisImage);
 
       const scrollBarVal = this.animVal.interpolate({
         inputRange: [deviceWidth * (i - 1), deviceWidth * (i + 1)],
         outputRange: [-this.itemWidth, this.itemWidth],
-        extrapolate: 'clamp',
-      })
+        extrapolate: "clamp",
+      });
 
       const thisBar = (
         <View
@@ -61,77 +64,64 @@ export default class App extends Component {
               styles.bar,
               {
                 width: this.itemWidth,
-                transform: [
-                  { translateX: scrollBarVal },
-                ],
+                transform: [{ translateX: scrollBarVal }],
               },
             ]}
           />
         </View>
-      )
-      barArray.push(thisBar)
-    })
+      );
+      barArray.push(thisBar);
+    });
 
     return (
-      <View
-        style={styles.container}
-        flex={1}
-      >
+      <View style={styles.container} flex={1}>
         <ScrollView
           horizontal
           showsHorizontalScrollIndicator={false}
           scrollEventThrottle={10}
           pagingEnabled
-          onScroll={
-            Animated.event(
-              [{ nativeEvent: { contentOffset: { x: this.animVal } } }],{useNativeDriver: false}
-            )
-          }
+          onScroll={Animated.event(
+            [{ nativeEvent: { contentOffset: { x: this.animVal } } }],
+            { useNativeDriver: false }
+          )}
         >
-
           {imageArray}
-
         </ScrollView>
-        <View
-          style={styles.barContainer}
-        >
-          {barArray}
-        </View>
+        <View style={styles.barContainer}>{barArray}</View>
       </View>
-    )
+    );
   }
 }
-
 
 const styles = StyleSheet.create({
   container: {
     height: 500,
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
   },
   barContainer: {
-    position: 'absolute',
+    position: "absolute",
     zIndex: 2,
     bottom: 40,
-    flexDirection: 'row',
+    flexDirection: "row",
   },
-    skip: {
-    position: 'absolute',
+  skip: {
+    position: "absolute",
     zIndex: 2,
     bottom: 80,
-    flexDirection: 'row',
+    flexDirection: "row",
   },
   track: {
-    backgroundColor: '#ccc',
-    overflow: 'hidden',
+    backgroundColor: "#ccc",
+    overflow: "hidden",
     height: 2,
   },
   bar: {
-    backgroundColor: '#5294d6',
+    backgroundColor: "#5294d6",
     height: 2,
-    position: 'absolute',
+    position: "absolute",
     left: 0,
     top: 0,
   },
-})
+});
