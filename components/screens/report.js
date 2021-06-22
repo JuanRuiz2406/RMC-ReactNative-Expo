@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { StyleSheet, View } from "react-native";
 import ActivityIndicator from "./activityIndicator";
-import { ShowReport } from "../report/index";
+import { default as ShowReport } from "../report/showReport";
 import { useRoute } from "@react-navigation/native";
 import { getReportDetails } from "../services/reports";
 import { getReportPhotos } from "../services/photography";

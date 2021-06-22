@@ -6,7 +6,7 @@ import {
   Dimensions,
   View,
 } from "react-native";
-import { FirstPhoto } from "../report/index";
+import { default as FirstPhoto } from "../report/firstPhoto";
 import { theme } from "../core/theme";
 
 import { Card, Paragraph, Chip, Title, Avatar } from "react-native-paper";
