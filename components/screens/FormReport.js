@@ -5,17 +5,13 @@ import {
   Alert,
   ScrollView,
   Dimensions,
-  Image,
   Text,
 } from "react-native";
+import ActivityIndicator from "./activityIndicator";
 import { useForm } from "react-hook-form";
 import { TextInput, Picker } from "../hook-form/index";
 import { reverseGeocodeAsync } from "expo-location";
-import {
-  getReportById,
-  getReportDetails,
-  newReport,
-} from "../services/reports";
+import { newReport } from "../services/reports";
 import * as ImagePicker from "expo-image-picker";
 import * as firebase from "firebase";
 import { newPhotography } from "../services/photography";
@@ -29,10 +25,16 @@ export default ({ navigation: { navigate } }) => {
   const [cityName, setCityName] = useState("");
   const [latitude, setLatitude] = useState(0);
   const [longitude, setLongitude] = useState(0);
+
   const pickerOptions = ["Público", "Privado"];
+
   const [image, setImage] = useState(null);
   const [user, setUser] = useState(null);
+
+  const [loading, setLoading] = useState(false);
+
   let images = "";
+
   useEffect(() => {
     if (latitude !== 0) {
       updateCoordenadesAndCityName();
@@ -73,6 +75,7 @@ export default ({ navigation: { navigate } }) => {
   const saveImages = async (reportResponse) => {
     const images = image.split(",");
     for (const img of images) {
+      console.log(img);
       const uploadUrl = await uploadImageAsync(img);
       await newPhotography(uploadUrl, reportResponse);
       console.log("subida");
@@ -86,6 +89,8 @@ export default ({ navigation: { navigate } }) => {
 
   const onSubmitReport = async (data) => {
     console.log(data);
+
+    setLoading(true);
 
     reset({
       title: "",
@@ -102,11 +107,10 @@ export default ({ navigation: { navigate } }) => {
       uploadUrl.toString()
     );
 
-    Alert.alert("Reporte", reportResponse.message);
     console.log(reportResponse);
     if (reportResponse != null) {
       saveImages(reportResponse);
-      Alert.alert("Reporte", "Reporte Guardado exitosamente");
+      Alert.alert("Reporte", "Reporte guardado exitosamente");
     }
     if (reportResponse.status === 401) {
       Alert.alert(
@@ -114,121 +118,131 @@ export default ({ navigation: { navigate } }) => {
         reportResponse.error
       );
     }
+
+    setLoading(false);
   };
 
   console.log(errors);
 
   return (
     <View style={styles.container}>
-      <ScrollView style={styles.scrollView}>
-        <View style={styles.viewIn}>
-          <Text style={styles.label}>Información</Text>
-          <TextInput
-            title="Título"
-            control={control}
-            isPassword={false}
-            name="title"
-            rules={{
-              required: {
-                value: true,
-                message: "¡El título es requerido!",
-              },
-            }}
-            defaultValue=""
-            errorMessage={errors?.title?.message}
-            placeholder={"Escriba aquí"}
-          />
+      {loading ? (
+        <ActivityIndicator />
+      ) : (
+        <ScrollView style={styles.scrollView}>
+          <View style={styles.viewIn}>
+            <Text style={styles.label}>Información</Text>
+            <TextInput
+              title="Título"
+              control={control}
+              isPassword={false}
+              name="title"
+              rules={{
+                required: {
+                  value: true,
+                  message: "¡El título es requerido!",
+                },
+              }}
+              defaultValue=""
+              errorMessage={errors?.title?.message}
+              placeholder={"Escriba aquí"}
+            />
 
-          <TextInput
-            title="Descripción"
-            control={control}
-            isPassword={false}
-            name="description"
-            rules={{
-              required: {
-                value: true,
-                message: "¡Por favor describa su reporte!",
-              },
-            }}
-            defaultValue=""
-            errorMessage={errors?.description?.message}
-            placeholder={"Escriba aquí"}
-          />
+            <TextInput
+              title="Descripción"
+              control={control}
+              isPassword={false}
+              name="description"
+              rules={{
+                required: {
+                  value: true,
+                  message: "¡Por favor describa su reporte!",
+                },
+              }}
+              defaultValue=""
+              errorMessage={errors?.description?.message}
+              placeholder={"Escriba aquí"}
+            />
 
-          <Picker
-            title="Privacidad"
-            control={control}
-            name="privacy"
-            error={errors.privacy}
-            errorMessage="*Selecciona alguna opción*"
-            pickerOptions={pickerOptions}
-          />
+            <Picker
+              title="Privacidad"
+              control={control}
+              name="privacy"
+              error={errors.privacy}
+              errorMessage="*Selecciona alguna opción*"
+              pickerOptions={pickerOptions}
+            />
 
-          <View
-            style={{
-              borderBottomColor: "black",
-              borderBottomWidth: 0.5,
-              marginBottom: "4%",
-              marginTop: "4%",
-            }}
-          ></View>
+            <View
+              style={{
+                borderBottomColor: "black",
+                borderBottomWidth: 0.5,
+                marginBottom: "4%",
+                marginTop: "4%",
+              }}
+            ></View>
 
-          <Text style={styles.label}>Multimedia</Text>
+            <Text style={styles.label}>Multimedia</Text>
 
-          <Button
-            mode="contained"
-            onPress={() =>
-              navigate("Mapa", {
-                setLatitude: setLatitude,
-                setLongitude: setLongitude,
-              })
-            }
-          >
-            <Icon style={styles.icon} name="location-arrow" />
-          </Button>
-
-          <View style={styles.buttonViewContainer}>
             <Button
-              style={styles.button}
               mode="contained"
               onPress={() =>
-                navigate("Cámara", {
-                  setImage: setImage,
+                navigate("Mapa", {
+                  setLatitude: setLatitude,
+                  setLongitude: setLongitude,
                 })
               }
             >
-              <Icon style={styles.icon} name="camera" />
+              <Icon style={styles.icon} name="location-arrow" />
             </Button>
 
-            <Button style={styles.button} mode="contained" onPress={pickImage}>
-              <Icon style={styles.icon} name="image" />
+            <View style={styles.buttonViewContainer}>
+              <Button
+                style={styles.button}
+                mode="contained"
+                onPress={() =>
+                  navigate("Cámara", {
+                    setImage: setImage,
+                  })
+                }
+              >
+                <Icon style={styles.icon} name="camera" />
+              </Button>
+
+              <Button
+                style={styles.button}
+                mode="contained"
+                onPress={pickImage}
+              >
+                <Icon style={styles.icon} name="image" />
+              </Button>
+            </View>
+            <View>
+              {image === null ? (
+                <View></View>
+              ) : (
+                <CarouselImg photos={image.split(",")} />
+              )}
+            </View>
+            <View
+              style={{
+                borderBottomColor: "black",
+                borderBottomWidth: 0.5,
+                marginBottom: "4%",
+                marginTop: "4%",
+              }}
+            ></View>
+
+            <Button
+              mode="contained"
+              style={styles.green}
+              onPress={handleSubmit(onSubmitReport)}
+            >
+              Reportar
             </Button>
           </View>
-          <View>
-            {image === null ? (
-              <View></View>
-            ) : (
-              <CarouselImg photos={image.split(",")} />
-            )}
-          </View>
-          <View
-            style={{
-              borderBottomColor: "black",
-              borderBottomWidth: 0.5,
-              marginBottom: "4%",
-              marginTop: "4%",
-            }}
-          ></View>
-
-          <Button
-            mode="contained"
-            style={styles.green}
-            onPress={handleSubmit(onSubmitReport)}
-          >
-            Reportar
-          </Button>
-        </View>
-      </ScrollView>
+        </ScrollView>
+      )}
     </View>
   );
 };
