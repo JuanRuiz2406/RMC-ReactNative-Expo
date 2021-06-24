@@ -108,15 +108,17 @@ export default ({ navigation: { navigate } }) => {
     );
 
     console.log(reportResponse);
-    if (reportResponse != null) {
-      saveImages(reportResponse);
-      Alert.alert("Reporte", "Reporte guardado exitosamente");
-    }
-    if (reportResponse.status === 401) {
+
+    if (reportResponse.code === 400) {
+      Alert.alert("Error", reportResponse.message);
+    } else if (reportResponse.status === 401) {
       Alert.alert(
         "Error de Autenticación (logee nuevamente o *retirar user*)",
         reportResponse.error
       );
+    } else if (reportResponse != null) {
+      saveImages(reportResponse);
+      Alert.alert("Reporte", "Reporte guardado exitosamente");
     }
 
     setLoading(false);
