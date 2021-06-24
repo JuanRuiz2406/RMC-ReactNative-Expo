@@ -7,7 +7,7 @@ import BackButton from "../ComponetsLogin/BackButton";
 import { useForm } from "react-hook-form";
 import { TextInput } from "../hook-form/index";
 import { StyleSheet, Dimensions, ScrollView, Alert } from "react-native";
-import { updateUser } from "../services/user";
+import { updateUserPassword } from "../services/user";
 import AsyncStorage from "@react-native-community/async-storage";
 
 export default function updatePasswordWithPassword({ navigation }) {

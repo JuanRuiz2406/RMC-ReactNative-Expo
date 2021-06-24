@@ -44,7 +44,10 @@ export default function LoginScreen({ navigation }) {
         createResponse.user
       );
     } else {
-      Alert.alert("Campos mal rellenados, revise y vuelva a intentar");
+      Alert.alert(
+        "Error",
+        "El Correco Electrónico o la Contraseña son erroneos"
+      );
     }
   };
 
