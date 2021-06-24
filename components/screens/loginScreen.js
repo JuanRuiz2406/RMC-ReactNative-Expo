@@ -5,7 +5,7 @@ import {
   Dimensions,
   View,
   Alert,
-  ScrollView
+  ScrollView,
 } from "react-native";
 import { useForm } from "react-hook-form";
 import { TextInput } from "../hook-form/index";
@@ -13,13 +13,13 @@ import { AuthContainer } from "../loginComponents/authContainer";
 import { AuthContext } from "../contexts/authContext";
 import { loginUser } from "../services/user";
 
-import { Text } from 'react-native-paper'
-import Background from '../ComponetsLogin/Background'
-import Logo from '../ComponetsLogin/Logo'
-import Header from '../ComponetsLogin/Header'
-import Button from '../ComponetsLogin/Button'
-import BackButton from '../ComponetsLogin/BackButton'
-import { theme } from '../core/theme'
+import { Text } from "react-native-paper";
+import Background from "../ComponetsLogin/Background";
+import Logo from "../ComponetsLogin/Logo";
+import Header from "../ComponetsLogin/Header";
+import Button from "../ComponetsLogin/Button";
+import BackButton from "../ComponetsLogin/BackButton";
+import { theme } from "../core/theme";
 
 export default function LoginScreen({ navigation }) {
   const { handleSubmit, control, reset, errors } = useForm();
@@ -37,9 +37,13 @@ export default function LoginScreen({ navigation }) {
     const createResponse = await loginUser(data, "normal", data.password);
     console.log(createResponse);
     if (createResponse.email != null) {
-      login(createResponse.email, data.email, createResponse.token, createResponse.user);
-    }
-    else {
+      login(
+        createResponse.email,
+        data.email,
+        createResponse.token,
+        createResponse.user
+      );
+    } else {
       Alert.alert("Campos mal rellenados, revise y vuelva a intentar");
     }
   };
@@ -47,17 +51,16 @@ export default function LoginScreen({ navigation }) {
   console.log(errors);
 
   return (
-
     <Background>
       <BackButton goBack={navigation.goBack} />
       <ScrollView
         ref={(ref) => (scrollView = ref)}
-        style={styles.scrollView} bounces={false}>
-
+        style={styles.scrollView}
+        bounces={false}
+      >
         <Logo />
         <Header>Bienvenido de nuevo</Header>
         <AuthContainer>
-
           <TextInput
             title="Correo Electrónico"
             control={control}
@@ -102,7 +105,7 @@ export default function LoginScreen({ navigation }) {
           />
           <View style={styles.forgotPassword}>
             <TouchableOpacity
-              onPress={() => navigation.navigate('resetPasswordScreen')}
+              onPress={() => navigation.navigate("ResetPasswordScreen")}
             >
               <Text style={styles.forgot}>Olvido su contraseña?</Text>
             </TouchableOpacity>
@@ -110,13 +113,13 @@ export default function LoginScreen({ navigation }) {
 
           <Button mode="contained" onPress={handleSubmit(onSubmitLogin)}>
             Iniciar Sesion
-            </Button>
+          </Button>
           <Button mode="outlined" onPress={() => loginWithGoogle()}>
             Google
-            </Button>
+          </Button>
           <Button mode="outlined" onPress={() => loginWithFacebook()}>
             Facebook
-            </Button>
+          </Button>
         </AuthContainer>
       </ScrollView>
     </Background>
@@ -154,12 +157,12 @@ const styles = StyleSheet.create({
     height: Dimensions.get("window").height,
   },
   forgotPassword: {
-    width: '100%',
-    alignItems: 'flex-end',
+    width: "100%",
+    alignItems: "flex-end",
     marginBottom: 24,
   },
   row: {
-    flexDirection: 'row',
+    flexDirection: "row",
     marginTop: 4,
   },
   forgot: {
@@ -167,7 +170,7 @@ const styles = StyleSheet.create({
     color: theme.colors.secondary,
   },
   link: {
-    fontWeight: 'bold',
+    fontWeight: "bold",
     color: theme.colors.primary,
   },
 });

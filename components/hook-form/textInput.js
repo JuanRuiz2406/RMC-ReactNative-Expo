@@ -1,8 +1,10 @@
 import React from "react";
-import { StyleSheet, TextInput, Text } from "react-native";
+import { StyleSheet, Text } from "react-native";
 import { Controller } from "react-hook-form";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { Input } from "react-native-elements";
+import { TextInput, HelperText } from "react-native-paper";
+import { theme } from "../core/theme";
 
 export default ({
   title,
@@ -17,12 +19,14 @@ export default ({
 }) => {
   return (
     <>
-      <Text style={styles.label}>{title}</Text>
       <Controller
         control={control}
         render={({ onChange, onBlur, value }) => (
-          <Input
-            leftIcon={{ type: 'font-awesome', name: leftIconName }}
+          <TextInput
+            mode="flat"
+            style={{ backgroundColor: "transparent", fontSize: 20 }}
+            label={title}
+            left={<TextInput.Icon name={leftIconName} />}
             secureTextEntry={isPassword}
             //style={styles.input}
             onBlur={onBlur}
@@ -35,31 +39,7 @@ export default ({
         rules={rules}
         defaultValue={defaultValue}
       />
-      {<Text style={styles.errorMessage}>{errorMessage}</Text>}
+      {<HelperText type="error">{errorMessage}</HelperText>}
     </>
   );
 };
-
-const styles = StyleSheet.create({
-  label: {
-    margin: 20,
-    marginTop: '1%',
-    marginLeft: 7,
-    fontSize: 22,
-    fontWeight: "bold",
-  },
-  errorMessage: {
-    marginLeft: 35,
-    fontSize: 12,
-  },
-  input: {
-    backgroundColor: "white",
-    height: 30,
-    padding: 2,
-    borderRadius: 4,
-    borderBottomWidth: 1,
-    marginLeft: '1%',
-    marginRight: '1%',
-    fontSize: 20,
-  },
-});

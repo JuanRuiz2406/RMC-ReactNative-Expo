@@ -9,7 +9,7 @@ import {
   StatusBar,
   View,
   TouchableWithoutFeedback,
-  Keyboard
+  Keyboard,
 } from "react-native";
 import { AuthContainer } from "../loginComponents/authContainer";
 import { AuthContext } from "../contexts/authContext";
@@ -43,12 +43,16 @@ export default function RegisterScreen({ navigation }) {
     const saveUser = await newUser(data);
     console.log(saveUser);
     if (saveUser.code === 201) {
-      console.log("El usuario ser registro correctamente")
+      console.log("El usuario ser registro correctamente");
       const responseLogin = await loginUser(data, "normal", data.password);
       console.log(responseLogin);
       if (responseLogin.token != null) {
         console.log("El usuario ser loguio correctamente");
-        register(responseLogin.user.email, responseLogin.token, responseLogin.user);
+        register(
+          responseLogin.user.email,
+          responseLogin.token,
+          responseLogin.user
+        );
       }
       if (responseLogin.token === null) {
         Alert.alert("Problemas para iniciar sesion, vuelva a intentar");
@@ -64,8 +68,8 @@ export default function RegisterScreen({ navigation }) {
       <BackButton goBack={navigation.goBack} />
       <ScrollView
         style={styles.scrollView}
-      //ref={(ref) => (scrollView = ref)}
-      //bounces={false}
+        //ref={(ref) => (scrollView = ref)}
+        //bounces={false}
       >
         <Logo />
         <Header>Crea una cuenta</Header>
@@ -87,7 +91,7 @@ export default function RegisterScreen({ navigation }) {
             }}
             defaultValue=""
             errorMessage={errors?.name?.message}
-            leftIconName="user"
+            leftIconName="account"
           />
           <TextInput
             title="Apellido"
@@ -106,7 +110,7 @@ export default function RegisterScreen({ navigation }) {
             }}
             defaultValue=""
             errorMessage={errors?.lastName?.message}
-            leftIconName="user"
+            leftIconName="account-child"
           />
           <TextInput
             title="Identificacion"
@@ -174,7 +178,7 @@ export default function RegisterScreen({ navigation }) {
             }}
             defaultValue=""
             errorMessage={errors?.direction?.message}
-            leftIconName="location-arrow"
+            leftIconName="map"
           />
 
           <Button mode="contained" onPress={handleSubmit(onSubmitRegister)}>
@@ -213,6 +217,6 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    justifyContent: 'center',
+    justifyContent: "center",
   },
 });

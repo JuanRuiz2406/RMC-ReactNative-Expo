@@ -1,10 +1,20 @@
 import React, { useState, useEffect, useContext } from "react";
-import { StyleSheet, Text, View, Image, ScrollView, Dimensions, Alert, Modal, TouchableHighlight } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  ScrollView,
+  Dimensions,
+  Alert,
+  Modal,
+  TouchableHighlight,
+} from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { AuthContext } from "../contexts/authContext";
 
-import { useForm } from 'react-hook-form';
-import { TextInput } from '../hook-form/index';
+import { useForm } from "react-hook-form";
+import { TextInput } from "../hook-form/index";
 import ActivityIndicator from "./activityIndicator";
 
 import AsyncStorage from "@react-native-community/async-storage";
@@ -19,19 +29,18 @@ export default function Profile({ navigation: { navigate } }) {
   const [loading, setLoading] = useState(true);
   const { logout } = useContext(AuthContext);
   const [user, setUser] = useState([]);
-  const [modalVisible, setModalVisible] = useState(false);  
+  const [modalVisible, setModalVisible] = useState(false);
   const [image, setImage] = useState(null);
 
   useEffect(() => {
     loadUser();
   }, []);
 
-
   const loadUser = async () => {
     setUser(JSON.parse(await AsyncStorage.getItem("user")));
     setLoading(false);
     console.log(user);
-  }
+  };
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
@@ -45,25 +54,24 @@ export default function Profile({ navigation: { navigate } }) {
     }
   };
   const camera = async () => {
-      setModalVisible(!modalVisible);
-      navigate("Cámara", {
-        setImage: setImage,
-      });
-      setModalVisible(!modalVisible);
-  }
+    setModalVisible(!modalVisible);
+    navigate("Cámara", {
+      setImage: setImage,
+    });
+    setModalVisible(!modalVisible);
+  };
   const saveImage = async () => {
     const uploadUrl = await uploadImageAsync(image);
-    usuario = JSON.parse(await AsyncStorage.getItem("user"))
+    usuario = JSON.parse(await AsyncStorage.getItem("user"));
     console.log(uploadUrl);
     let im = uploadUrl.toString();
     updateResponse = await updateUserImage(usuario, im);
-    if(updateResponse.code === 201){
+    if (updateResponse.code === 201) {
       usuario.imgURL = uploadUrl;
       await AsyncStorage.setItem("user", JSON.stringify(usuario));
     }
-  }
+  };
   const onDeleteUser = async (userEmail) => {
-
     const deleteResponse = await deleteUser(userEmail);
     console.log(deleteResponse);
     if (deleteResponse.code === 200) {
@@ -80,78 +88,95 @@ export default function Profile({ navigation: { navigate } }) {
       {loading ? (
         <ActivityIndicator />
       ) : (
-        <ScrollView showsVerticalScrollIndicator={false} style={styles.scrollView}>
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          style={styles.scrollView}
+        >
           <View style={{ alignSelf: "center" }}>
-
-            
             <View style={styles.profileImage}>
-              {user.imgURL === null ? (           
+              {user.imgURL === null ? (
                 <Image
-                source={require("../../image/Profile_Picture_Null.png")}
-                style={styles.image}
-                resizeMode="center"
-              />): (
+                  source={require("../../image/Profile_Picture_Null.png")}
+                  style={styles.image}
+                  resizeMode="center"
+                />
+              ) : (
                 <Image
-                source={{ uri: user.imgURL }}
-                style={styles.image}
-                resizeMode="center"
-              />
+                  source={{ uri: user.imgURL }}
+                  style={styles.image}
+                  resizeMode="center"
+                />
               )}
-
             </View>
             <Modal
-        animationType="slide"
-        transparent={true}
-        visible={modalVisible}
-        onRequestClose={() => {
-          Alert.alert('Modal has been closed.');
-        }}>
-          
-        <View style={styles.centeredView}>
-          <View style={styles.modalView}>
-          <View style={styles.gallery}>
-              <IconButton icon="image" size={30} color="#FEB139"
-              onPress={pickImage}
-              />
-            </View>
-            <View style={styles.camera}>
-              <IconButton icon="camera" size={30} color="#FEB139"
-                onPress={camera}
-              />
-            </View>
-            <View style={styles.profileImage}>
-            {image === null ? (           
-                <Image
-                source={{ uri: user.imgURL }}
-                style={styles.image}
-                resizeMode="center"
-              />): (
-                <Image
-                source={{ uri: image }}
-                style={styles.image}
-                resizeMode="contain"
-              />
-              )}
-            </View>
-            <TouchableHighlight
-              style={{ ...styles.closeButton, backgroundColor: '#FF0000' }}
-              onPress={() => {
-                setModalVisible(!modalVisible);
-              }}>
-              <Text style={styles.textStyle}>Cerrar</Text>
-            </TouchableHighlight>
-            <TouchableHighlight
-              style={{ ...styles.saveButton, backgroundColor: '#3CBA69' }}
-              onPress={saveImage}>
-              <Text style={styles.textStyle}>Guardar</Text>
-            </TouchableHighlight>
-          </View>
-        </View>
-      </Modal>
+              animationType="slide"
+              transparent={true}
+              visible={modalVisible}
+              onRequestClose={() => {
+                Alert.alert("Modal has been closed.");
+              }}
+            >
+              <View style={styles.centeredView}>
+                <View style={styles.modalView}>
+                  <View style={styles.gallery}>
+                    <IconButton
+                      icon="image"
+                      size={30}
+                      color="#FEB139"
+                      onPress={pickImage}
+                    />
+                  </View>
+                  <View style={styles.camera}>
+                    <IconButton
+                      icon="camera"
+                      size={30}
+                      color="#FEB139"
+                      onPress={camera}
+                    />
+                  </View>
+                  <View style={styles.profileImage}>
+                    {image === null ? (
+                      <Image
+                        source={{ uri: user.imgURL }}
+                        style={styles.image}
+                        resizeMode="center"
+                      />
+                    ) : (
+                      <Image
+                        source={{ uri: image }}
+                        style={styles.image}
+                        resizeMode="contain"
+                      />
+                    )}
+                  </View>
+                  <TouchableHighlight
+                    style={{
+                      ...styles.closeButton,
+                      backgroundColor: "#FF0000",
+                    }}
+                    onPress={() => {
+                      setModalVisible(!modalVisible);
+                    }}
+                  >
+                    <Text style={styles.textStyle}>Cerrar</Text>
+                  </TouchableHighlight>
+                  <TouchableHighlight
+                    style={{ ...styles.saveButton, backgroundColor: "#3CBA69" }}
+                    onPress={saveImage}
+                  >
+                    <Text style={styles.textStyle}>Guardar</Text>
+                  </TouchableHighlight>
+                </View>
+              </View>
+            </Modal>
             <View style={styles.pencil}>
-              <IconButton icon="pencil" size={30} color="#FEB139"
-              onPress={() => {
-                setModalVisible(true)}}
+              <IconButton
+                icon="pencil"
+                size={30}
+                color="#FEB139"
+                onPress={() => {
+                  setModalVisible(true);
+                }}
               />
             </View>
           </View>
@@ -193,7 +218,8 @@ export default function Profile({ navigation: { navigate } }) {
                 },
                 pattern: {
                   value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                  message: "*El Correo Electrónico debe tener un formato válido*",
+                  message:
+                    "*El Correo Electrónico debe tener un formato válido*",
                 },
               }}
               defaultValue={String(user.email)}
@@ -218,7 +244,7 @@ export default function Profile({ navigation: { navigate } }) {
               }}
               defaultValue={String(user.direction)}
               errorMessage={errors?.direction?.message}
-              leftIconName="location-arrow"
+              leftIconName="map"
             />
 
             <TextInput
@@ -240,21 +266,28 @@ export default function Profile({ navigation: { navigate } }) {
               errorMessage={errors?.password?.message}
               leftIconName="lock"
             />
-            <Button mode="outlined" onPress={() => navigate("Cambiar Contraseña")}>
+            <Button
+              mode="outlined"
+              onPress={() => navigate("Cambiar Contraseña")}
+            >
               Cambiar Contraseña
-              </Button>
+            </Button>
 
-            <Button mode="outlined" onPress={() => navigate("Reportes del Usuario")}>
+            <Button
+              mode="outlined"
+              onPress={() => navigate("Reportes del Usuario")}
+            >
               Mis Reportes
             </Button>
 
-            <Button mode="contained" style={styles.bottonBorrar} onPress={() => onDeleteUser(user.email)}>
+            <Button
+              mode="contained"
+              style={styles.bottonBorrar}
+              onPress={() => onDeleteUser(user.email)}
+            >
               Eliminar cuenta
             </Button>
           </View>
-
-
-
         </ScrollView>
       )}
     </View>
@@ -275,7 +308,7 @@ const styles = StyleSheet.create({
     height: undefined,
   },
   profileImage: {
-    marginTop: '4%',
+    marginTop: "4%",
     width: 200,
     height: 200,
     borderRadius: 200,
@@ -295,7 +328,7 @@ const styles = StyleSheet.create({
   camera: {
     left: 50,
     bottom: 10,
-    flexDirection: 'row',
+    flexDirection: "row",
     backgroundColor: "#41444B",
     position: "absolute",
     width: 50,
@@ -307,8 +340,8 @@ const styles = StyleSheet.create({
   gallery: {
     bottom: 10,
     right: 50,
-    alignSelf: 'flex-end',
-    flexDirection: 'row',
+    alignSelf: "flex-end",
+    flexDirection: "row",
     backgroundColor: "#41444B",
     position: "absolute",
     width: 50,
@@ -325,8 +358,8 @@ const styles = StyleSheet.create({
   infoUserContainer: {
     alignSelf: "auto",
     marginTop: 20,
-    marginLeft: '3%',
-    marginRight: '3%',
+    marginLeft: "3%",
+    marginRight: "3%",
   },
   textTitle: {
     fontSize: 30,
@@ -363,11 +396,11 @@ const styles = StyleSheet.create({
   },
   bottonBorrar: {
     backgroundColor: "#FF0000",
-    margin: '5%',
-    marginTop: '10%'
+    margin: "5%",
+    marginTop: "10%",
   },
   viewPass: {
-    flexDirection: 'row',
+    flexDirection: "row",
     //justifyContent: 'space-around',
   },
   modalView: {
@@ -375,8 +408,8 @@ const styles = StyleSheet.create({
     margin: 20,
     borderRadius: 20,
     padding: 35,
-    alignItems: 'center',
-    shadowColor: '#000',
+    alignItems: "center",
+    shadowColor: "#000",
     shadowOffset: {
       width: 0,
       height: 2,
@@ -389,7 +422,7 @@ const styles = StyleSheet.create({
     left: 10,
     top: 10,
     position: "absolute",
-    flexDirection: 'row',
+    flexDirection: "row",
     borderRadius: 20,
     padding: 10,
     elevation: 2,
@@ -398,20 +431,20 @@ const styles = StyleSheet.create({
     top: 10,
     right: 10,
     position: "absolute",
-    alignSelf: 'flex-end',
-    flexDirection: 'row',
+    alignSelf: "flex-end",
+    flexDirection: "row",
     borderRadius: 20,
     padding: 10,
     elevation: 2,
   },
   textStyle: {
-    color: 'white',
-    fontWeight: 'bold',
-    textAlign: 'center',
+    color: "white",
+    fontWeight: "bold",
+    textAlign: "center",
   },
   modalText: {
     marginBottom: 15,
-    textAlign: 'center',
+    textAlign: "center",
   },
 });
 

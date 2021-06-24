@@ -146,6 +146,7 @@ export default ({ navigation: { navigate } }) => {
               defaultValue=""
               errorMessage={errors?.title?.message}
               placeholder={"Escriba aquí"}
+              leftIconName="format-title"
             />
 
             <TextInput
@@ -162,6 +163,7 @@ export default ({ navigation: { navigate } }) => {
               defaultValue=""
               errorMessage={errors?.description?.message}
               placeholder={"Escriba aquí"}
+              leftIconName="text"
             />
 
             <Picker
