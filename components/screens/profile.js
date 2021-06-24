@@ -21,7 +21,7 @@ import AsyncStorage from "@react-native-community/async-storage";
 import Button from "../ComponetsLogin/Button";
 import { IconButton, Colors } from "react-native-paper";
 import * as firebase from "firebase";
-import { deleteUser, updateUserImage } from "../services/user";
+import { deleteUser, updateUserImage, updateUser } from "../services/user";
 import * as ImagePicker from "expo-image-picker";
 
 export default function Profile({ navigation: { navigate } }) {
@@ -80,6 +80,31 @@ export default function Profile({ navigation: { navigate } }) {
     }
     if (deleteResponse.code === 401) {
       Alert.alert("Error al eliminar: ", deleteResponse.error);
+    }
+  };
+
+  const onUpdateUser = async (data) => {
+    const createResponse = await updateUser(data, user.id, user);
+    if (createResponse.code === 201) {
+      await AsyncStorage.setItem(
+        "user",
+        JSON.stringify({
+          id: user.id,
+          name: user.name,
+          lastname: user.lastname,
+          idCard: data.idCard,
+          email: data.email,
+          password: data.password,
+          direction: data.direction,
+          role: user.role,
+          state: user.state,
+        })
+      );
+
+      Alert.alert(createResponse.message);
+      loadUser();
+    } else {
+      Alert.alert(createResponse.message);
     }
   };
 
@@ -202,7 +227,7 @@ export default function Profile({ navigation: { navigate } }) {
                   message: "*La Cédula es obligatoria*",
                 },
               }}
-              defaultValue="504200201"
+              defaultValue={user.idCard}
               errorMessage={errors?.idCard?.message}
               leftIconName="id-card"
             />
@@ -252,6 +277,7 @@ export default function Profile({ navigation: { navigate } }) {
               control={control}
               isPassword={true}
               name="password"
+              disabled={true}
               rules={{
                 required: {
                   value: true,
@@ -266,6 +292,9 @@ export default function Profile({ navigation: { navigate } }) {
               errorMessage={errors?.password?.message}
               leftIconName="lock"
             />
+            <Button mode="contained" onPress={handleSubmit(onUpdateUser)}>
+              Actualizar Perfil
+            </Button>
             <Button
               mode="outlined"
               onPress={() => navigate("Cambiar Contraseña")}
