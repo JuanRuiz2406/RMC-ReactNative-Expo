@@ -16,6 +16,7 @@ export default ({
   errorMessage,
   leftIconName,
   placeholder,
+  disabled,
 }) => {
   return (
     <>
@@ -26,6 +27,7 @@ export default ({
             mode="flat"
             style={{ backgroundColor: "transparent", fontSize: 20 }}
             label={title}
+            disabled={disabled}
             left={<TextInput.Icon name={leftIconName} />}
             secureTextEntry={isPassword}
             //style={styles.input}

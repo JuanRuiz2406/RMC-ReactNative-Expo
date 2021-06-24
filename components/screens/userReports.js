@@ -40,12 +40,14 @@ export default ({ navigation: { navigate } }) => {
       {loading ? (
         <ActivityIndicator />
       ) : (
-        <List
-          onRefresh={() => setRefreshing(true)}
-          refreshing={refreshing}
-          reports={reports}
-          onPress={onPress}
-        />
+        <View style={styles.container2}>
+          <List
+            onRefresh={() => setRefreshing(true)}
+            refreshing={refreshing}
+            reports={reports}
+            onPress={onPress}
+          />
+        </View>
       )}
     </View>
   );
@@ -67,5 +69,8 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     borderBottomColor: "gray",
     borderBottomWidth: 0.5,
+  },
+  container2: {
+    marginBottom: "15%",
   },
 });

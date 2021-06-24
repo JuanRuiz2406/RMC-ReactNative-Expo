@@ -82,7 +82,7 @@ export default ({ onRefresh, refreshing, reports, onPress }) => {
 const styles = StyleSheet.create({
   container: {
     margin: "3%",
-    marginBottom: "15%",
+    marginBottom: "1%",
   },
   container2: {
     marginTop: "5%",

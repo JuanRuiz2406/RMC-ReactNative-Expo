@@ -23,7 +23,7 @@ import { theme } from "../core/theme";
 
 export default function LoginScreen({ navigation }) {
   const { handleSubmit, control, reset, errors } = useForm();
-  const { login, loginWithGoogle, loginWithFacebook } = useContext(AuthContext);
+  const { login, loginWithGoogle } = useContext(AuthContext);
 
   const onSubmitLogin = async (data) => {
     console.log(data);
@@ -119,9 +119,6 @@ export default function LoginScreen({ navigation }) {
           </Button>
           <Button mode="outlined" onPress={() => loginWithGoogle()}>
             Google
-          </Button>
-          <Button mode="outlined" onPress={() => loginWithFacebook()}>
-            Facebook
           </Button>
         </AuthContainer>
       </ScrollView>
