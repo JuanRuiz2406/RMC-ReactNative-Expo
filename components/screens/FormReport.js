@@ -133,7 +133,7 @@ export default ({ navigation: { navigate } }) => {
       ) : (
         <ScrollView style={styles.scrollView}>
           <View style={styles.viewIn}>
-            <Text style={styles.label}>Información</Text>
+            <Text style={styles.label}>Crear Reporte</Text>
             <TextInput
               title="Título"
               control={control}

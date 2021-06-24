@@ -75,7 +75,7 @@ export default function Profile({ navigation: { navigate } }) {
     const deleteResponse = await deleteUser(userEmail);
     console.log(deleteResponse);
     if (deleteResponse.code === 200) {
-      Alert.alert(deleteResponse.message);
+      Alert.alert("Cuenta Eliminada", deleteResponse.message);
       logout();
     }
     if (deleteResponse.code === 401) {
@@ -285,7 +285,7 @@ export default function Profile({ navigation: { navigate } }) {
               style={styles.bottonBorrar}
               onPress={() => onDeleteUser(user.email)}
             >
-              Eliminar cuenta
+              Desactivar cuenta
             </Button>
           </View>
         </ScrollView>

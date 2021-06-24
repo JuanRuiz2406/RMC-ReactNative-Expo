@@ -17,7 +17,7 @@ export default navBar = () => {
       style={{ backgroundColor: "white" }}
     >
       <Tab.Screen
-        name="Home"
+        name="Reportes"
         style={styles.container}
         component={ReportStack}
         options={{
