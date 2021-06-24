@@ -59,8 +59,9 @@ export default ({ navigation: { navigate } }) => {
     navigate("Seleccionar Multiples Fotos", {
       setImage: setImage,
     });
-    images = image.split(",");
-    console.log(images);
+    if(image != null)
+      images = image.split(",");
+    //console.log(images);
   };
   const updateCoordenadesAndCityName = async () => {
     let locationData = await reverseGeocodeAsync({
@@ -98,7 +99,7 @@ export default ({ navigation: { navigate } }) => {
     });
     //const uploadUrl = await uploadImageAsync(image);
     const uploadUrl = "image";
-    console.log(uploadUrl);
+    //console.log(uploadUrl);
     const reportResponse = await newReport(
       data,
       user,

@@ -76,7 +76,7 @@ const styles = StyleSheet.create({
     width: Dimensions.get("window").width,
   },
   scrollView: {
-    width: Dimensions.get("window").width - 50,
+    width: Dimensions.get("window").width,
     height: Dimensions.get("window").height,
   },
   logo: {

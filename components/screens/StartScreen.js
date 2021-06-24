@@ -10,7 +10,7 @@ export default function StartScreen({ navigation }) {
   return (
     <Background>
       <View style={styles.scrollView}>
-        <Logo />
+        <Logo  style={styles.logo}/>
       </View>
       <Header>Inicio de sesion</Header>
       <Paragraph>
@@ -34,6 +34,9 @@ export default function StartScreen({ navigation }) {
 
 const styles = StyleSheet.create({
   scrollView: {
+    width: Dimensions.get("window").width,
+  },
+  logo: {
     width: Dimensions.get("window").width,
   },
 });

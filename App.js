@@ -38,7 +38,9 @@ import { idAppFacebook } from "./components/config/idKeyFacebook";
 import { Alert } from "react-native";
 import { Button } from "react-native";
 import updatePasswordWithCode from "./components/screens/updatePasswordWithCode";
+import { LogBox } from "react-native";
 
+LogBox.ignoreLogs(["Require cycle"]), [];
 if (!firebase.apps.length) {
   firebase.initializeApp(firebaseConfig);
 }

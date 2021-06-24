@@ -11,11 +11,10 @@ import { theme } from "../core/theme";
 import Button from "../ComponetsLogin/Button";
 
 import { ThemeProvider, useRoute } from "@react-navigation/native";
-import { YellowBox } from "react-native";
+import { LogBox } from "react-native";
 
-YellowBox.ignoreWarnings([
-  "Non-serializable values were found in the navigation state",
-]);
+LogBox.ignoreLogs(["Non-serializable values were found in the navigation state"]), [];
+
 export default ({ navigation: { goBack } }) => {
   const route = useRoute();
 

@@ -6,7 +6,7 @@ import Button from "../ComponetsLogin/Button";
 import BackButton from "../ComponetsLogin/BackButton";
 import { useForm } from "react-hook-form";
 import { TextInput } from "../hook-form/index";
-import { StyleSheet, Dimensions, View, Alert } from "react-native";
+import { StyleSheet, Dimensions, View, Alert, ScrollView } from "react-native";
 import { verificationCode } from "../services/user";
 import AsyncStorage from "@react-native-community/async-storage";
 
@@ -31,19 +31,27 @@ export default function updatePasswordWithCode({ navigation }) {
           "Haz logrado reestablecer tu contraseña, vuelve a inicar sesión para utilizar nuestros servicios."
         );
         navigation.navigate("LoginScreen");
+      }else{
+        Alert.alert("Error", response.message);
+
       }
     } else {
-      console.log("las contraseñas no coinciden");
+      Alert.alert("Error", "Las contraseñas no coinciden");
     }
   };
 
   return (
     <Background>
       <BackButton goBack={navigation.goBack} />
+        <ScrollView 
+        ref={(ref) => (scrollView = ref)}
+        style={styles.scrollView}
+        bounces={false}
+      >
       <View style={styles.logo}>
         <Logo />
       </View>
-      <View style={styles.scrollView}>
+
         <Header>Restaurar Contraseña</Header>
         <TextInput
           title="Código de Verificación"
@@ -79,7 +87,7 @@ export default function updatePasswordWithCode({ navigation }) {
             },
           }}
           defaultValue=""
-          errorMessage={errors?.password?.message}
+          errorMessage={errors?.password1?.message}
           leftIconName="lock"
         />
 
@@ -99,13 +107,13 @@ export default function updatePasswordWithCode({ navigation }) {
             },
           }}
           defaultValue=""
-          errorMessage={errors?.password?.message}
+          errorMessage={errors?.password2?.message}
           leftIconName="lock"
         />
         <Button mode="contained" onPress={handleSubmit(onSubmit)}>
           Cambiar contraseña
         </Button>
-      </View>
+      </ScrollView>
     </Background>
   );
 }
@@ -115,12 +123,11 @@ const styles = StyleSheet.create({
     width: Dimensions.get("window").width,
   },
   scrollView: {
-    width: Dimensions.get("window").width - 50,
+    width: Dimensions.get("window").width- 50,
     height: Dimensions.get("window").height,
   },
   logo: {
     width: Dimensions.get("window").width - 50,
-    marginTop: "120%",
-    marginLeft: "-12%",
+    marginLeft: "-10%",
   },
 });
