@@ -20,7 +20,7 @@ import AsyncStorage from "@react-native-community/async-storage";
 import Button from "../ComponetsLogin/Button";
 import { IconButton, Colors } from "react-native-paper";
 import * as firebase from "firebase";
-import { deleteUser, updateUserImage, updateUser } from "../services/user";
+import { deleteUser, updateUserImage, updateUser, getByIdUser } from "../services/user";
 import * as ImagePicker from "expo-image-picker";
 
 export default function Profile({ navigation: { navigate } }) {
@@ -62,14 +62,15 @@ export default function Profile({ navigation: { navigate } }) {
   const saveImage = async () => {
     setLoading(true);
     const uploadUrl = await uploadImageAsync(image);
-    usuario = JSON.parse(await AsyncStorage.getItem("user"));
     console.log(uploadUrl);
     let im = uploadUrl.toString();
-    updateResponse = await updateUserImage(usuario, im);
+    updateResponse = await updateUserImage(JSON.parse(await AsyncStorage.getItem("user")), im);
     if (updateResponse.code === 201) {
-      usuario.imgURL = uploadUrl;
-      await AsyncStorage.setItem("user", JSON.stringify(usuario));
+      await AsyncStorage.removeItem("user");
+      setUser(await getByIdUser(user.id));
+      await AsyncStorage.setItem("user", JSON.stringify(user));
     }
+    
     setModalVisible(false);
     setLoading(false);
   };
@@ -286,7 +287,7 @@ export default function Profile({ navigation: { navigate } }) {
                   message: "*La Contraseña es obligatoria*",
                 },
                 minLength: {
-                  value: 8,
+                  value: 7,
                   message: "*La Contraseña debe tener 8 caracteres mínimo*",
                 },
               }}
