@@ -1,23 +1,10 @@
-import React, { Component, useState, useEffect } from "react";
-import {
-  Animated,
-  View,
-  StyleSheet,
-  Image,
-  Dimensions,
-  ScrollView,
-  Text,
-} from "react-native";
+import React, { useState, useEffect } from "react";
+import { StyleSheet } from "react-native";
 import { getReportPhotos } from "../services/photography";
 import { Card } from "react-native-paper";
 
 export default ({ reportId }) => {
   const [image, setImage] = useState(null);
-
-  console.log(reportId);
-  let url =
-    "https://s-media-cache-ak0.pinimg.com/originals/ee/51/39/ee5139157407967591081ee04723259a.png";
-  let uris = "";
   const fetchDetails = async () => {
     const apiPhotos = await getReportPhotos(reportId);
     for (let i = 0; i < apiPhotos.length; i++) {
@@ -26,13 +13,11 @@ export default ({ reportId }) => {
     }
   };
 
-  //console.log(image);
 
   useEffect(() => {
     fetchDetails();
   }, []);
   //
-  console.log(image);
   return <Card.Cover source={{ uri: image }} />;
 };
 

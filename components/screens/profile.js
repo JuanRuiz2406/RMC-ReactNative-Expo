@@ -10,7 +10,6 @@ import {
   Modal,
   TouchableHighlight,
 } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
 import { AuthContext } from "../contexts/authContext";
 
 import { useForm } from "react-hook-form";
@@ -61,6 +60,7 @@ export default function Profile({ navigation: { navigate } }) {
     setModalVisible(!modalVisible);
   };
   const saveImage = async () => {
+    setLoading(true);
     const uploadUrl = await uploadImageAsync(image);
     usuario = JSON.parse(await AsyncStorage.getItem("user"));
     console.log(uploadUrl);
@@ -70,6 +70,8 @@ export default function Profile({ navigation: { navigate } }) {
       usuario.imgURL = uploadUrl;
       await AsyncStorage.setItem("user", JSON.stringify(usuario));
     }
+    setModalVisible(false);
+    setLoading(false);
   };
   const onDeleteUser = async (userEmail) => {
     const deleteResponse = await deleteUser(userEmail);

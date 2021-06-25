@@ -39,7 +39,7 @@ export default function ResetPasswordScreen({ navigation }) {
     <Background>
       {loading ? (
         <ActivityIndicator />
-      ) : (<View>
+      ) : (<View style={styles.scrollView}>
         
       <BackButton goBack={navigation.goBack} />
       <View style={styles.logo}>
@@ -90,8 +90,7 @@ const styles = StyleSheet.create({
     height: Dimensions.get("window").height,
   },
   logo: {
-    width: Dimensions.get("window").width - 50,
-    marginTop: "150%",
-    marginLeft: "-10%",
+    width: Dimensions.get("window").width ,
+
   },
 });

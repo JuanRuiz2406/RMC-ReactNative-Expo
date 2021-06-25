@@ -21,7 +21,7 @@ export default ({ navigation: { navigate } }) => {
       setReports(reportsResponse);
     }
     if (reportsResponse.status === 401) {
-      Alert.alert("Error", reportsResponse.error);
+      Alert.alert("Errors", reportsResponse.error);
     }
   });
 
