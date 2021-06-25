@@ -23,12 +23,10 @@ export default ({ navigation: { goBack } }) => {
   }, []);
 
   const onDone = async (data) =>{
-    //console.log(data);
     var uris = "";
     data.map((img) =>
       uris = (uris +  "," + img.uri)
     );
-    //console.log(uris.substring(1));
     route.params.setImage(uris.substring(1));
     goBack();
 

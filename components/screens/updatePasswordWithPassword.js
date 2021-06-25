@@ -53,7 +53,7 @@ export default function updatePasswordWithPassword({ navigation }) {
             },
           }}
           defaultValue=""
-          errorMessage={errors?.password?.message}
+          errorMessage={errors?.password1?.message}
           leftIconName="lock"
         />
 
@@ -73,7 +73,7 @@ export default function updatePasswordWithPassword({ navigation }) {
             },
           }}
           defaultValue=""
-          errorMessage={errors?.password?.message}
+          errorMessage={errors?.password2?.message}
           leftIconName="lock"
         />
         <Button mode="contained" onPress={handleSubmit(onSubmit)}>

@@ -9,30 +9,38 @@ import { TextInput } from "../hook-form/index";
 import { StyleSheet, Dimensions, View, Alert, ScrollView } from "react-native";
 import { updateVerificationCode } from "../services/user";
 import AsyncStorage from "@react-native-community/async-storage";
+import ActivityIndicator from "./activityIndicator";
 
 export default function ResetPasswordScreen({ navigation }) {
   const { handleSubmit, control, reset, errors } = useForm();
+  const [loading, setLoading] = useState(false);
 
   const onSubmit = async (data) => {
+    setLoading(true);
     await AsyncStorage.setItem("emailCode", data.email);
     const responseUpdateVerificationCode = await updateVerificationCode(
       data.email
     );
-    console.log(responseUpdateVerificationCode);
     if (responseUpdateVerificationCode.code === 201) {
       console.log("inside");
+      setLoading(false);
       Alert.alert(
         "Código Enviado",
         "Revisa tu correo electrónico para encontrar tu código."
       );
       navigation.navigate("updatePasswordWithCode");
     } else {
+      setLoading(false);
       Alert.alert("ERROR", "No existe el usuario.");
     }
   };
 
   return (
     <Background>
+      {loading ? (
+        <ActivityIndicator />
+      ) : (<View>
+        
       <BackButton goBack={navigation.goBack} />
       <View style={styles.logo}>
         <Logo />
@@ -67,6 +75,8 @@ export default function ResetPasswordScreen({ navigation }) {
           Enviar codigo
         </Button>
       </View>
+      </View>
+      )}
     </Background>
   );
 }

@@ -55,13 +55,11 @@ export default ({ navigation: { navigate } }) => {
   }, [latitude, longitude]);
 
   const pickImage = async () => {
-    //console.log(image);
     navigate("Seleccionar Multiples Fotos", {
       setImage: setImage,
     });
     if(image != null)
       images = image.split(",");
-    //console.log(images);
   };
   const updateCoordenadesAndCityName = async () => {
     let locationData = await reverseGeocodeAsync({
@@ -76,7 +74,6 @@ export default ({ navigation: { navigate } }) => {
   const saveImages = async (reportResponse) => {
     const images = image.split(",");
     for (const img of images) {
-      console.log(img);
       const uploadUrl = await uploadImageAsync(img);
       await newPhotography(uploadUrl, reportResponse);
       console.log("subida");
@@ -99,7 +96,6 @@ export default ({ navigation: { navigate } }) => {
     });
     //const uploadUrl = await uploadImageAsync(image);
     const uploadUrl = "image";
-    //console.log(uploadUrl);
     const reportResponse = await newReport(
       data,
       user,
